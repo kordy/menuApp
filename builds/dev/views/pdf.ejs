@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню</title>
+    <style>
+
+          *{
+              margin:0;
+              padding:0;
+          }
+          .menu{
+ <%
+               if(typeof(image) !== 'undefined'){
+ %>
+                   width:<%= image.width %>px;
+                   height:<%= image.height %>px;
+                   background:url("http://localhost:5000<%= image.src %>") no-repeat left top;
+ <%
+               }
+ %>
+              font:16px Arial;
+              background-size:contain;
+          }
+          .menu__inner{
+                padding:120px 80px;
+          }
+          .menu__table{
+              border-collapse:collapse;
+          }
+          .menu__name{
+              width:70%;
+              text-align:left;
+          }
+          .menu__cnt{
+              width:15%;
+              text-align:right;
+              padding-right:30px;
+          }
+          .menu__price{
+              width:15%;
+              text-align:right;
+          }
+          .menu__th{
+              font-size:1.1em;
+              font-weight:normal;
+              border-bottom:1px solid #000;
+              padding-bottom:0.5em;
+          }
+          .menu__td{
+               padding-top:.8em;
+          }
+    </style>
+</head>
+<body>
+<div class='menu' >
+    <div class='menu__inner'>
+        <table class='menu__table'>
+            <thead>
+                <tr class='menu__tr'>
+                   <th class='menu__th menu__name'>Наименование</th>
+                   <th class='menu__th menu__cnt'>Кол</th>
+                   <th class='menu__th menu__price'>Цена(руб)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < products.length; i++) { %>
+                <tr class='menu-list-item'>
+                    <td class='menu__td menu__name'><%- products[i].name %></td>
+                    <td class='menu__td menu__cnt'><%- products[i].count %><%- products[i].measure %></td>
+                    <td class='menu__td menu__price'><%- products[i].price %></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
