@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "easyimage": "^2.0.0",
+    "gulp-clean": "^0.3.1",
     "gulp-rename": "^1.2.2",
     "html-pdf": "^1.2.2",
     "imagemagick": "^0.1.3",

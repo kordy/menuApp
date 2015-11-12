@@ -1,1 +1,6 @@
 .env
+.idea
+builds/dev/static/css
+builds/dev/static/js
+builds/dev/static/templates
+builds/dev/static/views

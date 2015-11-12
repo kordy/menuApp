@@ -1,0 +1,16 @@
+<div ng-controller="UploadXLSXController" class='ovh xlsx-controller'>
+    <div class='btn btn-success excel-add'>
+        <label class='pointer'>
+            <div class='uploadHeader'><span class=" glyphicon glyphicon-plus"></span> Загрузить
+                Excel-файл
+            </div>
+            <input type="file" nv-file-select uploader="uploaderXSLX" class='upload-input'/>
+        </label>
+    </div>
+    <ul class='upload-list'>
+        <li ng-repeat="item in uploaderXSLX.queue">
+            <span ng-bind="item.file.name"></span>
+            <button ng-click="item.upload()">Загрузить</button>
+        </li>
+    </ul>
+</div>
