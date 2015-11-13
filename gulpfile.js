@@ -10,6 +10,10 @@ var gulp = require('gulp'),
 gulp.task('clean', function () {
     gulp.src('builds/dev/static/templates', {read: false})
         .pipe(clean());
+    gulp.src('builds/dev/static/models', {read: false})
+        .pipe(clean());
+    gulp.src('builds/dev/static/collections', {read: false})
+      .pipe(clean());
     gulp.src('builds/dev/static/views', {read: false})
         .pipe(clean());
 //    gulp.src('builds/dev/static/js', {read: false})
@@ -41,6 +45,15 @@ gulp.task('js', function(){
     gulp.src('builds/dev/app/views/**/*.js')
         .pipe(gulp.dest('builds/dev/static/views'));
 
+    gulp.src('builds/dev/app/collections/**/*.js')
+      .pipe(gulp.dest('builds/dev/static/collections'));
+
+    gulp.src('builds/dev/app/models/**/*.js')
+      .pipe(gulp.dest('builds/dev/static/models'));
+
+    gulp.src('builds/dev/app/services/**/*.js')
+      .pipe(gulp.dest('builds/dev/static/services'));
+
     gulp.src([
         'bower_components/text/text.js'
     ])
@@ -49,10 +62,10 @@ gulp.task('js', function(){
 
 gulp.task('html', function(){
     gulp.src('builds/dev/app/templates/**/*.html')
-        .pipe(rename(function (path) {
-            path.extname = ".js"
-        }))
-        .pipe(gulp.dest('builds/dev/static/templates'));
+      .pipe(rename(function (path) {
+          path.extname = ".js"
+      }))
+      .pipe(gulp.dest('builds/dev/static/templates'));
 });
 
 gulp.task('css', function(){
@@ -86,7 +99,7 @@ gulp.task('webserver', function(){
 
 
 gulp.task('default', [
-    'clean',
+    //'clean',
     'js',
     'css',
     'html',

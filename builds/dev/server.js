@@ -31,6 +31,12 @@ app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + "/static"));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 
 process.on('uncaughtException', function (err) {
     console.log(err);
@@ -40,10 +46,6 @@ io.sockets.on('connection', function (client) {
 
     Group.find({}, function(err, products){
         client.emit('updateGroups', products);
-    });
-
-    Product.fetch(function(err, products){
-        client.emit('showProducts', products);
     });
 
     Menu.find({})
@@ -118,6 +120,19 @@ io.sockets.on('connection', function (client) {
     });
 
 });
+
+app.get('/groups', function (req, res) {
+    Group.find({}, null, {sort: {'code': 1}}, function(err, groups){
+        res.send(groups);
+    });
+});
+
+app.get('/products', function (req, res) {
+    Product.fetch(function(err, products){
+        res.send(products);
+    });
+});
+
 
 app.get('/menu.json', function (req, res) {
     Menu.find({}, function(err, menu) {

@@ -6,10 +6,7 @@ requirejs.config({
     baseUrl: 'static',
     paths: {
         text: 'js/libs/text',
-        views: 'views',
-        templates: 'templates',
-        models: 'models',
-        collections: '/collections'
+        api: 'services/api'
     }
 });
 

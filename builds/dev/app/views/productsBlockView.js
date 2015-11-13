@@ -12,10 +12,8 @@ define([
                 blanksTableRegion: '[data-region="blanksTableRegion"]',
                 excelUploadRegion: '[data-region="excelUploadRegion"]'
             },
-            initialize: function() {
-                this.render();
-            },
             onRender: function() {
+                console.log('render');
                 var productsTableView = new ProductsTableView();
                 this.productsTableRegion.show(productsTableView);
                 var blanksTableView = new BlanksTableView();

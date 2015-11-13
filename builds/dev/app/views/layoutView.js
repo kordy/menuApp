@@ -1,5 +1,5 @@
 define([
-    "text!templates/layoutTemplate.js",
+    "text!templates/LayoutTemplate.js",
     "views/productsBlockView"
 ],
     function(LayoutTemplate, ProductsBlockView) {
@@ -10,7 +10,6 @@ define([
                 productsBlockRegion: '#productsBlockRegion'
             },
             initialize: function() {
-                console.log('herre');
                 this.render();
             },
             onRender: function() {
