@@ -6,26 +6,14 @@
         <th>Удалить</th>
     </tr>
     </thead>
-    <tbody>
-    <tr ng-repeat="image in images">
-        <td><img src='{{image.src}}' width=50></td>
-        <td><input placeholder='Название' class='table-input' type='text' ng-model='image.name'></td>
-        <td><span class="glyphicon glyphicon-remove" ng-click='deleteImage(image)'></span></td>
-    </tr>
+    <tbody id='blanksBody'>
     </tbody>
 </table>
-<div ng-controller="UploadImageController" class='ovh'>
-    <div class='btn btn-success image-add'>
+<div class='ovh'>
+    <div class='btn btn-success imageAdd'>
         <label class='pointer'>
             <div class='uploadHeader'><span class=" glyphicon glyphicon-plus"></span> Добавить фон</div>
-            <input type="file" nv-file-select uploader="UploaderBg" class='upload-input'/>
+            <input type="file" class='upload-input blankUpload' multiple/>
         </label>
     </div>
-    <div class='btn btn-default image-save' ng-click='updateImages()'>Сохранить</div>
-    <ul class='upload-list'>
-        <li ng-repeat="item in UploaderBg.queue">
-            <span ng-bind="item.file.name"></span>
-            <button ng-click="item.upload()">Загрузить</button>
-        </li>
-    </ul>
 </div>

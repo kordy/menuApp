@@ -69,12 +69,12 @@ Image.prototype.saveIMG = function(file,callback){
         that.height = result.height;
         that.name = file.name;
         that.save(function (err) {
-            console.log(that);
             if (err) console.log(err);
             fs.rename(tmpPath, that.path(), function (err) {
                 console.log('rename callback ', err);
             });
-            if(typeof callback === 'function')callback();
+            that.src = fileDirectory + that.url();
+            if(typeof callback === 'function')callback(that);
         });
     });
 

@@ -30,6 +30,10 @@ gulp.task('js', function(){
         'bower_components/marionette/lib/backbone.marionette.js',
         'bower_components/backbone.stickit/backbone.stickit.js',
         'bower_components/bootstrap/dist/js/bootstrap.js',
+        'bower_components/jquery-file-upload/js/vendor/jquery.ui.widget.js',
+        'bower_components/jquery-file-upload/js/jquery.iframe-transport.js',
+        'bower_components/jquery-file-upload/js/jquery.fileupload.js',
+        'bower_components/alertify/alertify.js',
         'bower_components/requirejs/require.js'
          ])
         .pipe(concat('libs.js'))
@@ -73,6 +77,8 @@ gulp.task('css', function(){
     gulp.src([
         'bower_components/bootstrap/dist/css/bootstrap.css',
         'bower_components/bootstrap/dist/css/bootstrap-theme.css',
+        'bower_components/alertify/themes/alertify.core.css',
+        'bower_components/alertify/themes/alertify.bootstrap.css',
     ])
     .pipe(concat('libs.css'))
     .pipe(gulp.dest('builds/dev/static/css'));

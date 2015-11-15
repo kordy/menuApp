@@ -1,6 +1,7 @@
 define(['api'],
   function(Api) {
     var Model = Backbone.Model.extend({
+      idAttribute: '_id',
       url: function() {
         var base =
           _.result(this, 'urlRoot') ||
@@ -23,6 +24,14 @@ define(['api'],
           this.set(attrs);
         }
         return Api.post(this.getUrl(), this.cook(this.attributes, true));
+      },
+
+      delete: function() {
+        return Api.delete(this.getUrl());
+      },
+
+      update: function() {
+        return Api.put(this.getUrl(), this.attributes);
       },
 
       fetch: function(options) {
