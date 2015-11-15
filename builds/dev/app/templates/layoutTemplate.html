@@ -15,11 +15,11 @@
 
 <div class="container-fluid">
 <div class="row">
-<div class="col-md-6 menu-wrapper" id="productsBlockRegion"></div>
-<div class="col-md-6">
+<div class="col-md-4 menu-wrapper" id="productsBlockRegion"></div>
+<div class="col-md-8">
 
     <div class="page-header prew-header">
-        <h3 class='left'>Создание меню</h3>
+        <h3 class='left'>Создать меню</h3>
     </div>
 
     <div class='highlight create-menu'>
@@ -45,11 +45,6 @@
                         ></select>
             </div>
         </form>
-    </div>
-
-    <div ng-if='menuCurrent.name && menuCurrent.products[0]' class="btn-group right imp-btns" role="group" aria-label="...">
-        <button ng-click='menuSave()' type="button" class="btn btn-success">Сохранить меню</button>
-        <button ng-click='downloadPDF()' type="button" class="btn btn-success">Экспорт в PDF</button>
     </div>
 
 
@@ -85,18 +80,75 @@
         </table>
     </div>
 
+    <div ng-if='menuCurrent.name && menuCurrent.products[0]' class="page-header prew-header">
+        <h3 class='left'>Дополнительные настройки</h3>
+    </div>
+    <div class='highlight options-menu'>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Сервис</h4>
+                <form>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label><input type="checkbox" checked value="">Использовать доп. расходы на персонал</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="increase">Надбавка за сервис (%):</label>
+                                <input type="text" class="form-control" id="increase">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="comment">Комментарий доп. расходы:</label>
+                                <textarea class="form-control" rows="3" id="comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h4>Формат</h4>
+                <form>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label><input type="checkbox" value="">Использовать английские названия</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value="">Использовать изображения элементов</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" value="">Скрыть цены за каждую единицу товара</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="discount">Скидка на общую стоимость (%):</label>
+                                <input type="text" class="form-control" id="discount">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if='menuCurrent.name && menuCurrent.products[0]' class="btn-group right imp-btns" role="group" aria-label="...">
+        <button ng-click='preload()' type="button" class="btn btn-success">Предпросмотр</button>
+        <button ng-click='menuSave()' type="button" class="btn btn-success">Сохранить меню</button>
+        <button ng-click='downloadPDF()' type="button" class="btn btn-success">Экспорт в PDF</button>
+    </div>
+
     <!--<div ng-if='menuCurrent.name && menuCurrent.products[0]' ng-click='menuSave()' class='bg-success block block--active tac pointer'>Сохранить</div>-->
 
     <!--<div ng-if='menuCurrent.name && menuCurrent.products[0]' ng-click='downloadPDF()' class='bg-success block block--active tac pointer'>Сохранить в PDF</div>-->
     <!--<div ng-if='menuCurrent.name && menuCurrent.products[0]' ng-click='getPDF()' class='bg-success block block--active tac pointer'>Просмотр PDF</div>-->
     <div id='pdfContainer'></div>
-
-    <div ng-if='menuCurrent.name && menuCurrent.products[0]' class="page-header prew-header">
-        <h3 class='left'>Предпросмотр</h3>
-    </div>
-    <div ng-if='menuCurrent.name && menuCurrent.products[0]' class='highlight' style='min-height:200px;clear:both;'>
-        <h1 style='text-align:center;'>Предпросмотр меню! <br> <small>(в разработке)</small></h1>
-    </div>
 
 </div>
 </div>

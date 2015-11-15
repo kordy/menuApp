@@ -16,7 +16,8 @@ define([
       onRender: function() {
         var that = this;
       },
-      showEditPanel: function(){
+      showEditPanel: function(e){
+        e.stopPropagation();
         var $el = $(this.el);
         $el.find('.panel').show();
         $el.siblings().find('.panel').hide();

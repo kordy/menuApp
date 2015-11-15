@@ -53,11 +53,19 @@ define([
         else this.showSubMenuGroup();
       },
       showProds: function(){
-        $(this.el).children('.childrenBlock').children('.prod-group').slideDown(300);
+        var $el = $(this.el),
+            $group = $el.children('.childrenBlock').children('.prod-group');
+
+        if($group.hasClass('prod-group--current')) $group.removeClass('prod-group--current').slideUp(300);
+        else  $group.addClass('prod-group--current').slideDown(300);
       },
       showSubMenuGroup: function(){
-        var $el = $(this.el);
-        $el.children('.childrenBlock').children('.menu-group').addClass('menu-group--current').slideDown(300);
+        var $el = $(this.el),
+            $group = $el.children('.childrenBlock').children('.menu-group');
+
+        if($group.hasClass('menu-group--current')) $group.removeClass('menu-group--current').slideUp(300);
+        else $group.addClass('menu-group--current').slideDown(300);
+
         $el.siblings().find('.menu-group').hide();
         $el.siblings().find('.prod-group').hide();
         $el.siblings().find('.panel').hide();
