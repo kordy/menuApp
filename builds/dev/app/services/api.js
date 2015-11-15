@@ -1,48 +1,51 @@
-define(function() {
-  var Api = function() {
+define(function () {
+  var Api = function () {
     var basePath = 'http://localhost:3000/'; // instance for developers
 
     function getBasePath() {
       return basePath;
     }
 
-    function get(url, data, options) {
-      return request('GET', url, data, options);
+    function get(url, data) {
+      return request('GET', url, data);
     }
 
-    function post(url, data, options) {
-      return request('POST', url, data, options);
+    function post(url, data) {
+      return request('POST', url, data);
     }
 
-    function put(url, data, options) {
-      return request('PUT', url, data, options);
+    function put(url, data) {
+      return request('PUT', url, data);
     }
 
-    function remove(url, data, options) {
-      return request('DELETE', url, data, options);
+    function remove(url, data) {
+      return request('DELETE', url, data);
     }
 
-    function request(type, url, data, options) {
-      options = options || {};
+    function request(type, url, data) {
       var deferredRequest = $.Deferred();
 
       if (!url) {
         deferredRequest.reject('Url not specified');
         return deferredRequest.promise();
       }
+      var options = {
+        url: getBasePath() + url,
+        type: type,
+        data: data
+      };
 
-      var requestSettings = getRequestSettings(type, url, data, options);
-      sendRequest(requestSettings, deferredRequest);
+      sendRequest(options, deferredRequest);
 
       return deferredRequest.promise();
     }
 
     function sendRequest(requestSettings, deferredRequest) {
       $.ajax(requestSettings)
-        .done(function(data, statusStr, xhr) {
+        .done(function (data, statusStr, xhr) {
           deferredRequest.resolve(data, statusStr, xhr);
         })
-        .fail(function(xhr) {
+        .fail(function (xhr) {
           deferredRequest.reject();
         });
     }

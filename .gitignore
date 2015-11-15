@@ -4,5 +4,8 @@ builds/dev/static/css
 builds/dev/static/js
 builds/dev/static/templates
 builds/dev/static/views
+builds/dev/static/collections
+builds/dev/static/models
+builds/dev/static/services
 node_modules
 bower_components

@@ -1,6 +1,6 @@
 define([
         "text!templates/productsBlockTemplate.js",
-        "views/productsBlock/productsTableView",
+        "views/productsBlock/productsListView",
         "views/productsBlock/blanksTableView",
         "views/productsBlock/excelUploadView"
     ],

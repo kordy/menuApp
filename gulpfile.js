@@ -27,9 +27,9 @@ gulp.task('js', function(){
         'bower_components/jquery/dist/jquery.js',
         'bower_components/underscore/underscore.js',
         'bower_components/backbone/backbone.js',
-        'bower_components/marionette/lib/backbone.marionette.min.js',
+        'bower_components/marionette/lib/backbone.marionette.js',
         'bower_components/backbone.stickit/backbone.stickit.js',
-        'bower_components/bootstrap/dist/js/bootstrap.min.js',
+        'bower_components/bootstrap/dist/js/bootstrap.js',
         'bower_components/requirejs/require.js'
          ])
         .pipe(concat('libs.js'))

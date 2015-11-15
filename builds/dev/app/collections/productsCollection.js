@@ -1,7 +1,8 @@
-define(['collections/collection', 'models/cardModel'],
-  function(Collection, CardModel) {
-    var CardsCollection = Collection.extend({
-      url: 'v1/cards',
-      model: CardModel
-    })
+define(['collections/collection', 'models/productModel'],
+  function(Collection, ProductModel) {
+    var ProductsCollection = Collection.extend({
+      url: 'products',
+      model: ProductModel
+    });
+    return ProductsCollection
   });
