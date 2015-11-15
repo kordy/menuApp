@@ -19,6 +19,7 @@ define([
 
         that.groupCollectionView = new Mn.CollectionView({
           tagName: 'ul',
+          className: 'nav nav-sidebar sidebar menu-group',
           childView: GroupListItemView,
           collection: that.parsedGroupsCollection
         });

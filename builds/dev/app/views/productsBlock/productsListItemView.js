@@ -5,7 +5,9 @@ define([
     var ProductsListItemView = Mn.ItemView.extend({
       className: 'prod-group__item',
       tagName: 'li',
-
+      events: {
+        'click .glyphicon-edit': 'showEditPanel'
+      },
       template: ProductsListItemTemplate,
       initialize: function (param) {
         var that = this;
@@ -14,6 +16,11 @@ define([
       onRender: function() {
         var that = this;
       },
+      showEditPanel: function(){
+        var $el = $(this.el);
+        $el.find('.panel').show();
+        $el.siblings().find('.panel').hide();
+      }
     });
     return ProductsListItemView;
   });
