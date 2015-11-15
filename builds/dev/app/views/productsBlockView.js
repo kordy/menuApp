@@ -13,7 +13,6 @@ define([
                 excelUploadRegion: '[data-region="excelUploadRegion"]'
             },
             onRender: function() {
-                console.log('render');
                 var productsTableView = new ProductsTableView();
                 this.productsTableRegion.show(productsTableView);
                 var blanksTableView = new BlanksTableView();
