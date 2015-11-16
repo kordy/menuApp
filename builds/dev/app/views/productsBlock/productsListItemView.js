@@ -8,6 +8,16 @@ define([
       events: {
         'click .glyphicon-edit': 'showEditPanel'
       },
+      bindings: {
+        '.prod-name': 'name',
+        '.prod-name-eng': 'nameEng',
+        '.prod-serving': 'serving',
+        '.prod-serving-drink': 'servingDrink',
+        '.prod-price-serving': 'priceServing',
+        '.prod-price-kg': 'priceKg',
+        '.prod-price-base': 'priceBase',
+        '.prod-image': 'image'
+      },
       template: ProductsListItemTemplate,
       initialize: function (param) {
         var that = this;
@@ -15,12 +25,13 @@ define([
       },
       onRender: function() {
         var that = this;
+        this.stickit();
       },
       showEditPanel: function(e){
         e.stopPropagation();
         var $el = $(this.el);
+        $('.panel').hide();
         $el.find('.panel').show();
-        $el.siblings().find('.panel').hide();
       }
     });
     return ProductsListItemView;

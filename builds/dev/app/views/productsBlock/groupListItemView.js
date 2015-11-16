@@ -11,7 +11,7 @@ define([
       childViewContainer: '.childrenBlock',
       template: GroupListItemTemplate,
       events: {
-        'click' : 'setActiveMenuItem'
+        'click .menu-group__item-text' : 'setActiveMenuItem'
       },
       initialize: function (param) {
         var that = this;
