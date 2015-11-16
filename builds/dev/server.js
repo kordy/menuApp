@@ -59,25 +59,6 @@ io.sockets.on('connection', function (client) {
     client.emit('updateImages', images);
   });
 
-  client.on('updateProducts', function (products) {
-    var length = products.length;
-
-    for (var i in products) {
-      var prod = new Product();
-      for (var j in products[i]) {
-        prod[j] = products[i][j]
-      }
-      prod.replace(function () {
-        length--;
-        if (length === 0) {
-          Product.find({}, function (err, products) {
-            client.emit('showProducts', products);
-          });
-        }
-      });
-    }
-  });
-
   client.on('updateImages', function (images) {
     for (var i in images) {
       var im = new Image();
@@ -166,6 +147,29 @@ app.put('/image/:id', function (req, res) {
   });
 });
 
+app.post('/products', multipartMiddleware, function (req, res) {
+  console.log(req.files);
+  if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
+    xlsx.parse(req.files.files, function () {
+      Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
+        Product.fetch(function (err, products) {
+          res.send({groups: groups, products: products});
+        });
+      });
+    })
+  }
+});
+
+app.get('/menus', function (req, res) {
+  Menu.find({})
+    .populate('products image')
+    .exec(function (err, menus) {
+      res.send(menus);
+    });
+});
+
+
+
 app.get('/menu.json', function (req, res) {
   Menu.find({}, function (err, menu) {
     res.send(JSON.stringify(menu));
@@ -201,18 +205,6 @@ app.post('/menu.json', function (req, res) {
 app.get('/', function (req, res) {
   res.render('index.ejs');
 });
-
-
-
-
-app.post('/', multipartMiddleware, function (req, res) {
-  if (typeof req.files != 'undefined' && req.files.file.name.split('.').pop() === 'xlsx') {
-    xlsx.parse(req.files, function () {
-      res.send('ОК');
-    })
-  }
-});
-
 
 var server = http.listen(app.get('port'), function () {
   var host = server.address().address;
