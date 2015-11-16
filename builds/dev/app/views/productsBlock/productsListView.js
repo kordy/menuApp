@@ -3,9 +3,10 @@ define([
     "views/productsBlock/groupListItemView",
     "views/productsBlock/productsListItemView",
     "collections/groupsCollection",
-    "collections/productsCollection"
+    "collections/productsCollection",
+    "sync"
   ],
-  function (ProductsListTemplate, GroupListItemView, ProductsListItemView, GroupsCollection, ProductsCollection) {
+  function (ProductsListTemplate, GroupListItemView, ProductsListItemView, GroupsCollection, ProductsCollection, Sync) {
 
     var ProductsListView = Mn.LayoutView.extend({
       className: 'highlight',
@@ -17,28 +18,41 @@ define([
         that.groupsCollection = new GroupsCollection();
         that.parsedGroupsCollection = new GroupsCollection();
 
+        $.when(that.groupsCollection.fetch(), that.productsCollection.fetch()).then(function() {
+          that.formatCollection();
+        });
+        Sync.on('updateProducts', function(items){
+          that.groupsCollection.reset(items.groups);
+          that.productsCollection.reset(items.products);
+          that.render();
+          that.formatCollection();
+        });
+      },
+      formatCollection: function() {
+        var that = this;
+        var parsedCollection = [];
+        that.groupsCollection.each(function(item) {
+          if (item.get('code').length === 2) {
+            parsedCollection[parsedCollection.length] = item;
+          } else {
+            that.setToGroupParent(item);
+          }
+        });
+        that.productsCollection.each(function(item) {
+          console.log(item);
+          that.setGroupProducts(item);
+        });
+        that.parsedGroupsCollection.reset(parsedCollection);
+
         that.groupCollectionView = new Mn.CollectionView({
           tagName: 'ul',
           className: 'nav nav-sidebar sidebar menu-group',
           childView: GroupListItemView,
           collection: that.parsedGroupsCollection
         });
-        $.when(that.groupsCollection.fetch(), that.productsCollection.fetch()).then(function(){
-          var parsedCollection = [];
-          that.groupsCollection.each(function(item) {
-            if (item.get('code').length === 2) {
-              parsedCollection[parsedCollection.length] = item;
-            } else {
-              that.setToGroupParent(item);
-            }
-          });
-          that.productsCollection.each(function(item) {
-            that.setGroupProducts(item);
-          });
-          that.parsedGroupsCollection.set(parsedCollection);
-          that.groupCollectionView.render();
-          that.productsListRegion.show(that.groupCollectionView);
-        })
+        that.productsListRegion.show(that.groupCollectionView);
+
+        that.notFirst = true;
       },
       setGroupChildren: function(parentItem) {
         var that = this;

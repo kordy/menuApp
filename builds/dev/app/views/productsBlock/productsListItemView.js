@@ -11,10 +11,14 @@ define([
       template: ProductsListItemTemplate,
       initialize: function (param) {
         var that = this;
-//        that.model.on('change', that.render, that);
+        that.model.on('change', that.render, that);
       },
       onRender: function() {
         var that = this;
+      },
+      onDestroy: function() {
+        console.log('destroy');
+        this.$el.remove();
       },
       showEditPanel: function(e){
         e.stopPropagation();

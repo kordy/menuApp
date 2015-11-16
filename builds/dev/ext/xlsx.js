@@ -59,7 +59,6 @@ var XLSX = {
             XLSX.dataLength = data.length;
 
             for(var j in data){
-				console.log("HERE");
                 XLSX.cntAll++;
                 if (isNaN(parseInt(data[j][0])) || !data[j][0]) continue;
                 dataSave(data[j], callback);
