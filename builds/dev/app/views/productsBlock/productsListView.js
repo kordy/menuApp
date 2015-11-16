@@ -39,7 +39,6 @@ define([
           }
         });
         that.productsCollection.each(function(item) {
-          console.log(item);
           that.setGroupProducts(item);
         });
         that.parsedGroupsCollection.reset(parsedCollection);

@@ -160,6 +160,16 @@ app.post('/products', multipartMiddleware, function (req, res) {
   }
 });
 
+app.get('/menus', function (req, res) {
+  Menu.find({})
+    .populate('products image')
+    .exec(function (err, menus) {
+      res.send(menus);
+    });
+});
+
+
+
 app.get('/menu.json', function (req, res) {
   Menu.find({}, function (err, menu) {
     res.send(JSON.stringify(menu));
