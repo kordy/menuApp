@@ -12,20 +12,6 @@
       <th></th>
     </tr>
     </thead>
-    <tbody data-region="menuProductsItemsRegion">
-    <tr ng-repeat-start="productCurrent in menuCurrent.products"
-        ng-click='productToggle(productCurrent)'
-        ng-if='groupCompare(menuCurrent.products[$index-1].group[0], productCurrent.group[0])'
-      >
-      <th colspan=5>{{productCurrent.group[0].name}}</th>
-    </tr>
-    <tr ng-click='productToggle(productCurrent)' ng-repeat-end>
-      <td>{{productCurrent.name}}</td>
-      <td>{{productCurrent.count}} {{productCurrent.measure}}</td>
-      <td>{{productCurrent.price}} Р</td>
-      <td>{{productCurrent.priceBase}} Р</td>
-      <td><span class="glyphicon glyphicon-ok"></span></td>
-    </tr>
-    </tbody>
+    <tbody data-region="menuProductsItemsRegion"></tbody>
   </table>
 </div>

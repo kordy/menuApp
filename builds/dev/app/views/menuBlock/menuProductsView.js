@@ -1,12 +1,12 @@
 define([
     "text!templates/menuBlock/menuProductsTemplate.js",
+    "views/menuBlock/menuProductsItemView"
   ],
-  function(MenuProductsTemplate) {
+  function(MenuProductsTemplate, MenuProductsListItemView) {
     var MenuProductsView = Marionette.LayoutView.extend({
       template: MenuProductsTemplate,
       regions: {
-        //savedMenusRegion: '[data-region="savedMenusRegion"]',
-        //blankSelectRegion: '[data-region="blankSelectRegion"]'
+        menuProductsItemsRegion: '[data-region="menuProductsItemsRegion"]',
       },
       initialize: function() {
         var that = this;
@@ -17,17 +17,16 @@ define([
 
       },
       onRender: function() {
-      //  var that = this;
+        var that = this;
+        //this.$el = this.$el.children();
+        //that.$el.unwrap();
       //  var selectMenuView = new SelectView({collection: that.menusCollection});
       //  selectMenuView.on('change', function(selected) {
       //    console.log(selected);
       //  });
       //  this.savedMenusRegion.show(selectMenuView);
-      //  var blanksSelectView = new SelectView({collection: that.blanksCollection});
-      //  blanksSelectView.on('change', function(selected) {
-      //    console.log(selected);
-      //  });
-      //  this.blankSelectRegion.show(blanksSelectView);
+        var menuProductsListItemView = new MenuProductsListItemView();
+        that.menuProductsItemsRegion.show(menuProductsListItemView);
       }
     });
     return MenuProductsView;
