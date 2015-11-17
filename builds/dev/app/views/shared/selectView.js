@@ -18,6 +18,10 @@ define([
           this.collection.on('selected',this.selectedModel, this);
         }
       },
+      onRender: function() {
+
+        this.$("option").first().trigger('option_changed');
+      },
       selectedModel: function(model){
         this.trigger('change', model);
       }

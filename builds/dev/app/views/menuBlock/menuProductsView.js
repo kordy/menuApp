@@ -1,8 +1,9 @@
 define([
     "text!templates/menuBlock/menuProductsTemplate.js",
-    "views/menuBlock/menuProductsItemView"
+    "views/menuBlock/menuProductsItemView",
+    "collections/menusCollection"
   ],
-  function(MenuProductsTemplate, MenuProductsListItemView) {
+  function(MenuProductsTemplate, MenuProductsListItemView, MenusCollection) {
     var MenuProductsView = Marionette.LayoutView.extend({
       template: MenuProductsTemplate,
       regions: {
@@ -25,6 +26,8 @@ define([
       //    console.log(selected);
       //  });
       //  this.savedMenusRegion.show(selectMenuView);
+      //  that.menusCollection = new MenusCollection();
+        //that.menusCollection.fetch();
         var menuProductsListItemView = new MenuProductsListItemView();
         that.menuProductsItemsRegion.show(menuProductsListItemView);
       }
