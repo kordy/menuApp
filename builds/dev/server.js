@@ -163,8 +163,15 @@ app.post('/products', multipartMiddleware, function (req, res) {
 app.get('/menus', function (req, res) {
   Menu.find({})
     .populate('products image')
-    .exec(function (err, menus) {
-      res.send(menus);
+    .exec(function (err, docs) {
+      var options = {
+        path: 'products.group',
+        model: 'group'
+      };
+      if (err) return res.json(500);
+      Menu.populate(docs, options, function (err, menus) {
+        res.json(menus);
+      });
     });
 });
 

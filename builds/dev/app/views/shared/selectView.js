@@ -13,14 +13,17 @@ define([
         this.$("option:selected").trigger('option_changed');
       },
       initialize: function(params) {
+        var that = this;
         if (params.collection) {
-          this.collection = params.collection;
-          this.collection.on('selected',this.selectedModel, this);
+          that.collection.on('sync', function() {
+            that.$("option").first().trigger('option_changed');
+          });
+          that.collection.on('selected',this.selectedModel, this);
         }
       },
       onRender: function() {
 
-        this.$("option").first().trigger('option_changed');
+
       },
       selectedModel: function(model){
         this.trigger('change', model);

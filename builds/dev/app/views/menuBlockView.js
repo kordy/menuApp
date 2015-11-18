@@ -31,6 +31,7 @@ define([
         var selectMenuView = new SelectView({collection: that.menusCollection});
         selectMenuView.on('change', function(selected) {
           console.log(selected);
+          that.setCurrentMenu(selected);
         });
         this.savedMenusRegion.show(selectMenuView);
         var blanksSelectView = new SelectView({collection: that.blanksCollection});
@@ -40,7 +41,17 @@ define([
         this.blankSelectRegion.show(blanksSelectView);
         this.menuProductsView = new MenuProductsView();
         this.menuProductsRegion.show(this.menuProductsView);
-
+      },
+      setCurrentMenu: function(selected) {
+        var groups = {};
+        console.log(selected);
+        var products = selected.get('products');
+        console.log(products);
+        _.each(products, function(product) {
+          if (!groups[product.group[0].name]) groups[product.group[0].name] = [];
+          groups[product.group[0].name][groups[product.group[0].name].length] = product;
+        });
+        console.log(groups);
       }
     });
     return MenuBlockView;
