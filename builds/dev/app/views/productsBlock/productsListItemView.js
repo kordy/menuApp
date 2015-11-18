@@ -1,12 +1,14 @@
 define([
-    "text!templates/productsBlock/productsListItemTemplate.js"
+    "text!templates/productsBlock/productsListItemTemplate.js",
+    "sync"
   ],
-  function (ProductsListItemTemplate) {
+  function (ProductsListItemTemplate, Sync) {
     var ProductsListItemView = Mn.ItemView.extend({
       className: 'prod-group__item',
       tagName: 'li',
       events: {
-        'click .glyphicon-edit': 'showEditPanel'
+        'click .glyphicon-edit': 'showEditPanel',
+        'click .glyphicon-plus-sign': 'initAddToMenu'
       },
       bindings: {
         '.prod-name': 'name',
@@ -30,6 +32,10 @@ define([
       onDestroy: function() {
         console.log('destroy');
         this.$el.remove();
+      },
+      initAddToMenu: function(){
+        var that = this;
+        Sync.trigger('addToMenu', that.model.attributes);
       },
       showEditPanel: function(e){
         e.stopPropagation();

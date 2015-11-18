@@ -3,9 +3,12 @@ define([
     "views/shared/selectView",
     "views/menuBlock/menuProductsView",
     "collections/blanksCollection",
-    "collections/menusCollection"
+    "collections/menusCollection",
+    "models/menuModel",
+    "models/productModel",
+    "sync"
   ],
-  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection) {
+  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, ProductModel, Sync) {
     var MenuBlockView = Marionette.LayoutView.extend({
       template: MenuBlockTemplate,
       regions: {
@@ -25,6 +28,9 @@ define([
         that.blanksCollection.on('sync', function() {
 
         });
+        Sync.on('addToMenu', that.addProduct, that);
+        that.currentMenu = new MenuModel();
+        that.currentMenu.products = [];
       },
       onRender: function() {
         var that = this;
@@ -41,6 +47,7 @@ define([
         this.blankSelectRegion.show(blanksSelectView);
         this.menuProductsView = new MenuProductsView();
         this.menuProductsRegion.show(this.menuProductsView);
+
       },
       setCurrentMenu: function(selected) {
         var groups = {};
@@ -52,6 +59,14 @@ define([
           groups[product.group[0].name][groups[product.group[0].name].length] = product;
         });
         console.log(groups);
+      },
+      addProduct: function(product) {
+        var that = this;
+        console.log(that);
+        console.log(that.currentMenu);
+        that.currentMenu.products[that.currentMenu.products.length] = new ProductModel(product);
+        that.currentMenu.set('products', that.currentMenu.products);
+        console.log(that.currentMenu);
       }
     });
     return MenuBlockView;

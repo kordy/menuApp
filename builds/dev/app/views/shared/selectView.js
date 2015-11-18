@@ -16,7 +16,7 @@ define([
         var that = this;
         if (params.collection) {
           that.collection.on('sync', function() {
-            that.$("option").first().trigger('option_changed');
+//            that.$("option").first().trigger('option_changed');
           });
           that.collection.on('selected',this.selectedModel, this);
         }
