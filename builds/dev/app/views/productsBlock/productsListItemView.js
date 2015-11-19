@@ -38,10 +38,11 @@ define([
         Sync.trigger('addToMenu', that.model.attributes);
       },
       showEditPanel: function(e){
-        e.stopPropagation();
         var $el = $(this.el);
-        $('.panel').hide();
-        $el.find('.panel').show();
+        e.stopPropagation();
+        $('.nav-sidebar').find('.panel').hide();
+        if(!$el.hasClass('prod-current')) $el.addClass('prod-current').find('.panel').show();
+        else $el.removeClass('prod-current');
       }
     });
     return ProductsListItemView;

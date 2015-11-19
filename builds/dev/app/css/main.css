@@ -95,15 +95,22 @@ body{
 .nav-sidebar {
     margin-top:3px;
 }
-.nav-sidebar > li > a {
+.nav-sidebar > li > a.menu-group__item-text {
+    display:flex;
+    justify-content:space-between;
     padding-right: 20px;
-    padding-left: 20px;
+    padding-left: 10px;
 }
-.nav-sidebar > .active > a,
-.nav-sidebar > li > a:hover,
-.nav-sidebar > li > a:focus {
+.nav-sidebar > .active > a.menu-group__item-text,
+.nav-sidebar > li > a.menu-group__item-text:hover,
+.nav-sidebar > li > a.menu-group__item-text:focus {
     color: #fff;
     background-color: #428bca;
+}
+.nav-sidebar > .active > a.menu-group__item-text .menu-group__item-text-name,
+.nav-sidebar > li > a.menu-group__item-text:hover .menu-group__item-text-name,
+.nav-sidebar > li > a.menu-group__item-text:focus .menu-group__item-text-name {
+    text-decoration: none;
 }
 
 /* MENU GROUP */
@@ -124,19 +131,29 @@ body{
 .menu-group__item:first-child{
     border-top:none;
 }
-.menu-group__item.active > .menu-group__item-text{
-	color: #337ab7;
-}
 .menu-group__item-text{
-	display:block;
-	color:#333;    
+    display:flex;
+    justify-content:space-between;
+	color:#333;
 	padding: 10px 20px 10px 30px;
     font-size: 13px;
 	text-decoration:none;
 	font-weight:bold;
 }
-.menu-group__item-text:hover{
+.menu-group__item-text:hover, .menu-group__item.active > .menu-group__item-text{
 	color: #337ab7;
+    text-decoration: none;
+}
+.menu-group__item-text:hover .menu-group__item-text-name, .menu-group__item.active > .menu-group__item-text-name{
+    text-decoration: underline;
+}
+.menu-group__item-text-name{
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.menu-group__item-text-icon{
+    margin-right:20px;
 }
 .nav-sidebar > .nav-sidebar__item.menu-group__item.active > .menu-group__item-text{
     color:#fff;
@@ -171,6 +188,20 @@ body{
     border: 1px solid #ddd;
 	font-size:13px;
 	cursor:default;
+}
+.prod-group__item-info{
+    display:flex;
+    justify-content:space-between;
+}
+.prod-group__item-name{
+    flex-basis:65%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.prod-group__item-icons{
+    flex-wrap:nowrap;
+    flex-grow:1;
 }
 .prod-group__item .glyphicon{
 	font-size:16px;
