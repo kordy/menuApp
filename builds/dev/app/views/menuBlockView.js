@@ -17,6 +17,9 @@ define([
         blankSelectRegion: '[data-region="blankSelectRegion"]',
         menuProductsRegion: '[data-region="menuProductsRegion"]'
       },
+      events: {
+        'change .isEnglish': 'initChangeLanguage'
+      },
       bindings: {
         '.noAdditionalExpenses': {
           observe: 'noAdditionalExpenses'
@@ -71,6 +74,10 @@ define([
         this.menuProductsView = new MenuProductsView({collection: that.model.items});
         this.menuProductsRegion.show(this.menuProductsView);
         that.stickit();
+      },
+      initChangeLanguage: function() {
+        var that = this;
+        Sync.trigger('changeLanguage', that.model.get('isEnglish'));
       },
       setCurrentMenu: function(selected) {
         //var groups = {};
