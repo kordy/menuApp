@@ -1,9 +1,20 @@
-<div class='menu-list__characters'>
-  <span class='itemName'><%- typeof name !== 'undefined' ? name : "" %></span>
-  <span class='itemMeasure'><%- typeof measure !== 'undefined' ? measure : "" %></span>
-  <span class='itemPrice'><%- typeof price !== 'undefined' ? price + " Р": "" %></span>
-  <span class='itemPriceBase'><%- typeof priceBase !== 'undefined' ? priceBase + " Р": "" %></span>
+<div class="row">
+    <div class="col-md-5 vcenter">
+        <div class='menu-list__characters'>
+            <span class='itemName'><%- typeof name !== 'undefined' ? name : "" %></span>
+        </div>
+    </div><!--
+    --><div class="col-md-5 vcenter">
+        <div class="row">
+            <div class="col-md-6">
+                <input class="form-control prod-price-kg" type="text" placeholder="Количество" value="<%- typeof measure !== 'undefined' ? measure : '' %>">
+            </div>
+            <div class="col-md-6">
+                <input class="form-control prod-price-serving" type="text" placeholder="Цена за 1 шт" value="<%- typeof price !== 'undefined' ? price + ' Р': '' %>">
+            </div>
+        </div>
+    </div><!--
+    --><div class="col-md-2 vcenter">
+        <span class='itemPriceBase'><%- typeof priceBase !== 'undefined' ? priceBase + " Р": "" %></span>
 </div>
-<div class='menu-list__handle'>
-  <span class="glyphicon glyphicon-align-justify"></span>
 </div>

@@ -200,6 +200,7 @@ body{
     white-space: nowrap;
 }
 .prod-group__item-icons{
+    color: #337ab7;
     flex-wrap:nowrap;
     flex-grow:1;
 }
@@ -288,4 +289,36 @@ body{
   right: 0;
   bottom: 0;
 
+}
+.highlight.menuBlock{
+    padding:0;
+}
+.menu-list{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+.menu-list__item{
+    padding:5px 0;
+    border:1px solid #337ab7;
+    margin:-1px;
+    background-color:#428bca;
+    color:#fff;
+}
+.menu-list__item:first-child{
+    border-radius: 4px 4px 0 0;
+}
+.menu-list__item:last-child{
+    border-radius: 0 0 4px 4px;
+}
+.vcenter {
+     display: inline-block;
+     vertical-align: middle;
+     float: none;
+}
+.menu-list__characters{
+    padding-left:20px;
+}
+.menu-list__item .form-control{
+    margin:2px 0;
 }

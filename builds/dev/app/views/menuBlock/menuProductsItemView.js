@@ -11,6 +11,11 @@ define([
         //var that = this;
         //that.model.set('nameDefault', that.model.get('name'));
       },
+      bindings: {
+        '.itemName': 'name',
+        '.itemPrice': 'price',
+        '.itemMeasure': 'measure'
+      },
       events: {
         //'click .removeBlank': 'removeBlank',
         //'click .changeName': 'changeName',
@@ -27,7 +32,7 @@ define([
         //var that = this;
         //this.$el = this.$el.children();
         //that.$el.unwrap();
-        //this.stickit();
+        this.stickit();
       }
     });
     return MenuProductsItemView;
