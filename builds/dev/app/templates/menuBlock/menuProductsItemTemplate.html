@@ -1,13 +1,9 @@
-<tr ng-repeat-start="productCurrent in menuCurrent.products"
-    ng-click='productToggle(productCurrent)'
-    ng-if='groupCompare(menuCurrent.products[$index-1].group[0], productCurrent.group[0])'
-  >
-  <th colspan=5>{{productCurrent.group[0].name}}</th>
-</tr>
-<tr ng-click='productToggle(productCurrent)' ng-repeat-end>
-  <td>{{productCurrent.name}}</td>
-  <td>{{productCurrent.count}} {{productCurrent.measure}}</td>
-  <td>{{productCurrent.price}} Р</td>
-  <td>{{productCurrent.priceBase}} Р</td>
-  <td><span class="glyphicon glyphicon-ok"></span></td>
-</tr>
+<div class='menu-list__characters'>
+  <span class='itemName'><%- typeof name !== 'undefined' ? name : "" %></span>
+  <span class='itemMeasure'><%- typeof measure !== 'undefined' ? measure : "" %></span>
+  <span class='itemPrice'><%- typeof price !== 'undefined' ? price + " Р": "" %></span>
+  <span class='itemPriceBase'><%- typeof priceBase !== 'undefined' ? priceBase + " Р": "" %></span>
+</div>
+<div class='menu-list__handle'>
+  <span class="glyphicon glyphicon-align-justify"></span>
+</div>

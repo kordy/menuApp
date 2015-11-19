@@ -30,7 +30,7 @@ define([
         });
         Sync.on('addToMenu', that.addProduct, that);
         that.currentMenu = new MenuModel();
-        that.currentMenu.products = [];
+        that.currentMenu.items = new Backbone.Collection();
       },
       onRender: function() {
         var that = this;
@@ -45,7 +45,7 @@ define([
           console.log(selected);
         });
         this.blankSelectRegion.show(blanksSelectView);
-        this.menuProductsView = new MenuProductsView();
+        this.menuProductsView = new MenuProductsView({collection: that.currentMenu.items});
         this.menuProductsRegion.show(this.menuProductsView);
 
       },
@@ -62,11 +62,12 @@ define([
       },
       addProduct: function(product) {
         var that = this;
-        console.log(that);
-        console.log(that.currentMenu);
-        that.currentMenu.products[that.currentMenu.products.length] = new ProductModel(product);
-        that.currentMenu.set('products', that.currentMenu.products);
-        console.log(that.currentMenu);
+        //console.log(that);
+        //console.log(that.currentMenu);
+        that.currentMenu.items.add(new ProductModel(product));
+        console.log(that.currentMenu.items);
+        //that.currentMenu.set('products', that.currentMenu.products);
+        //console.log(that.currentMenu);
       }
     });
     return MenuBlockView;

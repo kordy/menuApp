@@ -3,10 +3,11 @@ define([
   ],
   function (MenuProductsItemTemplate) {
     var MenuProductsItemView = Mn.ItemView.extend({
-      className: '',
-      tagName: 'tr',
+      className: 'menu-list__item',
+      tagName: 'li',
       template: MenuProductsItemTemplate,
       initialize: function () {
+        //console.log(this);
         //var that = this;
         //that.model.set('nameDefault', that.model.get('name'));
       },
@@ -23,9 +24,9 @@ define([
         //},
       },
       onRender: function() {
-        var that = this;
-        this.$el = this.$el.children();
-        that.$el.unwrap();
+        //var that = this;
+        //this.$el = this.$el.children();
+        //that.$el.unwrap();
         //this.stickit();
       }
     });
