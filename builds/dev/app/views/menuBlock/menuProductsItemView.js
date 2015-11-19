@@ -12,22 +12,21 @@ define([
         //that.model.set('nameDefault', that.model.get('name'));
       },
       events: {
-        //'click .removeBlank': 'removeBlank',
-        //'click .changeName': 'changeName',
-        //'blur .nameInput': 'checkName'
+        'click .menuItemDelete': 'deleteItem'
       },
       bindings: {
-        //':el': {
-        //  classes: {
-        //    loading: 'loading'
-        //  }
-        //},
+        ':el': {
+          classes: {
+            'menu-list__item--group': 'isGroup'
+          }
+        }
       },
       onRender: function() {
-        //var that = this;
-        //this.$el = this.$el.children();
-        //that.$el.unwrap();
-        //this.stickit();
+        this.stickit();
+      },
+      deleteItem: function() {
+        var that = this;
+        that.model.trigger('removeItem', that.model);
       }
     });
     return MenuProductsItemView;

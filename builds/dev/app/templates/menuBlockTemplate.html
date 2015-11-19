@@ -25,17 +25,16 @@
   <div class="row">
     <div class="col-md-6">
       <h4>Сервис</h4>
-      <form>
         <div class="form-group">
           <div class="checkbox">
-            <label><input type="checkbox" value="">Без доп. расходов на персонал</label>
+            <label><input type="checkbox" class='noAdditionalExpenses'>Без доп. расходов на персонал</label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="increase">Надбавка за сервис (%):</label>
-              <input type="text" class="form-control" id="increase">
+              <input type="text" class="form-control serviceIncrease" id="increase">
             </div>
           </div>
         </div>
@@ -43,35 +42,32 @@
           <div class="col-md-8">
             <div class="form-group">
               <label for="comment">Комментарий доп. расходы:</label>
-              <textarea class="form-control" rows="3" id="comment"></textarea>
+              <textarea class="form-control commentAdditionalExpenses" rows="3" id="comment"></textarea>
             </div>
           </div>
         </div>
-      </form>
     </div>
     <div class="col-md-6">
       <h4>Формат</h4>
-      <form>
         <div class="form-group">
           <div class="checkbox">
-            <label><input type="checkbox" value="">Использовать английские названия</label>
+            <label><input type="checkbox" class='isEnglish'>Использовать английские названия</label>
           </div>
           <div class="checkbox">
-            <label><input type="checkbox" value="">Использовать изображения элементов</label>
+            <label><input type="checkbox" class='isImages'>Использовать изображения элементов</label>
           </div>
           <div class="checkbox">
-            <label><input type="checkbox" value="">Скрыть цены за каждую единицу товара</label>
+            <label><input type="checkbox" class='noPrices'>Скрыть цены за каждую единицу товара</label>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label for="discount">Скидка на общую стоимость (%):</label>
-              <input type="text" class="form-control" id="discount">
+              <input type="text" class="form-control discount" id="discount">
             </div>
           </div>
         </div>
-      </form>
     </div>
   </div>
 </div>

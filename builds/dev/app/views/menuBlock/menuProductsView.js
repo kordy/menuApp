@@ -14,32 +14,20 @@ define([
         SortableBehavior:{
           behaviorClass: SortableBehavior,
           el: '[data-region="menuProductsItemsRegion"]',
+          handle: '.menuItemHandle',
           containment:'body'
         }
       },
       initialize: function(params) {
         var that = this;
         that.collection = params.collection;
-
-        //that.blanksCollection = new BlanksCollection();
-        //that.menusCollection = new MenusCollection();
-        //that.menusCollection.fetch();
-        //that.blanksCollection.fetch();
-
+        that.collection.on('removeItem',that.removeItem, that);
       },
       onRender: function() {
         var that = this;
-        //this.$el = this.$el.children();
-        //that.$el.unwrap();
-      //  var selectMenuView = new SelectView({collection: that.menusCollection});
-      //  selectMenuView.on('change', function(selected) {
-      //    console.log(selected);
-      //  });
-      //  this.savedMenusRegion.show(selectMenuView);
-      //  that.menusCollection = new MenusCollection();
-        //that.menusCollection.fetch();
-        //var menuProductsListItemView = new MenuProductsListItemView();
-        //that.menuProductsItemsRegion.show(menuProductsListItemView);
+      },
+      removeItem: function(model) {
+        this.collection.remove(model);
       }
     });
     return MenuProductsView;

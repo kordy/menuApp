@@ -1,8 +1,9 @@
 define([
     "text!templates/productsBlock/groupListItemTemplate.js",
     "views/productsBlock/productsListItemView",
+    "sync"
   ],
-  function (GroupListItemTemplate, ProductListItemView) {
+  function (GroupListItemTemplate, ProductListItemView, Sync) {
 
 
     var GroupListItemView = Mn.LayoutView.extend({
@@ -11,7 +12,8 @@ define([
       childViewContainer: '.childrenBlock',
       template: GroupListItemTemplate,
       events: {
-        'click .menu-group__item-text' : 'setActiveMenuItem'
+        'click .menu-group__item-text' : 'setActiveMenuItem',
+        'click .glyphicon-plus' : 'initAddToMenu'
       },
       initialize: function (param) {
         var that = this;
@@ -42,6 +44,11 @@ define([
           that.childrenView.collection.reset(that.model.get('children'));
           that.childrenRegion.show(that.childrenView);
         }
+      },
+      initAddToMenu: function(){
+        var that = this;
+        Sync.trigger('addToMenu', that.model.attributes);
+        return false;
       },
       setActiveMenuItem: function(e){
         e.stopPropagation();
