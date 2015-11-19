@@ -289,3 +289,20 @@ body{
   bottom: 0;
 
 }
+.menu-list{
+    padding:0;
+}
+.menu-list__item{
+    overflow:hidden;
+    display:block;
+    padding:10px;
+    border:1px solid #ccc;
+    margin-top:-1px;
+    background:#FFF;
+}
+.menu-list__characters{
+    float:left;
+}
+.menu-list__handle{
+    float:right;
+}
