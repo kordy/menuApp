@@ -2,6 +2,8 @@ Mn.View.prototype.getTemplate = function () {
   return _.template(this.getOption('template'));
 };
 
+Mn.Behaviors.behaviorsLookup = null;
+
 requirejs.config({
   baseUrl: 'static',
   paths: {

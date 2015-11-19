@@ -33,12 +33,12 @@ gulp.task('js', function(){
         'bower_components/jquery-file-upload/js/vendor/jquery.ui.widget.js',
         'bower_components/jquery-file-upload/js/jquery.iframe-transport.js',
         'bower_components/jquery-file-upload/js/jquery.fileupload.js',
+        'bower_components/jQuery UI Sortable/jquery-ui-sortable.js',
         'bower_components/alertify/alertify.js',
         'bower_components/requirejs/require.js'
          ])
         .pipe(concat('libs.js'))
         .pipe(gulp.dest('builds/dev/static/js'));
-
 
 
     gulp.src('builds/dev/app/js/*.js')
@@ -54,6 +54,9 @@ gulp.task('js', function(){
 
     gulp.src('builds/dev/app/models/**/*.js')
       .pipe(gulp.dest('builds/dev/static/models'));
+
+    gulp.src('builds/dev/app/behaviors/**/*.js')
+      .pipe(gulp.dest('builds/dev/static/behaviors'));
 
     gulp.src('builds/dev/app/services/**/*.js')
       .pipe(gulp.dest('builds/dev/static/services'));

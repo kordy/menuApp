@@ -1,16 +1,26 @@
 define([
     "text!templates/menuBlock/menuProductsTemplate.js",
     "views/menuBlock/menuProductsItemView",
-    "collections/menusCollection"
+    "collections/menusCollection",
+    "behaviors/sortableBehavior"
   ],
-  function(MenuProductsTemplate, MenuProductsListItemView, MenusCollection) {
-    var MenuProductsView = Marionette.LayoutView.extend({
+  function(MenuProductsTemplate, MenuProductsListItemView, MenusCollection, SortableBehavior) {
+
+    var MenuProductsView = Marionette.CompositeView.extend({
       template: MenuProductsTemplate,
-      regions: {
-        menuProductsItemsRegion: '[data-region="menuProductsItemsRegion"]',
+      childView: MenuProductsListItemView,
+      childViewContainer: '[data-region="menuProductsItemsRegion"]',
+      behaviors: {
+        SortableBehavior:{
+          behaviorClass: SortableBehavior,
+          el: '[data-region="menuProductsItemsRegion"]',
+          containment:'body'
+        }
       },
-      initialize: function() {
+      initialize: function(params) {
         var that = this;
+        that.collection = params.collection;
+
         //that.blanksCollection = new BlanksCollection();
         //that.menusCollection = new MenusCollection();
         //that.menusCollection.fetch();
@@ -28,8 +38,8 @@ define([
       //  this.savedMenusRegion.show(selectMenuView);
       //  that.menusCollection = new MenusCollection();
         //that.menusCollection.fetch();
-        var menuProductsListItemView = new MenuProductsListItemView();
-        that.menuProductsItemsRegion.show(menuProductsListItemView);
+        //var menuProductsListItemView = new MenuProductsListItemView();
+        //that.menuProductsItemsRegion.show(menuProductsListItemView);
       }
     });
     return MenuProductsView;
