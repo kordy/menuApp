@@ -5,16 +5,43 @@ define([
     "collections/blanksCollection",
     "collections/menusCollection",
     "models/menuModel",
-    "models/productModel",
+    "models/model",
     "sync"
   ],
-  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, ProductModel, Sync) {
+  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, Model, Sync) {
     var MenuBlockView = Marionette.LayoutView.extend({
       template: MenuBlockTemplate,
+      model: new MenuModel(),
       regions: {
         savedMenusRegion: '[data-region="savedMenusRegion"]',
         blankSelectRegion: '[data-region="blankSelectRegion"]',
         menuProductsRegion: '[data-region="menuProductsRegion"]'
+      },
+      events: {
+        'change .isEnglish': 'initChangeLanguage'
+      },
+      bindings: {
+        '.noAdditionalExpenses': {
+          observe: 'noAdditionalExpenses'
+        },
+        '.serviceIncrease': {
+          observe: 'serviceIncrease'
+        },
+        '.commentAdditionalExpenses': {
+          observe: 'commentAdditionalExpenses'
+        },
+        '.isEnglish': {
+          observe: 'isEnglish'
+        },
+        '.isImages': {
+          observe: 'isImages'
+        },
+        '.noPrices': {
+          observe: 'noPrices'
+        },
+        '.discount': {
+          observe: 'discount'
+        }
       },
       initialize: function() {
         var that = this;
@@ -29,8 +56,7 @@ define([
 
         });
         Sync.on('addToMenu', that.addProduct, that);
-        that.currentMenu = new MenuModel();
-        that.currentMenu.items = new Backbone.Collection();
+        that.model.items = new Backbone.Collection();
       },
       onRender: function() {
         var that = this;
@@ -45,29 +71,31 @@ define([
           console.log(selected);
         });
         this.blankSelectRegion.show(blanksSelectView);
-        this.menuProductsView = new MenuProductsView({collection: that.currentMenu.items});
+        this.menuProductsView = new MenuProductsView({collection: that.model.items});
         this.menuProductsRegion.show(this.menuProductsView);
-
+        that.stickit();
+      },
+      initChangeLanguage: function() {
+        var that = this;
+        Sync.trigger('changeLanguage', that.model.get('isEnglish'));
       },
       setCurrentMenu: function(selected) {
-        var groups = {};
-        console.log(selected);
-        var products = selected.get('products');
-        console.log(products);
-        _.each(products, function(product) {
-          if (!groups[product.group[0].name]) groups[product.group[0].name] = [];
-          groups[product.group[0].name][groups[product.group[0].name].length] = product;
-        });
-        console.log(groups);
+        //var groups = {};
+        //console.log(selected);
+        //var products = selected.get('products');
+        //console.log(products);
+        //_.each(products, function(product) {
+        //  if (!groups[product.group[0].name]) groups[product.group[0].name] = [];
+        //  groups[product.group[0].name][groups[product.group[0].name].length] = product;
+        //});
+        //console.log(groups);
       },
-      addProduct: function(product) {
+      addProduct: function(item) {
         var that = this;
-        //console.log(that);
-        //console.log(that.currentMenu);
-        that.currentMenu.items.add(new ProductModel(product));
-        console.log(that.currentMenu.items);
-        //that.currentMenu.set('products', that.currentMenu.products);
-        //console.log(that.currentMenu);
+        if (item.code) item.isGroup = true;
+        that.model.items.add(new Model(item));
+        that.model.set('items', that.model.items.toJSON());
+        console.log(that.model);
       }
     });
     return MenuBlockView;

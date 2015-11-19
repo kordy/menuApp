@@ -11,11 +11,19 @@ define([
         __v: 0,
         _id: "",
         group: [],
+        isGroup: false,
         name: "",
         nameEng: "",
         priceBase: '',
         serving: ''
-      }]
+      }],
+      noAdditionalExpenses: false,
+      serviceIncrease: '',
+      commentAdditionalExpenses: '',
+      isEnglish: false,
+      isImages: false,
+      noPrices: false,
+      discount: ''
     },
     initialize: function(params) {
 
