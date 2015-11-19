@@ -115,6 +115,21 @@ app.get('/products', function (req, res) {
   });
 });
 
+app.post('/products', multipartMiddleware, function (req, res) {
+  console.log(req.files);
+  if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
+    xlsx.parse(req.files.files, function () {
+      Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
+        Product.fetch(function (err, products) {
+          res.send({groups: groups, products: products});
+        });
+      });
+    })
+  }
+});
+
+/********** I M A G E **********/
+
 app.get('/images', function (req, res) {
   Image.find({}, function (err, images) {
     res.send(images);
@@ -147,53 +162,55 @@ app.put('/image/:id', function (req, res) {
   });
 });
 
-app.post('/products', multipartMiddleware, function (req, res) {
-  console.log(req.files);
-  if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
-    xlsx.parse(req.files.files, function () {
-      Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
-        Product.fetch(function (err, products) {
-          res.send({groups: groups, products: products});
-        });
-      });
-    })
-  }
+/********** M E N U **********/
+
+app.get('/menus', function (req, res) {
+  Menu.find({})
+    .populate('image')
+    .exec(function (err, menus) {
+      res.json(menus);
+    });
 });
 
 app.post('/menu', function (req, res) {
+  var params = req.body;
+  delete params._id;
+  if (!params.image._id) delete params.image;
   var menu = new Menu(req.body);
   menu.save(function (err) {
-    if (err) console.log(err);
-    res.send(JSON.stringify(menu));
+    if (err) {
+      console.log(err);
+      res.send({'result': false});
+    } else {
+      Menu.find({})
+        .populate('image')
+        .exec(function (err, menus) {
+          res.json({menus: menus, currentMenuId: menu._id});
+        });
+    }
   });
 });
 
 app.put('/menu/:id', function (req, res) {
-  console.log(req.params.id);
-  console.log(req.params);
-});
-
-app.get('/menus', function (req, res) {
-  Menu.find({})
-    .populate('products image')
-    .exec(function (err, docs) {
-      var options = {
-        path: 'products.group',
-        model: 'group'
-      };
-      if (err) return res.json(500);
-      Menu.populate(docs, options, function (err, menus) {
-        res.json(menus);
+  Menu.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, menu) {
+    Menu.find({})
+      .populate('image')
+      .exec(function (err, menus) {
+        res.json({menus: menus, currentMenuId: menu._id});
       });
-    });
+  });
 });
 
-
-
-app.get('/menu', function (req, res) {
-  Menu.find({}, function (err, menu) {
-    res.send(JSON.stringify(menu));
-  })
+app.delete('/menu/:id', function (req, res) {
+  Menu.findOne({_id: req.params.id}, function (err, menu) {
+    menu.remove({}, function(err,menu) {
+      Menu.find({})
+        .populate('image')
+        .exec(function (err, menus) {
+          res.json({menus: menus});
+        });
+    });
+  });
 });
 
 app.get('/files/:file', function (req, res) {

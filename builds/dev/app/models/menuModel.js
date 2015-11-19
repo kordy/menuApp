@@ -6,20 +6,20 @@ define([
     urlRoot: 'menu',
     defaults: {
       __v: 0,
-      _id: "",
+      _id: null,
       name: "",
       image: {
         __v: 0,
-        _id: '',
+        _id: null,
         ext: '',
         height: '',
         name: '',
         src: '',
         width: ''
       },
-      products: [{
+      items: [{
         __v: 0,
-        _id: "",
+        _id: null,
         isGroup: false,
         name: "",
         nameEng: "",

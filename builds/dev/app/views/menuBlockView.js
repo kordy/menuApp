@@ -19,7 +19,8 @@ define([
       },
       events: {
         'change .isEnglish': 'initChangeLanguage',
-        'click .saveButton': 'saveMenu'
+        'click .saveButton': 'saveMenu',
+        'click .deleteButton': 'deleteMenu'
       },
       bindings: {
         '.noAdditionalExpenses': {
@@ -42,8 +43,13 @@ define([
         },
         '.discount': {
           observe: 'discount'
+        },
+        '.deleteButton': {
+          observe: '_id',
+          visible: true
         }
       },
+      currentMenuId: null,
       initialize: function() {
         var that = this;
         that.blanksCollection = new BlanksCollection();
@@ -51,7 +57,13 @@ define([
         that.menusCollection.fetch();
         that.blanksCollection.fetch();
         that.menusCollection.on('sync', function() {
+          that.menusCollection.unshift({'name': '--- Новое меню ---'});
 
+          if (!that.currentMenuId) that.setCurrentMenu(that.menusCollection.first());
+          else {
+            that.setCurrentMenu(that.menusCollection.find({_id: that.currentMenuId}));
+            that.selectMenuView.setSelected(that.currentMenuId);
+          }
         });
         that.blanksCollection.on('sync', function() {
 
@@ -61,12 +73,11 @@ define([
       },
       onRender: function() {
         var that = this;
-        var selectMenuView = new SelectView({collection: that.menusCollection});
-        selectMenuView.on('change', function(selected) {
-          console.log(selected);
+        that.selectMenuView = new SelectView({collection: that.menusCollection});
+        that.selectMenuView.on('change', function(selected) {
           that.setCurrentMenu(selected);
         });
-        this.savedMenusRegion.show(selectMenuView);
+        this.savedMenusRegion.show(that.selectMenuView);
         var blanksSelectView = new SelectView({collection: that.blanksCollection});
         blanksSelectView.on('change', function(selected) {
           console.log(selected);
@@ -81,15 +92,12 @@ define([
         Sync.trigger('changeLanguage', that.model.get('isEnglish'));
       },
       setCurrentMenu: function(selected) {
-        //var groups = {};
-        //console.log(selected);
-        //var products = selected.get('products');
-        //console.log(products);
-        //_.each(products, function(product) {
-        //  if (!groups[product.group[0].name]) groups[product.group[0].name] = [];
-        //  groups[product.group[0].name][groups[product.group[0].name].length] = product;
-        //});
-        //console.log(groups);
+        console.log(selected);
+        var that = this;
+        var items = selected.get('items');
+        if (items.length === 1 && !items[0]._id) that.model.items.reset();
+        else that.model.items.reset(items);
+        that.model.set(selected.attributes);
       },
       addProduct: function(item) {
         var that = this;
@@ -99,22 +107,37 @@ define([
         that.model.set('items', that.model.items.toJSON());
 
       },
+      deleteMenu: function() {
+        var that = this;
+        var name = that.model.get('name');
+        that.model.delete().done(function(response) {
+          that.currentMenuId = null;
+          that.menusCollection.reset(response.menus);
+          that.menusCollection.trigger('sync');
+          alertify.log('Меню <strong>' + name + '</strong> удалено');
+        });
+      },
       saveMenu: function() {
         var that = this;
-        //alertify.prompt('This is a prompt dialog!', 'some value',
-        //  function(evt, value){ alertify.message('You entered: ' + value);}
-        //);
         alertify.prompt('Введите название меню',
           function(evt, value){
             if (!value) return;
             that.model.set('name', value);
-            if (!that.model.get('_id')) that.model.save().done(function() {
-              alertify.success('Меню <strong>' + that.model.get('name') + '</strong> сохранено');
-            });
-            else that.model.update().done(function() {
+            if (!that.model.get('_id')) {
+              that.model.save().done(function(response) {
+                that.currentMenuId = response.currentMenuId;
+                that.menusCollection.reset(response.menus);
+                that.menusCollection.trigger('sync');
+                alertify.success('Меню <strong>' + that.model.get('name') + '</strong> сохранено');
+              });
+            }
+            else that.model.update().done(function(response) {
+              that.currentMenuId = response.currentMenuId;
+              that.menusCollection.reset(response.menus);
+              that.menusCollection.trigger('sync');
               alertify.success('Меню <strong>' + that.model.get('name') + '</strong> обновлено');
             });
-          }, that.model.get('name')
+          }, that.model.get('_id') ? that.model.get('name') : ''
         );
       }
     });

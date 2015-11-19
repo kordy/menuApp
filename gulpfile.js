@@ -33,7 +33,7 @@ gulp.task('js', function(){
         'bower_components/jquery-file-upload/js/vendor/jquery.ui.widget.js',
         'bower_components/jquery-file-upload/js/jquery.iframe-transport.js',
         'bower_components/jquery-file-upload/js/jquery.fileupload.js',
-        'bower_components/jQuery UI Sortable/jquery-ui-sortable.js',
+        'bower_components/jquery-ui-sortable/jquery-ui-sortable.js',
         'bower_components/alertify/alertify.js',
         'bower_components/requirejs/require.js'
          ])
