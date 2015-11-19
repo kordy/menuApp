@@ -18,12 +18,9 @@ define(['api'],
         return _.result(this, 'fetchUrl');
       },
 
-      save: function(attrs) {
-        options = options || {};
-        if (attrs) {
-          this.set(attrs);
-        }
-        return Api.post(this.getUrl(), this.cook(this.attributes, true));
+      save: function() {
+        console.log(this.attributes);
+        return Api.post(this.getUrl(), this.attributes);
       },
 
       delete: function() {

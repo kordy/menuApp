@@ -18,7 +18,8 @@ define([
         menuProductsRegion: '[data-region="menuProductsRegion"]'
       },
       events: {
-        'change .isEnglish': 'initChangeLanguage'
+        'change .isEnglish': 'initChangeLanguage',
+        'click .saveButton': 'saveMenu'
       },
       bindings: {
         '.noAdditionalExpenses': {
@@ -93,9 +94,28 @@ define([
       addProduct: function(item) {
         var that = this;
         if (item.code) item.isGroup = true;
+        item.children = null;
         that.model.items.add(new Model(item));
         that.model.set('items', that.model.items.toJSON());
-        console.log(that.model);
+
+      },
+      saveMenu: function() {
+        var that = this;
+        //alertify.prompt('This is a prompt dialog!', 'some value',
+        //  function(evt, value){ alertify.message('You entered: ' + value);}
+        //);
+        alertify.prompt('Введите название меню',
+          function(evt, value){
+            if (!value) return;
+            that.model.set('name', value);
+            if (!that.model.get('_id')) that.model.save().done(function() {
+              alertify.success('Меню <strong>' + that.model.get('name') + '</strong> сохранено');
+            });
+            else that.model.update().done(function() {
+              alertify.success('Меню <strong>' + that.model.get('name') + '</strong> обновлено');
+            });
+          }, that.model.get('name')
+        );
       }
     });
     return MenuBlockView;

@@ -3,10 +3,23 @@ var db = require('../db');
 
 var MenuSchema = db.Schema({
     name: String,
-    products: [
-        {type: db.Schema.Types.ObjectId, ref: 'product'}
+    items: [
+        { isGroup: Boolean,
+          name: String,
+          nameEng: String,
+          price: Number,
+          priceBase: Number,
+          serving: String
+        }
     ],
-    image: {type: db.Schema.Types.ObjectId, ref: 'image'}
+    image: {type: db.Schema.Types.ObjectId, ref: 'image'},
+    noAdditionalExpenses: Boolean,
+    serviceIncrease: String,
+    commentAdditionalExpenses: String,
+    isEnglish: Boolean,
+    isImages: Boolean,
+    noPrices: Boolean,
+    discount: String
 });
 
 var Menu = db.model('menu', MenuSchema);

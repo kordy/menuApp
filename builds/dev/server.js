@@ -160,6 +160,19 @@ app.post('/products', multipartMiddleware, function (req, res) {
   }
 });
 
+app.post('/menu', function (req, res) {
+  var menu = new Menu(req.body);
+  menu.save(function (err) {
+    if (err) console.log(err);
+    res.send(JSON.stringify(menu));
+  });
+});
+
+app.put('/menu/:id', function (req, res) {
+  console.log(req.params.id);
+  console.log(req.params);
+});
+
 app.get('/menus', function (req, res) {
   Menu.find({})
     .populate('products image')
@@ -177,7 +190,7 @@ app.get('/menus', function (req, res) {
 
 
 
-app.get('/menu.json', function (req, res) {
+app.get('/menu', function (req, res) {
   Menu.find({}, function (err, menu) {
     res.send(JSON.stringify(menu));
   })
