@@ -86,7 +86,7 @@ define([
           } else {
             that.blanksSelectView.setSelected();
           }
-          that.modelItems.on('add remove', function() {
+          that.modelItems.on('add remove sort', function() {
             that.itemsCheck();
             that.model.set('items', that.modelItems.toJSON());
           })
@@ -133,6 +133,7 @@ define([
         var items = selected.get('items');
         if (items.length === 1 && !items[0]._id) that.modelItems.reset();
         else that.modelItems.reset(items);
+        that.modelItems.trigger('change');
         that.model.set(selected.attributes);
         that.itemsCheck();
       },
