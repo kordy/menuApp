@@ -167,6 +167,14 @@ body {
     font-weight: bold;
 }
 
+.menu-group__item-text-name-wrap {
+    flex-basis:60%;
+    margin-right:20px;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    white-space: nowrap;
+}
+
 .menu-group__item-text:hover, .menu-group__item.active > .menu-group__item-text {
     color: #337ab7;
     text-decoration: none;
@@ -350,8 +358,19 @@ body {
 
 }
 
+/* MENU LIST */
+.highlight.menuBlock{
+    padding:0;
+}
+
 .menu-list {
     padding: 0;
+    margin:-1px;
+}
+
+.menu-list__empty{
+    display:block;
+    padding:10px;
 }
 
 .menu-list__item {
@@ -361,6 +380,14 @@ body {
     border: 1px solid #ccc;
     margin-top: -1px;
     background: #FFF;
+}
+
+.menu-list__item:first-child {
+    border-radius:4px 4px 0 0;
+}
+
+.menu-list__item:last-child {
+    border-radius: 0 0 4px 4px;
 }
 
 .menu-list__item--group {
@@ -379,4 +406,10 @@ body {
 }
 .menu-products-empty{
     font-size:1.25em;
+}
+.menu-list__characters-val input{
+    border:none;
+}
+.itemMeasure, .itemPrice, .itemPriceBase{
+    width:60px;
 }

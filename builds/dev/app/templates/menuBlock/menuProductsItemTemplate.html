@@ -1,8 +1,8 @@
 <div class='menu-list__characters'>
-  <span class='itemName'><%- typeof name !== 'undefined' ? name : "" %></span>
-  <span class='itemMeasure'><%- typeof measure !== 'undefined' ? measure : "" %></span>
-  <span class='itemPrice'><%- typeof price !== 'undefined' ? price + " Р": "" %></span>
-  <span class='itemPriceBase'><%- typeof priceBase !== 'undefined' ? priceBase + " Р": "" %></span>
+  <span class='menu-list__characters-val'><input class='itemName' type='text' value="<%- typeof name !== 'undefined' ? name : '' %>" /></span>
+  <span class='menu-list__characters-val'><input class='itemMeasure' type='text' value="<%- typeof measure !== 'undefined' ? measure : '' %>" /></span>
+  <span class='menu-list__characters-val'><input class='itemPrice' type='text' value="<%- typeof price !== 'undefined' ? price + 'Р': '' %>" /></span>
+  <span class='menu-list__characters-val'><input class='itemPriceBase' type='text' value="<%- typeof priceBase !== 'undefined' ? priceBase + 'Р': '' %>" /></span>
 </div>
 <div class='menu-list__handle menuItemHandle'>
   <span class="glyphicon glyphicon-align-justify"></span>
