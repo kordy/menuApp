@@ -32,7 +32,8 @@ define([
       isEnglish: false,
       isImages: false,
       noPrices: false,
-      discount: ''
+      discount: '',
+      noItems: true
     },
     initialize: function(params) {
 
