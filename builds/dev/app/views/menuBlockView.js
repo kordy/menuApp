@@ -58,62 +58,80 @@ define([
         that.blanksCollection.fetch();
         that.menusCollection.on('sync', function() {
           that.menusCollection.unshift({'name': '--- Новое меню ---'});
-
           if (!that.currentMenuId) that.setCurrentMenu(that.menusCollection.first());
           else {
+            console.log(that.currentMenuId);
             that.setCurrentMenu(that.menusCollection.find({_id: that.currentMenuId}));
             that.selectMenuView.setSelected(that.currentMenuId);
           }
         });
         that.blanksCollection.on('sync', function() {
-
+          that.blanksCollection.unshift({'name': '--- Выберите бланк ---'});
+          if (that.model.get('image') && that.model.get('image')._id) {
+            that.selectMenuView.setSelected(that.model.get('image')._id);
+          } else {
+            that.selectMenuView.setSelected();
+          }
+        });
+        that.model.on('change', function() {
+          if (that.model.get('image') && that.model.get('image')._id) {
+            that.blanksSelectView.setSelected(that.model.get('image')._id);
+          } else {
+            that.blanksSelectView.setSelected();
+          }
+          that.modelItems.on('add remove', function() {
+            that.model.set('items', that.modelItems.toJSON());
+          })
         });
         Sync.on('addToMenu', that.addProduct, that);
-        that.model.items = new Backbone.Collection();
+        that.modelItems = new Backbone.Collection();
       },
       onRender: function() {
         var that = this;
         that.selectMenuView = new SelectView({collection: that.menusCollection});
         that.selectMenuView.on('change', function(selected) {
+          that.saveMenuChanges();
           that.setCurrentMenu(selected);
         });
-        this.savedMenusRegion.show(that.selectMenuView);
-        var blanksSelectView = new SelectView({collection: that.blanksCollection});
-        blanksSelectView.on('change', function(selected) {
-          console.log(selected);
+        that.savedMenusRegion.show(that.selectMenuView);
+        that.blanksSelectView = new SelectView({collection: that.blanksCollection});
+        that.blanksSelectView.on('change', function(selected) {
+          that.model.set('image', selected.attributes);
         });
-        this.blankSelectRegion.show(blanksSelectView);
-        this.menuProductsView = new MenuProductsView({collection: that.model.items});
-        this.menuProductsRegion.show(this.menuProductsView);
+        that.blankSelectRegion.show(that.blanksSelectView);
+        that.menuProductsView = new MenuProductsView({collection: that.modelItems});
+        that.menuProductsRegion.show(that.menuProductsView);
         that.stickit();
       },
       initChangeLanguage: function() {
         var that = this;
         Sync.trigger('changeLanguage', that.model.get('isEnglish'));
       },
+      saveMenuChanges: function() {
+        var that = this;
+        var prevSelected = that.menusCollection.find({_id: that.model.get('_id')});
+        prevSelected.set(that.model.attributes);
+      },
       setCurrentMenu: function(selected) {
-        console.log(selected);
         var that = this;
         var items = selected.get('items');
-        if (items.length === 1 && !items[0]._id) that.model.items.reset();
-        else that.model.items.reset(items);
+        if (items.length === 1 && !items[0]._id) that.modelItems.reset();
+        else that.modelItems.reset(items);
         that.model.set(selected.attributes);
       },
       addProduct: function(item) {
         var that = this;
         if (item.code) item.isGroup = true;
         item.children = null;
-        that.model.items.add(new Model(item));
-        that.model.set('items', that.model.items.toJSON());
-
+        that.modelItems.add(new Model(item));
       },
       deleteMenu: function() {
         var that = this;
         var name = that.model.get('name');
         that.model.delete().done(function(response) {
           that.currentMenuId = null;
-          that.menusCollection.reset(response.menus);
-          that.menusCollection.trigger('sync');
+          that.menusCollection.remove(that.model);
+          that.setCurrentMenu(that.menusCollection.first());
           alertify.log('Меню <strong>' + name + '</strong> удалено');
         });
       },
@@ -126,19 +144,21 @@ define([
             if (!that.model.get('_id')) {
               that.model.save().done(function(response) {
                 that.currentMenuId = response.currentMenuId;
-                that.menusCollection.reset(response.menus);
+                that.model.set('_id', that.currentMenuId);
+                var saved = that.menusCollection.first();
+                saved.set(that.model.attributes);
+                that.saveMenuChanges();
                 that.menusCollection.trigger('sync');
                 alertify.success('Меню <strong>' + that.model.get('name') + '</strong> сохранено');
               });
             }
             else that.model.update().done(function(response) {
               that.currentMenuId = response.currentMenuId;
-              that.menusCollection.reset(response.menus);
-              that.menusCollection.trigger('sync');
+              that.saveMenuChanges();
               alertify.success('Меню <strong>' + that.model.get('name') + '</strong> обновлено');
             });
           }, that.model.get('_id') ? that.model.get('name') : ''
-        );
+        )
       }
     });
     return MenuBlockView;

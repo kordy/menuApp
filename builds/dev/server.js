@@ -176,7 +176,7 @@ app.post('/menu', function (req, res) {
   var params = req.body;
   delete params._id;
   if (!params.image._id) delete params.image;
-  var menu = new Menu(req.body);
+  var menu = new Menu(params);
   menu.save(function (err) {
     if (err) {
       console.log(err);
@@ -192,7 +192,10 @@ app.post('/menu', function (req, res) {
 });
 
 app.put('/menu/:id', function (req, res) {
-  Menu.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, menu) {
+  var params = req.body;
+  delete params._id;
+  if (!params.image._id) delete params.image;
+  Menu.findOneAndUpdate({_id: req.params.id}, params, null, function (err, menu) {
     Menu.find({})
       .populate('image')
       .exec(function (err, menus) {

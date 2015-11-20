@@ -28,7 +28,9 @@ define([
       setSelected: function(id) {
         var that = this;
         var selectedModel = that.collection.find({_id: id});
-        if (selectedModel) selectedModel.trigger('setSelected');
+        if (!selectedModel) selectedModel = that.collection.first();
+        if (!selectedModel) return;
+        selectedModel.trigger('setSelected');
       },
       selectedModel: function(model){
         this.trigger('change', model);

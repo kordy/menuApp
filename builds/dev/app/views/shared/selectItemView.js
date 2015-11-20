@@ -8,6 +8,9 @@ define([
       events : {
         'option_changed' : 'optionChangedHandler'
       },
+      bindings: {
+        ':el' : 'name'
+      },
       initialize: function() {
         this.model.on('setSelected', this.setSelected, this);
       },
@@ -17,6 +20,9 @@ define([
       setSelected: function() {
         this.$el.prop('selected', true);
         this.optionChangedHandler();
+      },
+      onRender: function() {
+        this.stickit();
       }
     });
     return SelectItemView;
