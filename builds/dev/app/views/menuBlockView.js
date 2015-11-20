@@ -23,6 +23,13 @@ define([
         'click .deleteButton': 'deleteMenu'
       },
       bindings: {
+        '.saveButton, .exportButton, .previewButton': {
+          visible: true,
+          observe: 'noItems',
+          onGet: function(value) {
+            return !value;
+          }
+        },
         '.noAdditionalExpenses': {
           observe: 'noAdditionalExpenses'
         },
@@ -80,11 +87,20 @@ define([
             that.blanksSelectView.setSelected();
           }
           that.modelItems.on('add remove', function() {
+            that.itemsCheck();
             that.model.set('items', that.modelItems.toJSON());
           })
         });
         Sync.on('addToMenu', that.addProduct, that);
         that.modelItems = new Backbone.Collection();
+      },
+      itemsCheck: function() {
+       var that = this;
+        if (that.modelItems.length) {
+          that.model.set('noItems', false);
+        } else {
+          that.model.set('noItems', true);
+        }
       },
       onRender: function() {
         var that = this;
@@ -118,6 +134,7 @@ define([
         if (items.length === 1 && !items[0]._id) that.modelItems.reset();
         else that.modelItems.reset(items);
         that.model.set(selected.attributes);
+        that.itemsCheck();
       },
       addProduct: function(item) {
         var that = this;

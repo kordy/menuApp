@@ -377,3 +377,6 @@ body {
 .menu-list__handle {
     float: right;
 }
+.menu-products-empty{
+    font-size:1.25em;
+}
