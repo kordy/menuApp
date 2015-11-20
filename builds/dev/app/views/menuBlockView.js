@@ -20,7 +20,8 @@ define([
       events: {
         'change .isEnglish': 'initChangeLanguage',
         'click .saveButton': 'saveMenu',
-        'click .deleteButton': 'deleteMenu'
+        'click .deleteButton': 'deleteMenu',
+        'click previewButton': 'showPDF',
       },
       bindings: {
         '.saveButton, .exportButton, .previewButton': {
@@ -177,6 +178,9 @@ define([
             });
           }, that.model.get('_id') ? that.model.get('name') : ''
         )
+      },
+      showPDF: function() {
+
       }
     });
     return MenuBlockView;

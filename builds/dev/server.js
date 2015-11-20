@@ -103,6 +103,11 @@ io.sockets.on('connection', function (client) {
 
 });
 
+app.get('/pdf', function (menu) {
+  var html = pdf.get(menu);
+  res.send(html);
+});
+
 app.get('/groups', function (req, res) {
   Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
     res.send(groups);
