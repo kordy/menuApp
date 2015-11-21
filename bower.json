@@ -14,6 +14,7 @@
     "text": "requirejs/text#~2.0.14",
     "jquery-file-upload": "~9.11.2",
     "alertify": "~0.3.10",
-    "jquery-ui-sortable": "jquery-ui-sortable#*"
+    "jquery-ui-sortable": "jquery-ui-sortable#*",
+    "html2canvas": "~0.4.1"
   }
 }

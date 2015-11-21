@@ -35,6 +35,7 @@ gulp.task('js', function(){
         'bower_components/jquery-file-upload/js/jquery.fileupload.js',
         'bower_components/jquery-ui-sortable/jquery-ui-sortable.js',
         'bower_components/alertify/alertify.js',
+        'bower_components/html2canvas/build/html2canvas.js',
         'bower_components/requirejs/require.js'
          ])
         .pipe(concat('libs.js'))

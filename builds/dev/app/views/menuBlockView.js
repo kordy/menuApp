@@ -6,9 +6,10 @@ define([
     "collections/menusCollection",
     "models/menuModel",
     "models/model",
-    "sync"
+    "sync",
+    "api"
   ],
-  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, Model, Sync) {
+  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, Model, Sync, Api) {
     var MenuBlockView = Marionette.LayoutView.extend({
       template: MenuBlockTemplate,
       model: new MenuModel(),
@@ -21,7 +22,8 @@ define([
         'change .isEnglish': 'initChangeLanguage',
         'click .saveButton': 'saveMenu',
         'click .deleteButton': 'deleteMenu',
-        'click previewButton': 'showPDF',
+        'click .previewButton': 'showPDF',
+        'click .exportButton': 'exportPDF'
       },
       bindings: {
         '.saveButton, .exportButton, .previewButton': {
@@ -180,7 +182,24 @@ define([
         )
       },
       showPDF: function() {
-
+        var that = this;
+        console.log(that);
+        Api.post('pdf', that.model.toJSON()).done(function(file){
+          var iframe = document.createElement('iframe');
+          document.getElementById('pdfContainer').innerHTML = '';
+          document.getElementById('pdfContainer').appendChild(iframe);
+          iframe.contentWindow.document.write(file);
+          console.log($(iframe.contentWindow.document).outerHeight());
+          $(iframe).height($(iframe.contentWindow.document).outerHeight());
+          $(iframe).width($(iframe.contentWindow.document).outerWidth());
+        });
+      },
+      exportPDF: function() {
+        var that = this;
+        Api.post('exportPDF', that.model.toJSON()).done(function(fileURL){
+          window.location.href = Api.getBasePath() + fileURL;
+          Api.get(fileURL);
+        });
       }
     });
     return MenuBlockView;

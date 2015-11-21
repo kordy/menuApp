@@ -103,9 +103,16 @@ io.sockets.on('connection', function (client) {
 
 });
 
-app.get('/pdf', function (menu) {
-  var html = pdf.get(menu);
+app.post('/pdf', function (req, res) {
+  var html = pdf.get(req.body);
   res.send(html);
+});
+
+
+app.post('/exportPDF', function (req, res) {
+  pdf.create(req.body, function (fileURL) {
+    res.send(fileURL);
+  });
 });
 
 app.get('/groups', function (req, res) {
@@ -226,13 +233,14 @@ app.get('/files/:file', function (req, res) {
   var filename = path.basename(file);
   var mimetype = mime.lookup(file);
 
-  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  if (mimetype !== 'image/jpeg')  {
+    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  }
   res.setHeader('Content-type', mimetype);
 
   var filestream = fs.createReadStream(file);
   filestream.pipe(res);
 });
-
 
 app.post('/menu.json', function (req, res) {
 

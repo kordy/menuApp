@@ -5,14 +5,14 @@
 var fs = require('fs');
 var htmlPdf = require('html-pdf');
 var ejs = require('ejs');
+var slugify = require('transliteration').slugify;
 
 var PDF = {
     create: function(menu, callback){
         var str = fs.readFileSync(__approot + '/views/pdf.ejs', 'utf8');
         var html = ejs.render(str, menu);
-		console.log(menu);
         if(menu.image){
-            var h = parseInt(menu.image.height) + 220 + 'px';
+            var h = parseInt(menu.image.height) + 228 + 'px';
             var w = parseInt(menu.image.width) + 160 + "px";
         }
         var options = {
@@ -20,15 +20,18 @@ var PDF = {
             "height": h,
             "width": w
         };
-		console.log('1111222333');
-		console.log(w + ' : ' + h);
+      var menuName = menu.name;
+      if (!menu.name) menuName = 'menu';
+      var fileURL = 'files/' + slugify(menuName) + '.pdf';
+      fs.writeFile(__approot + '/' + fileURL, "", function(err) {
+        if(err) throw err;
         htmlPdf.create(html,options).toStream(function(err, stream){
-		
-            var fileURL = '/files/foo.pdf';
-			console.log(err);
-            stream.pipe(fs.createWriteStream(__approot + fileURL));
-            if(typeof callback==='function')callback(fileURL);
+          stream.pipe(fs.createWriteStream(__approot + '/' + fileURL));
+          if(typeof callback==='function')callback(fileURL);
         });
+      });
+
+
 		
 		// htmlPdf.create(html).toBuffer(function(err, buffer){
 			// console.log(err);
@@ -37,6 +40,7 @@ var PDF = {
     },
     get: function(menu){
         var str = fs.readFileSync(__approot + '/views/pdf.ejs', 'utf8');
+      console.log(menu);
         var html = ejs.render(str, menu);
         return html;
     }

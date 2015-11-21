@@ -10,15 +10,6 @@
               padding:0;
           }
           .menu{
- <%
-               if(typeof(image) !== 'undefined'){
- %>
-                   width:<%= image.width %>px;
-                   height:<%= image.height %>px;
-                   background:url("http://localhost:5000<%= image.src %>") no-repeat left top;
- <%
-               }
- %>
               font:16px Arial;
               background-size:contain;
           }
@@ -53,7 +44,15 @@
     </style>
 </head>
 <body>
-<div class='menu' >
+<div class='menu'
+  <%
+  if(typeof(image) !== 'undefined'){
+  %>
+  style='width:<%= image.width %>px; height:<%= image.height %>px; background:url("http://localhost:3000<%= image.src %>") no-repeat left top;'
+<%
+}
+%>
+  >
     <div class='menu__inner'>
         <table class='menu__table'>
             <thead>
@@ -64,11 +63,11 @@
                 </tr>
             </thead>
             <tbody>
-                <% for(var i = 0; i < products.length; i++) { %>
+                <% for(var i = 0; i < items.length; i++) { %>
                 <tr class='menu-list-item'>
-                    <td class='menu__td menu__name'><%- products[i].name %></td>
-                    <td class='menu__td menu__cnt'><%- products[i].count %><%- products[i].measure %></td>
-                    <td class='menu__td menu__price'><%- products[i].price %></td>
+                    <td class='menu__td menu__name'><%- items[i].name %></td>
+                    <td class='menu__td menu__cnt'><%- items[i].count %><%- items[i].measure %></td>
+                    <td class='menu__td menu__price'><%- items[i].price %></td>
                 </tr>
                 <% } %>
             </tbody>
