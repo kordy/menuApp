@@ -8,6 +8,7 @@ define([
       _id: "",
       code: "",
       name: "",
+      nameEng: "",
       children: null,
       childrenView: null
     },

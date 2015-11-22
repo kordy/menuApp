@@ -10,6 +10,7 @@ function dataSave(data, callback){
     var gr = new Group();
     gr.code = data[0];
     gr.name = data[1];
+    gr.nameEng = data[3];
 
     gr.replace(function(){
         if(!data[2])return;

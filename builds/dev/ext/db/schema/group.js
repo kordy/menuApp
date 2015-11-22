@@ -2,6 +2,7 @@ var db = require('../db');
 
 var GroupSchema = db.Schema({
     name: String,
+    nameEng: String,
     code: {
         type: String,
         unique: true
