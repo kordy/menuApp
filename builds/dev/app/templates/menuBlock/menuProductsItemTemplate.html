@@ -1,12 +1,19 @@
 <div class='menu-list__characters'>
   <span class='menu-list__characters-val'><input class='itemName' type='text' value="<%- typeof name !== 'undefined' ? name : '' %>" /></span>
-  <span class='menu-list__characters-val'><input class='itemMeasure' type='text' value="<%- typeof measure !== 'undefined' ? measure : '' %>" /></span>
-  <span class='menu-list__characters-val'><input class='itemPrice' type='text' value="<%- typeof price !== 'undefined' ? price + 'Р': '' %>" /></span>
-  <span class='menu-list__characters-val'><input class='itemPriceBase' type='text' value="<%- typeof priceBase !== 'undefined' ? priceBase + 'Р': '' %>" /></span>
-</div>
-<div class='menu-list__handle menuItemHandle'>
-  <span class="glyphicon glyphicon-align-justify"></span>
+  <span class='menu-list__characters-val'>
+      <span class='menu-list__characters-val-text'>Вес: </span>
+      <input class='itemMeasure' type='text' value="<%- typeof measure !== 'undefined' ? measure : '' %>" />
+      <span class='menu-list__characters-val-text'> г</span>
+  </span>
+  <span class='menu-list__characters-val'>
+      <span class='menu-list__characters-val-text'>Стоимость: </span>
+      <input class='itemPrice' type='text' value="<%- typeof priceServing !== 'undefined' ? priceServing : '' %>" />
+      <span class='menu-list__characters-val-text'> руб.</span>
+  </span>
 </div>
 <div class='menu-list__delete menuItemDelete'>
   <span class="glyphicon glyphicon-remove"></span>
+</div>
+<div class='menu-list__handle menuItemHandle'>
+    <span class="glyphicon glyphicon-align-justify"></span>
 </div>

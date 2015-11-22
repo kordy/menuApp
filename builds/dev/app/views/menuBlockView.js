@@ -26,7 +26,7 @@ define([
         'click .exportButton': 'exportPDF'
       },
       bindings: {
-        '.saveButton, .exportButton, .previewButton': {
+        '.saveButton, .exportButton, .previewButton, .addOptions, .optionsMenu': {
           visible: true,
           observe: 'noItems',
           onGet: function(value) {
@@ -124,7 +124,7 @@ define([
       },
       initChangeLanguage: function() {
         var that = this;
-        Sync.trigger('changeLanguage', that.model.get('isEnglish'));
+        Sync.trigger('changeLanguage', !that.model.get('isEnglish'));
       },
       saveMenuChanges: function() {
         var that = this;
