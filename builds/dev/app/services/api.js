@@ -1,4 +1,4 @@
-define(function () {
+define(['router'], function (Router) {
   var Api = function () {
     var basePath = 'http://localhost:3000/'; // instance for developers
 
@@ -29,6 +29,15 @@ define(function () {
         deferredRequest.reject('Url not specified');
         return deferredRequest.promise();
       }
+
+      var token = $.cookie('token');
+
+      if (token) {
+        if (data) data.token = token;
+        else data = {token: token}
+      }
+
+
       var options = {
         url: getBasePath() + url,
         type: type,
@@ -46,6 +55,9 @@ define(function () {
           deferredRequest.resolve(data, statusStr, xhr);
         })
         .fail(function (xhr) {
+          if (xhr && xhr.responseJSON && xhr.responseJSON.tokenFail) {
+            Router.go('login');
+          }
           deferredRequest.reject();
         });
     }
