@@ -90,6 +90,19 @@ app.post('/login', function(req, res) {
   });
 });
 
+app.get('/files/:file', function (req, res) {
+  var file = __dirname + '/files/' + req.params.file;
+  var filename = path.basename(file);
+  var mimetype = mime.lookup(file);
+
+  if (mimetype !== 'image/jpeg')  {
+    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  }
+  res.setHeader('Content-type', mimetype);
+
+  var filestream = fs.createReadStream(file);
+  filestream.pipe(res);
+});
 
 var apiRoutes = express.Router();
 
@@ -237,20 +250,6 @@ app.delete('/menu/:id', function (req, res) {
         });
     });
   });
-});
-
-app.get('/files/:file', function (req, res) {
-  var file = __dirname + '/files/' + req.params.file;
-  var filename = path.basename(file);
-  var mimetype = mime.lookup(file);
-
-  if (mimetype !== 'image/jpeg')  {
-    res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-  }
-  res.setHeader('Content-type', mimetype);
-
-  var filestream = fs.createReadStream(file);
-  filestream.pipe(res);
 });
 
 app.post('/menu.json', function (req, res) {
