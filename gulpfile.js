@@ -25,6 +25,7 @@ gulp.task('clean', function () {
 gulp.task('js', function(){
     gulp.src([
         'bower_components/jquery/dist/jquery.js',
+        'bower_components/jquery-cookie/jquery.cookie.js',
         'bower_components/underscore/underscore.js',
         'bower_components/backbone/backbone.js',
         'bower_components/marionette/lib/backbone.marionette.js',

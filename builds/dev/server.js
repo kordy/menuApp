@@ -11,6 +11,7 @@ var io = require('socket.io')(http);
 var ejs = require('ejs');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
+var jwt = require('jsonwebtoken');
 
 var bodyParser = require('body-parser');
 var fs = require('fs');
@@ -24,84 +25,94 @@ var Menu = require('./ext/db/schema/menu');
 var Image = require('./ext/db/schema/image');
 var Product = require('./ext/db/schema/product');
 var Group = require('./ext/db/schema/group');
+var User = require('./ext/db/schema/user');
 
 app.set('port', (process.env.PORT || 3000));
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
+app.set('secret', 'FusionMenuApp');
+
 app.use(express.static(__dirname + "/static"));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
   next();
 });
-
 
 process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
-io.sockets.on('connection', function (client) {
-
-  Group.find({}, function (err, products) {
-    client.emit('updateGroups', products);
-  });
-
-  Menu.find({})
-    .populate('products image')
-    .exec(function (err, menus) {
-      client.emit('updateMenuList', menus);
-    });
-
-  Image.find({}, function (err, images) {
-    client.emit('updateImages', images);
-  });
-
-  client.on('updateImages', function (images) {
-    for (var i in images) {
-      var im = new Image();
-      for (var j in images[i]) {
-        im[j] = images[i][j]
+app.post('/isLogin', function(req, res) {
+  var token = req.body.token || req.query.token;
+  if (token) {
+    jwt.verify(token, app.get('secret'), function(err, decoded) {
+      if (err) {
+        return res.json({ tokenValid: false, message: 'Failed to authenticate token.' });
+      } else {
+        return res.json({ tokenValid: true, message: 'Failed to authenticate token.' });
       }
-      im.replace();
+    });
+  } else {
+    return res.status(403).send({
+      tokenFail: false,
+      message: 'No token provided.'
+    });
+  }
+});
+
+app.post('/login', function(req, res) {
+  var login = req.body.login;
+  var password = req.body.password;
+  User.findOne({name: login}, function(err, curUser){
+
+    if (err) console.log(err);
+
+    if (curUser && curUser.checkPassword(password)) {
+
+      var token = jwt.sign(curUser, app.get('secret'), {
+        expiresIn: '24h'
+      });
+
+      res.json({
+        success: true,
+        message: 'Enjoy your token!',
+        token: token
+      });
+    } else {
+      res.json({
+        success: false
+      });
     }
   });
-
-  client.on('updateMenu', function (menu) {
-    var m = new Menu(menu)
-    m.replace(function () {
-      Menu.find({}, function (err, menus) {
-        client.emit('updateMenuList', menus);
-      })
-    });
-  });
-
-  client.on('createPDF', function (menu) {
-    pdf.create(menu, function (fileURL) {
-      client.emit('downloadFile', fileURL);
-    });
-  });
-
-  client.on('getPDF', function (menu) {
-    var html = pdf.get(menu);
-    client.emit('showPDF', html);
-  });
-
-  client.on('deleteImage', function (imageId) {
-    Image.findOne({_id: imageId}, function (err, image) {
-      image.remove();
-    });
-  });
-
-  client.on('getImages', function () {
-    Image.find({}, function (err, images) {
-      client.emit('updateImages', images);
-    });
-  });
-
 });
+
+
+var apiRoutes = express.Router();
+
+apiRoutes.use(function(req, res, next) {
+  var token = req.body.token || req.query.token;
+  if (token) {
+    jwt.verify(token, app.get('secret'), function(err, decoded) {
+      if (err) {
+        return res.json({ tokenFail: true, message: 'Failed to authenticate token.' });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    return res.status(403).send({
+      tokenFail: true,
+      message: 'No token provided.'
+    });
+  }
+});
+
+app.use('/', apiRoutes);
 
 app.post('/pdf', function (req, res) {
   var html = pdf.get(req.body);

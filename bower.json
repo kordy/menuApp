@@ -15,6 +15,7 @@
     "jquery-file-upload": "~9.11.2",
     "alertify": "~0.3.10",
     "jquery-ui-sortable": "jquery-ui-sortable#*",
-    "html2canvas": "~0.4.1"
+    "html2canvas": "~0.4.1",
+    "jquery-cookie": "~1.4.1"
   }
 }

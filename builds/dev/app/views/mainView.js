@@ -1,15 +1,23 @@
 define([
     "text!templates/LayoutTemplate.js",
     "views/productsBlockView",
-    "views/menuBlockView"
+    "views/menuBlockView",
+    "router"
 ],
-    function(LayoutTemplate, ProductsBlockView, MenuBlockView) {
-        var LayoutView = Marionette.LayoutView.extend({
+    function(LayoutTemplate, ProductsBlockView, MenuBlockView, Router) {
+        var MainView = Marionette.LayoutView.extend({
             el: 'body',
             template: LayoutTemplate,
             regions: {
               productsBlockRegion: '#productsBlockRegion',
               menuBlockRegion: '#menuBlockRegion'
+            },
+            events: {
+              'click .logoutButton': 'logout'
+            },
+            logout: function() {
+              $.removeCookie('token');
+              Router.go('login');
             },
             initialize: function() {
                 this.render();
@@ -21,5 +29,5 @@ define([
                 this.menuBlockRegion.show(menuBlockView);
             }
         });
-        return LayoutView;
+        return MainView;
     });
