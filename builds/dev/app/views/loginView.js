@@ -21,14 +21,24 @@ define([
         'submit': 'login'
       },
       login: function () {
+        if (!this.model.get('login') || !this.model.get('login')) {
+          alertify.error('Введите логин и пароль');
+          return;
+        }
         Api.post(this.model.getUrl(), this.model.toJSON()).done(function(data) {
           if(data && data.success && data.token) {
             $.cookie("token", data.token, {
               path    : '/'
             });
             Router.go('main');
+          } else {
+            alertify.error('Неверный логин или пароль');
           }
-        });
+        })
+          .fail(function(){
+            alertify.error('Неверный логин или пароль');
+          })
+        ;
         return false;
       },
       initialize: function () {

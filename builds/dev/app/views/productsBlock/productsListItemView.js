@@ -9,7 +9,9 @@ define([
       tagName: 'li',
       events: {
         'click .glyphicon-edit': 'showEditPanel',
-        'click .glyphicon-plus-sign': 'initAddToMenu'
+        'click .glyphicon-plus-sign': 'initAddToMenu',
+        'click .deleteButton': 'deleteProduct',
+        'click .saveButton': 'updateProduct'
       },
       bindings: {
         '.prod-name': {
@@ -97,14 +99,12 @@ define([
       initialize: function (param) {
         var that = this;
         that.model.set('isAdmin', User.isAdmin());
-        that.model.on('change', that.render, that);
       },
       onRender: function () {
         var that = this;
         this.stickit();
       },
       onDestroy: function () {
-        console.log('destroy');
         this.$el.remove();
       },
       initAddToMenu: function () {
@@ -117,6 +117,27 @@ define([
         $('.nav-sidebar').find('.panel').hide();
         if (!$el.hasClass('prod-current')) $el.addClass('prod-current').find('.panel').show();
         else $el.removeClass('prod-current');
+      },
+      deleteProduct: function() {
+        var that = this;
+        that.model.delete()
+          .done(function(){
+            alertify.log('Файл <strong>' + that.model.get('name') + '</strong> удален');
+            that.remove();
+          })
+          .fail(function(){
+            alertify.error('Ошибка при удалении');
+          })
+      },
+      updateProduct: function() {
+        var that = this;
+        that.model.update()
+          .done(function(){
+            alertify.log('Продукт <strong>' + that.model.get('name') + '</strong> обновлен');
+          })
+          .fail(function(){
+            alertify.error('Ошибка при обновлении');
+          })
       }
     });
     return ProductsListItemView;

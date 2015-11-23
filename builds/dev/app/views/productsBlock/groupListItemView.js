@@ -75,7 +75,7 @@ define([
 
         $el.siblings().find('.menu-group').hide();
         $el.siblings().find('.prod-group').hide();
-        $el.siblings().find('.panel').hide();
+//        $el.siblings().find('.panel').hide();
         $el.parents('.menu-group').removeClass('menu-group--current');
       },
       regions: {
