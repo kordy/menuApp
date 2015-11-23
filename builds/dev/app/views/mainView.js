@@ -1,5 +1,5 @@
 define([
-    "text!templates/LayoutTemplate.js",
+    "text!templates/layoutTemplate.js",
     "views/productsBlockView",
     "views/menuBlockView",
     "router"

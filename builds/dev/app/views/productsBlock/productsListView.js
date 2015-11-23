@@ -1,5 +1,5 @@
 define([
-    "text!templates/productsBlock/ProductsListTemplate.js",
+    "text!templates/productsBlock/productsListTemplate.js",
     "views/productsBlock/groupListItemView",
     "views/productsBlock/productsListItemView",
     "collections/groupsCollection",
