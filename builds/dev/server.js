@@ -59,7 +59,7 @@ app.post('/isLogin', function(req, res) {
       if (err) {
         return  res.status(401).json({ tokenValid: false, message: 'Failed to authenticate token.' });
       } else {
-        return  res.status(200).json({ tokenValid: true, message: 'success' });
+        return  res.status(200).json({ tokenValid: true, message: 'success', userInfo: decoded });
       }
     });
   } else {

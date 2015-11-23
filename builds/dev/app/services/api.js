@@ -37,7 +37,6 @@ define(['router'], function (Router) {
         //else data = {token: token}
       }
 
-
       var options = {
         url: getBasePath() + url,
         type: type,
