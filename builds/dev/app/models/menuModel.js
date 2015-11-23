@@ -23,6 +23,7 @@ define([
         isGroup: false,
         name: "",
         nameEng: "",
+        priceServing: '',
         priceBase: '',
         serving: ''
       }],
