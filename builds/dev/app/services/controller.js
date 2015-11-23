@@ -1,4 +1,4 @@
-define(['views/mainView', 'views/loginView', 'api', 'router'], function(MainView, LoginView, Api, Router) {
+define(['views/mainView', 'views/loginView', 'api', 'router' , 'userInfo'], function(MainView, LoginView, Api, Router, User) {
   var Controller = Marionette.Controller.extend({
     initialize: function(options) {
       //TODO: code to initialize
@@ -7,17 +7,27 @@ define(['views/mainView', 'views/loginView', 'api', 'router'], function(MainView
       //TODO: code to start
     },
     login: function() {
-      if ($.cookie('token'))
-      Api.post('islogin').done(function() {
-        Router.go('main');
-      });
+      if ($.cookie('token')) {
+        Api.post('islogin').done(function(data) {
+          Router.go('main');
+        });
+        return;
+      }
       var loginView = new LoginView();
     },
     main: function() {
-      Api.post('islogin').fail(function() {
+      Api
+        .post('islogin').fail(function() {
+        $.removeCookie('token');
+          User.set({});
         Router.go('login');
-      });
-      var mainView = new MainView();
+
+      })
+        .done(function(data) {
+          User.set(data.userInfo);
+          var mainView = new MainView();
+        });
+
     },
     notFound: function() {
 //      var router  =new Router

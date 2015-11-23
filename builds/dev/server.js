@@ -36,7 +36,8 @@ app.use(express.static(__dirname + "/static"));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', 'http://menu.fusion-service.com');
+  res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
   next();
@@ -47,13 +48,18 @@ process.on('uncaughtException', function (err) {
 });
 
 app.post('/isLogin', function(req, res) {
-  var token = req.body.token || req.query.token;
+  //console.log(req.headers);
+  if (req.method === 'OPTIONS') {
+    next();
+    return;
+  }
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, app.get('secret'), function(err, decoded) {
       if (err) {
-        return res.json({ tokenValid: false, message: 'Failed to authenticate token.' });
+        return  res.status(401).json({ tokenValid: false, message: 'Failed to authenticate token.' });
       } else {
-        return res.json({ tokenValid: true, message: 'Failed to authenticate token.' });
+        return  res.status(200).json({ tokenValid: true, message: 'success', userInfo: decoded });
       }
     });
   } else {
@@ -67,6 +73,7 @@ app.post('/isLogin', function(req, res) {
 app.post('/login', function(req, res) {
   var login = req.body.login;
   var password = req.body.password;
+
   User.findOne({name: login}, function(err, curUser){
 
     if (err) console.log(err);
@@ -94,11 +101,15 @@ app.post('/login', function(req, res) {
 var apiRoutes = express.Router();
 
 apiRoutes.use(function(req, res, next) {
-  var token = req.body.token || req.query.token;
+  if (req.method === 'OPTIONS') {
+    next();
+    return;
+  }
+  var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, app.get('secret'), function(err, decoded) {
       if (err) {
-        return res.json({ tokenFail: true, message: 'Failed to authenticate token.' });
+        return res.status(401).json({ tokenFail: true, message: 'Failed to authenticate token.' });
       } else {
         req.decoded = decoded;
         next();
@@ -139,7 +150,7 @@ app.get('/products', function (req, res) {
 });
 
 app.post('/products', multipartMiddleware, function (req, res) {
-  console.log(req.files);
+  //console.log(req.files);
   if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
     xlsx.parse(req.files.files, function () {
       Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {

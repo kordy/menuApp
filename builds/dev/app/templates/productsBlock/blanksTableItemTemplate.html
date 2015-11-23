@@ -3,4 +3,4 @@
   <input placeholder="Название" class="table-input nameInput" type="text" value="<%- name %>">
   <div class='btn btn-success changeName'>Сохранить</div>
 </td>
-<td><span class="glyphicon glyphicon-remove removeBlank"></span></td>
+<%= isAdmin ? '<td><span class="glyphicon glyphicon-remove removeBlank"></span></td>' : '' %>

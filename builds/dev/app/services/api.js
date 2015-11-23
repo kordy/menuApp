@@ -33,15 +33,20 @@ define(['router'], function (Router) {
       var token = $.cookie('token');
 
       if (token) {
-        if (data) data.token = token;
-        else data = {token: token}
+        //if (data) data.token = token;
+        //else data = {token: token}
       }
-
 
       var options = {
         url: getBasePath() + url,
         type: type,
-        data: data
+        data: data,
+        xhrFields: {
+          withCredentials: true
+        },
+        beforeSend: function(xhr, data) {
+          xhr.setRequestHeader('X-Access-Token', token);
+        }
       };
 
       sendRequest(options, deferredRequest);

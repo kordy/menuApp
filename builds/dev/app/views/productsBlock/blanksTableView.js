@@ -2,15 +2,21 @@ define([
     "text!templates/productsBlock/blanksTableTemplate.js",
     "collections/blanksCollection",
     "views/productsBlock/blanksTableItemView",
-    "api"
+    "api",
+    "userInfo"
   ],
-  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api) {
+  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api, User) {
     var BlanksTableView = Mn.CompositeView.extend({
       className: 'highlight imageBlock',
       collection: new BlanksCollection(),
       childView: BlanksTableItemView,
       childViewContainer: '#blanksBody',
       template: BlanksTableTemplate,
+      templateHelpers: function(){
+        return {
+          isAdmin: User.isAdmin()
+        }
+      },
       uploadingFiles: 0,
       ui: {
         uploadInput: '.blankUpload',
@@ -35,10 +41,17 @@ define([
       onRender: function (){
         var that = this;
 
+        var token = $.cookie('token');
         that.ui.uploadInput.fileupload({
           url: Api.getBasePath() + 'image',
           sequentialUpload: false,
           dataType: 'json',
+          xhrFields: {
+            withCredentials: true
+          },
+          beforeSend: function(xhr, data) {
+            xhr.setRequestHeader('X-Access-Token', token);
+          },
           add: function (e, data) {
             that.showLoader();
             var jqXHR = data.submit()
