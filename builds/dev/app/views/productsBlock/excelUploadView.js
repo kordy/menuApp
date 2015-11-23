@@ -29,11 +29,17 @@ define([
       },
       onRender: function (){
         var that = this;
-
+        var token = $.cookie('token');
         that.ui.uploadInput.fileupload({
           url: Api.getBasePath() + 'products',
           sequentialUpload: false,
           dataType: 'json',
+          xhrFields: {
+            withCredentials: true
+          },
+          beforeSend: function(xhr, data) {
+            xhr.setRequestHeader('X-Access-Token', token);
+          },
           add: function (e, data) {
             that.showLoader();
             var jqXHR = data.submit()
