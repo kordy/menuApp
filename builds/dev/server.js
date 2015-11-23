@@ -36,7 +36,7 @@ app.use(express.static(__dirname + "/static"));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://menu.fusion-service.com');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8000');
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
@@ -143,6 +143,8 @@ app.get('/groups', function (req, res) {
   });
 });
 
+/********** P R O D U C T S **********/
+
 app.get('/products', function (req, res) {
   Product.fetch(function (err, products) {
     res.send(products);
@@ -155,13 +157,27 @@ app.post('/products', multipartMiddleware, function (req, res) {
     xlsx.parse(req.files.files, function () {
       Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
         Product.fetch(function (err, products) {
-          res.send({groups: groups, products: products});
+          res.status(200).send({groups: groups, products: products});
         });
       });
     })
   }else{
     console.log("Error file format!");
   }
+});
+
+app.delete('/product/:id', function (req, res) {
+  Product.findOne({_id: req.params.id}, function (err, product) {
+    product.remove({}, function(err,removed) {
+      res.status(200).send({result:true, removed: removed});
+    });
+  });
+});
+
+app.put('/product/:id', function (req, res) {
+  Product.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, product) {
+    res.status(200).send({result:true, product: product});
+  });
 });
 
 /********** I M A G E **********/
