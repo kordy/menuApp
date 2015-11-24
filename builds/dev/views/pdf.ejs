@@ -12,25 +12,35 @@
           .menu{
               font:16px Arial;
               background-size:contain;
+              color:#023567;
           }
           .menu__inner{
-                padding:120px 80px;
+                padding:120px 100px;
+          }
+          .menu__header{
+              font-size:22px;
+              font-weight:bold;
+              text-align:center;
+              margin-bottom:60px;
+          }
+          .menu__list{
+            list-style:none;
+          }
+          .menu__item{
+            font-size:16px;
+            list-style:none;
+            margin-bottom:20px;
+          }
+          .menu__item--group{
+            font-size:18px;
+            font-weight:bold;
+            margin-top:40px;
+          }
+          .menu__price{
+            font-weight:bold;
           }
           .menu__table{
               border-collapse:collapse;
-          }
-          .menu__name{
-              width:70%;
-              text-align:left;
-          }
-          .menu__cnt{
-              width:15%;
-              text-align:right;
-              padding-right:30px;
-          }
-          .menu__price{
-              width:15%;
-              text-align:right;
           }
           .menu__th{
               font-size:1.1em;
@@ -54,24 +64,20 @@
 %>
   >
     <div class='menu__inner'>
-        <table class='menu__table'>
-            <thead>
-                <tr class='menu__tr'>
-                   <th class='menu__th menu__name'>Наименование</th>
-                   <th class='menu__th menu__cnt'>Кол</th>
-                   <th class='menu__th menu__price'>Цена(руб)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i = 0; i < items.length; i++) { %>
-                <tr class='menu-list-item'>
-                    <td class='menu__td menu__name'><%- items[i].name %></td>
-                    <td class='menu__td menu__cnt'><%- items[i].count %><%- items[i].measure %></td>
-                    <td class='menu__td menu__price'><%- items[i].price %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
+      <div class='menu__header'><%- name %></div>
+        <ul class='menu__list'>
+          <% for(var i = 0; i < items.length; i++) { %>
+          <% var groupClass = null; %>
+          <% if(items[i].isGroup) groupClass = ' menu__item--group' %>
+          <li class='menu__item<%- groupClass %>'>
+              <span class='menu__name'><%- items[i].name %></span>
+              <% if(!groupClass) { %>
+                  <span class='menu__cnt'> (<%- items[i].serving %> г.)</span>
+                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- items[i].priceServing %> руб.</span>
+              <% } %>
+          </li>
+          <% } %>
+        </ul>
     </div>
 </div>
 </body>
