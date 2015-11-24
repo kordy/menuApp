@@ -3,7 +3,7 @@
     <tr>
         <th></th>
         <th>Название</th>
-        <th>Удалить</th>
+        <%= isAdmin ? '<th>Удалить</th>' : '' %>
     </tr>
     </thead>
     <tbody id='blanksBody'>

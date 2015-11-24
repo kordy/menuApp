@@ -11,7 +11,8 @@ requirejs.config({
     api: 'services/api',
     sync: 'services/sync',
     router: 'services/router',
-    controller: 'services/controller'
+    controller: 'services/controller',
+    userInfo: 'services/userInfo'
   }
 });
 

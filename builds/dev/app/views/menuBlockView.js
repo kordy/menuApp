@@ -128,6 +128,7 @@ define([
       },
       saveMenuChanges: function() {
         var that = this;
+        that.model.set('items', that.modelItems.toJSON());
         var prevSelected = that.menusCollection.find({_id: that.model.get('_id')});
         prevSelected.set(that.model.attributes);
       },
@@ -158,6 +159,7 @@ define([
       },
       saveMenu: function() {
         var that = this;
+        that.model.set('items', that.modelItems.toJSON());
         alertify.prompt('Введите название меню',
           function(evt, value){
             if (!value) return;
@@ -183,7 +185,7 @@ define([
       },
       showPDF: function() {
         var that = this;
-        console.log(that);
+        that.model.set('items', that.modelItems.toJSON());
         Api.post('pdf', that.model.toJSON()).done(function(file){
           var iframe = document.createElement('iframe');
           document.getElementById('pdfContainer').innerHTML = '';
@@ -196,6 +198,7 @@ define([
       },
       exportPDF: function() {
         var that = this;
+        that.model.set('items', that.modelItems.toJSON());
         Api.post('exportPDF', that.model.toJSON()).done(function(fileURL){
           window.location.href = Api.getBasePath() + fileURL;
           Api.get(fileURL);

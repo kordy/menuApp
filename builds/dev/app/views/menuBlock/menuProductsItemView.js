@@ -11,9 +11,6 @@ define([
       initialize: function () {
         var that = this;
         Sync.on('changeLanguage', that.changeLanguage, that);
-        //var that = this;
-        //that.model.set('nameDefault', that.model.get('name'));
-        console.log(this.model);
       },
       events: {
         'click .menuItemDelete': 'deleteItem',
@@ -29,16 +26,22 @@ define([
           observe: ['name','nameEng','isEnglish'],
           onGet: function(values) {
             return values[2] ? values[1] : values[0];
+          },
+          onSet: function(value) {
+            if (!this.model.get('isEnglish')) {
+              this.model.set('name', value);
+            } else {
+              this.model.set('nameEng', value);
+            }
           }
         },
         '.itemMeasure':'serving',
         '.itemPrice':'priceServing',
-        '.itemPriceBase':'priceBase',
+        '.itemPriceBase':'priceBase'
       },
       changeLanguage: function(isEnglish) {
         var that = this;
         that.model.set('isEnglish', isEnglish);
-        console.log(that.model);
       },
       onRender: function() {
         this.stickit();

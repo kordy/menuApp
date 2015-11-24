@@ -2,11 +2,17 @@ define([
     "text!templates/layoutTemplate.js",
     "views/productsBlockView",
     "views/menuBlockView",
-    "router"
+    "router",
+    "userInfo"
 ],
-    function(LayoutTemplate, ProductsBlockView, MenuBlockView, Router) {
+    function(LayoutTemplate, ProductsBlockView, MenuBlockView, Router, User) {
         var MainView = Marionette.LayoutView.extend({
             el: 'body',
+            templateHelpers: function(){
+                return {
+                    user: User.get().name
+                }
+            },
             template: LayoutTemplate,
             regions: {
               productsBlockRegion: '#productsBlockRegion',

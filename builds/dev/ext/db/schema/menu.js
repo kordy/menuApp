@@ -8,6 +8,7 @@ var MenuSchema = db.Schema({
           name: String,
           nameEng: String,
           price: Number,
+          priceServing: Number,
           priceBase: Number,
           serving: String
         }

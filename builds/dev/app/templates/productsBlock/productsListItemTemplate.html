@@ -1,8 +1,8 @@
 <div class="prod-group__item-info">
     <span class="prod-group__item-name"><%- $.trim(name) %></span>
     <div class="prod-group__item-icons">
-        <span class="right glyphicon glyphicon-remove" aria-hidden="true" title="Удалить"></span>
-        <span class="right glyphicon glyphicon-saved" aria-hidden="true" title="Сохранить"></span>
+        <%= isAdmin ? '<span class="right glyphicon glyphicon-remove deleteButton" aria-hidden="true" title="Удалить"></span>' : '' %>
+        <%= isAdmin ? '<span class="right glyphicon glyphicon-saved saveButton" aria-hidden="true" title="Сохранить"></span>' : '' %>
         <span class="right glyphicon glyphicon-edit" aria-hidden="true" title="Редактировать"></span>
         <span class="right glyphicon glyphicon-plus-sign" aria-hidden="true" title="Добавить в меню"></span>
     </div>
@@ -47,6 +47,7 @@
                 </div>
             </div>
       </div>
+    <% if (isAdmin) { %>
       <div class='row'>
             <div class="col-md-6">
                 <div class="form-group">
@@ -55,5 +56,6 @@
                 </div>
             </div>
       </div>
+    <% } %>
   </div>
 </div>

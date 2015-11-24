@@ -1,11 +1,17 @@
 define([
-    "text!templates/productsBlock/blanksTableItemTemplate.js"
+    "text!templates/productsBlock/blanksTableItemTemplate.js",
+    "userInfo"
   ],
-  function (BlanksTableItemTemplate) {
+  function (BlanksTableItemTemplate, User) {
     var BlanksTableItemView = Mn.ItemView.extend({
       className: '',
       tagName: 'tr',
       template: BlanksTableItemTemplate,
+      templateHelpers: function(){
+        return {
+          isAdmin: User.isAdmin()
+        }
+      },
       initialize: function () {
         var that = this;
         that.model.set('nameDefault', that.model.get('name'));

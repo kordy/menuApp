@@ -2,15 +2,21 @@ define([
     "text!templates/productsBlock/blanksTableTemplate.js",
     "collections/blanksCollection",
     "views/productsBlock/blanksTableItemView",
-    "api"
+    "api",
+    "userInfo"
   ],
-  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api) {
+  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api, User) {
     var BlanksTableView = Mn.CompositeView.extend({
       className: 'highlight imageBlock',
       collection: new BlanksCollection(),
       childView: BlanksTableItemView,
       childViewContainer: '#blanksBody',
       template: BlanksTableTemplate,
+      templateHelpers: function(){
+        return {
+          isAdmin: User.isAdmin()
+        }
+      },
       uploadingFiles: 0,
       ui: {
         uploadInput: '.blankUpload',
