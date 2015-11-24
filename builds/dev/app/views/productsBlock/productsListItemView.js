@@ -30,7 +30,6 @@ define([
         this.stickit();
       },
       onDestroy: function() {
-        console.log('destroy');
         this.$el.remove();
       },
       initAddToMenu: function(){
@@ -42,7 +41,7 @@ define([
         e.stopPropagation();
         $('.nav-sidebar').find('.panel').hide();
         if(!$el.hasClass('prod-current')) $el.addClass('prod-current').find('.panel').show();
-        else $el.removeClass('prod-current');
+        else $el.removeClass('prod-current').find('.panel').hide();
       }
     });
     return ProductsListItemView;
