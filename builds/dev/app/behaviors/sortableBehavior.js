@@ -19,8 +19,10 @@ define(function() {
         }
       });
       that.viewEl().sortable({ // Делаем список сортируемым
+        cancel: this.options.cancel || false,
         axis: this.options.axis || false,
         grid: this.options.grid || false,
+        items: this.options.items || false,
         containment: this.options.containment || false,
         cursor: "move",
         handle: this.options.handle || false,

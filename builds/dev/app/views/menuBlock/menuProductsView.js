@@ -21,8 +21,10 @@ define([
         SortableBehavior:{
           behaviorClass: SortableBehavior,
           el: '[data-region="menuProductsItemsRegion"]',
+          items: '.menu-list__item:not(.menu-list__item--disabled)',
           handle: '.menuItemHandle',
-          containment:'body'
+          containment:'body',
+          cancel: '.menu-list__item--disabled'
         }
       },
       initialize: function(params) {

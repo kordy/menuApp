@@ -437,6 +437,13 @@ body {
     width: 60%;
 }
 
+.menu-list__item--isDelimiter{
+    padding: 4px 15px;
+    background: #F7F7F9;
+    font-weight: bold;
+    font-size:0.9em;
+}
+
 .menu-list__characters {
     float: left;
 }

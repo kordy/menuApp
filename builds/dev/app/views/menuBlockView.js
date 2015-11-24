@@ -54,6 +54,9 @@ define([
         '.discount': {
           observe: 'discount'
         },
+        '.isTwoColumns': {
+          observe: 'isTwoColumns'
+        },
         '.deleteButton': {
           observe: '_id',
           visible: true
@@ -75,6 +78,7 @@ define([
             that.selectMenuView.setSelected(that.currentMenuId);
           }
         });
+
         that.blanksCollection.on('sync', function() {
           that.blanksCollection.unshift({'name': '--- Выберите бланк ---'});
           if (that.model.get('image') && that.model.get('image')._id) {
@@ -83,19 +87,47 @@ define([
             that.selectMenuView.setSelected();
           }
         });
+
         that.model.on('change', function() {
           if (that.model.get('image') && that.model.get('image')._id) {
             that.blanksSelectView.setSelected(that.model.get('image')._id);
           } else {
             that.blanksSelectView.setSelected();
           }
-          that.modelItems.on('add remove sort', function() {
-            that.itemsCheck();
-            that.model.set('items', that.modelItems.toJSON());
-          })
         });
-        Sync.on('addToMenu', that.addProduct, that);
+
         that.modelItems = new Backbone.Collection();
+        that.modelItems.on('add remove sort', function() {
+          that.itemsCheck();
+          that.model.set('items', that.modelItems.toJSON());
+        });
+
+
+        that.model.on('change:isTwoColumns', function() {
+          var delimiter = that.modelItems.find({'isDelimiter': true});
+
+          if (that.model.get('isTwoColumns')) {
+            if (!delimiter) {
+              that.modelItems.unshift({
+                isDelimiter: true,
+                isDisabled: true,
+                name: 'Левая колонка'
+              });
+              that.modelItems.push({
+                isDelimiter: true,
+                name: 'Правая колонка'
+              });
+            }
+          } else {
+            var delimiters = that.modelItems.where({'isDelimiter': true});
+            _.each(delimiters, function(item){
+              that.modelItems.remove(item);
+            });
+          }
+        });
+
+        Sync.on('addToMenu', that.addProduct, that);
+
       },
       itemsCheck: function() {
        var that = this;

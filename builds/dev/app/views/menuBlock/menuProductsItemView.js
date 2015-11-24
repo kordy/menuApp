@@ -19,7 +19,9 @@ define([
       bindings: {
         ':el': {
           classes: {
-            'menu-list__item--group': 'isGroup'
+            'menu-list__item--group': 'isGroup',
+            'menu-list__item--disabled': 'isDisabled',
+            'menu-list__item--isDelimiter': 'isDelimiter'
           }
         },
         '.itemName':{

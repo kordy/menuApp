@@ -12,8 +12,8 @@ var PDF = {
         var str = fs.readFileSync(__approot + '/views/pdf.ejs', 'utf8');
         var html = ejs.render(str, menu);
         if(menu.image){
-            var h = parseInt(menu.image.height) + 228 + 'px';
-            var w = parseInt(menu.image.width) + 160 + "px";
+            var h = parseInt(menu.image.height) + 1 + 'px';
+            var w = parseInt(menu.image.width) + 'px';
         }
         var options = {
             "border": "0",

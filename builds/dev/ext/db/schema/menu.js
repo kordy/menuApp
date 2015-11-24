@@ -5,6 +5,7 @@ var MenuSchema = db.Schema({
     name: String,
     items: [
         { isGroup: Boolean,
+          isDelimiter: Boolean,
           name: String,
           nameEng: String,
           price: Number,
@@ -20,6 +21,7 @@ var MenuSchema = db.Schema({
     isEnglish: Boolean,
     isImages: Boolean,
     noPrices: Boolean,
+    isTwoColumns: Boolean,
     discount: String
 });
 

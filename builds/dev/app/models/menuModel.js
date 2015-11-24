@@ -21,6 +21,7 @@ define([
         __v: 0,
         _id: null,
         isGroup: false,
+        isDelimiter: false,
         name: "",
         nameEng: "",
         priceServing: '',
@@ -34,7 +35,8 @@ define([
       isImages: false,
       noPrices: false,
       discount: '',
-      noItems: true
+      noItems: true,
+      isTwoColumns: false
     },
     initialize: function(params) {
 
