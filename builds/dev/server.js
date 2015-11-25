@@ -150,6 +150,12 @@ app.post('/exportPDF', function (req, res) {
   });
 });
 
+app.post('/exportExcel', function (req, res) {
+  xlsx.build(req.body, function (fileURL) {
+    res.send(fileURL);
+  });
+});
+
 app.get('/groups', function (req, res) {
   Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
     res.send(groups);

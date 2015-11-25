@@ -23,7 +23,8 @@ define([
         'click .saveButton': 'saveMenu',
         'click .deleteButton': 'deleteMenu',
         'click .previewButton': 'showPDF',
-        'click .exportButton': 'exportPDF'
+        'click .exportButton': 'exportPDF',
+        'click .exportExcelButton': 'exportExcel'
       },
       bindings: {
         '.saveButton, .exportButton, .previewButton, .addOptions, .optionsMenu': {
@@ -233,7 +234,15 @@ define([
         that.model.set('items', that.modelItems.toJSON());
         Api.post('exportPDF', that.model.toJSON()).done(function(fileURL){
           window.location.href = Api.getBasePath() + fileURL;
-          Api.get(fileURL);
+          //Api.get(fileURL);
+        });
+      },
+      exportExcel: function() {
+        var that = this;
+        that.model.set('items', that.modelItems.toJSON());
+        Api.post('exportExcel', that.model.toJSON()).done(function(fileURL){
+          window.location.href = Api.getBasePath() + fileURL;
+          //Api.get(fileURL);
         });
       }
     });
