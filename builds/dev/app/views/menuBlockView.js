@@ -16,7 +16,8 @@ define([
       regions: {
         savedMenusRegion: '[data-region="savedMenusRegion"]',
         blankSelectRegion: '[data-region="blankSelectRegion"]',
-        menuProductsRegion: '[data-region="menuProductsRegion"]'
+        menuProductsRegion: '[data-region="menuProductsRegion"]',
+        previewRegion: '[data-region="previewRegion"]'
       },
       events: {
         'change .isEnglish': 'initChangeLanguage',
@@ -25,15 +26,29 @@ define([
         'click .previewButton': 'showPDF',
         'click .exportButton': 'exportPDF',
         'click .exportExcelButton': 'exportExcel',
-        'click .exportWordButton': 'exportWord'
+        'click .exportWordButton': 'exportWord',
+        'keydown .paddingLeft': 'upDownValue',
+        'keydown .paddingRight': 'upDownValue',
+        'keydown .paddingTop': 'upDownValue',
+        'keydown .paddingBottom': 'upDownValue'
       },
       bindings: {
-        '.saveButton, .exportButton, .previewButton, .addOptions, .optionsMenu': {
+        '.saveButton, .exportExcelButton, .exportWordButton, .exportButton, .previewButton, .addOptions, .optionsMenu': {
           visible: true,
           observe: 'noItems',
           onGet: function(value) {
             return !value;
           }
+        },
+        '.exportButton': {
+          visible: true,
+          observe: 'image',
+          onGet: function(value) {
+            return value && value._id;
+          }
+        },
+        '.menuName': {
+          observe: 'name'
         },
         '.noAdditionalExpenses': {
           observe: 'noAdditionalExpenses'
@@ -58,6 +73,25 @@ define([
         },
         '.isTwoColumns': {
           observe: 'isTwoColumns'
+        },
+        '.paddingLeft': {
+          observe: 'paddingLeft'
+        },
+        '.paddingRight': {
+          observe: 'paddingRight'
+        },
+        '.paddingTop': {
+          observe: 'paddingTop'
+        },
+        '.paddingBottom': {
+          observe: 'paddingBottom'
+        },
+        '.previewRegionW': {
+          observe: ['items', 'image'],
+          visible: true,
+          onGet: function(values) {
+            return values[0] && values[0].length && values[1] && values[1]._id;
+          }
         },
         '.deleteButton': {
           observe: '_id',
@@ -104,6 +138,9 @@ define([
           that.model.set('items', that.modelItems.toJSON());
         });
 
+        Api.get('pdfTemplate').done(function(pdfTemplate) {
+          that.pdfPreview(pdfTemplate);
+        });
 
         that.model.on('change:isTwoColumns', function() {
           var delimiter = that.modelItems.find({'isDelimiter': true});
@@ -130,7 +167,66 @@ define([
 
         Sync.on('addToMenu', that.addProduct, that);
 
+        $(window).on('resize', function() {
+          that.setPreviewSize();
+        });
       },
+
+      upDownValue: function(e) {
+        var target = $(e.currentTarget);
+        var isShift = !! e.shiftKey;
+        var val = parseInt(target.val());
+        if (e.keyCode == 37 || e.keyCode == 40) {
+          if (isShift) val -= 10;
+          else val--;
+        } else
+        if (e.keyCode == 38 || e.keyCode == 39) {
+          if (isShift) val += 10;
+          else val++;
+        }
+        if (val < 0) val = 0;
+        target.val(val);
+        target.change();
+      },
+
+      setPreviewSize: function() {
+        var that = this;
+        var columnWidth = that.$el.width();
+        var previewWidth = that.$el.find('.menu').width();
+        var previewHeight = that.$el.find('.menu').height();
+        var coef = 1;
+        if (previewWidth > columnWidth) {
+          coef = columnWidth/previewWidth;
+        }
+        that.$el.find('.previewRegion').css({
+          'transform': 'scale(' + coef + ')',
+          '-webkit-transform': 'scale(' + coef + ')',
+          'transform-origin': 'top left',
+          '-webkit-transform-origin': 'top left'
+        });
+        that.$el.find('.previewRegionW').css({
+          'height': previewHeight * coef + 'px'
+        })
+      },
+
+      pdfPreview: function(pdfTemplate) {
+        var parentView = this;
+        var PdfPreView = Marionette.ItemView.extend({
+          template: pdfTemplate,
+          model: parentView.model,
+          initialize: function() {
+            this.render();
+            this.model.on('change', this.render, this);
+          },
+          onRender: function() {
+            parentView.setPreviewSize();
+            this.stickit();
+          }
+        });
+        parentView.pdfPreview = new PdfPreView();
+        parentView.previewRegion.show(parentView.pdfPreview);
+      },
+
       itemsCheck: function() {
        var that = this;
         if (that.modelItems.length) {
@@ -214,7 +310,7 @@ define([
               that.saveMenuChanges();
               alertify.success('Меню <strong>' + that.model.get('name') + '</strong> обновлено');
             });
-          }, that.model.get('_id') ? that.model.get('name') : ''
+          }, that.model.get('name') !== '--- Новое меню ---' ? that.model.get('name') : ''
         )
       },
       showPDF: function() {

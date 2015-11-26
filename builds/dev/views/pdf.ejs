@@ -13,9 +13,16 @@
               font:16px Arial;
               background-size:contain;
               color:#023567;
+              width:100%;
           }
           .menu__inner{
-                padding:120px 100px;
+
+          }
+          .menu__blank{
+            padding-left: <%- paddingLeft %>px;
+            padding-right: <%- paddingRight %>px;
+            padding-top: <%- paddingTop %>px;
+            padding-bottom: <%- paddingBottom %>px;
           }
           .menu__header{
               font-size:22px;
@@ -25,6 +32,13 @@
           }
           .menu__list{
             list-style:none;
+          }
+          .menu__inner--part{
+            float:left;
+            width:50%;
+          }
+          .menu__inner--part-right{
+            /*float:right;*/
           }
           .menu__item{
             font-size:16px;
@@ -63,21 +77,47 @@
 }
 %>
   >
-    <div class='menu__inner'>
-      <div class='menu__header'><%- name %></div>
-        <ul class='menu__list'>
-          <% for(var i = 0; i < items.length; i++) { %>
-          <% var groupClass = null; %>
-          <% if(items[i].isGroup) groupClass = ' menu__item--group' %>
+    <div class='menu__inner <%- typeof isTwoColumns !== 'undefined' && isTwoColumns && isTwoColumns !== 'false' ? 'menu__inner--part' : '' %>'>
+      <div class='menu__blank'>
+        <div class='menu__header'><%- name %></div>
+        <ul class="menu__list">
+          <%
+          if (typeof items !== 'undefined') {
+            for(var i = 0; i < items.length; i++) {
+              if (items[i].isDelimiter && !i) continue;
+              if (typeof isTwoColumns !== 'undefined' && isTwoColumns && items[i].isDelimiter) {
+          %>
+        </ul>
+      </div>
+    </div>
+    <div class='menu__inner menu__inner--part menu__inner--part-right'>
+      <div class='menu__blank'>
+        <div class='menu__header'><%- name %></div>
+          <ul class="menu__list">
+          <%
+                continue;
+              }
+              var groupClass = null;
+              if (items[i].isGroup) groupClass = ' menu__item--group';
+              var itemName = isEnglish === 'true' || isEnglish === true ? items[i].nameEng : items[i].name;
+              var measure = isEnglish === 'true' || isEnglish === true ? ' g' : ' г';
+              var serving = items[i].serving ? items[i].serving + measure : '';
+              var currency = isEnglish === 'true' || isEnglish === true ? ' RUR' : ' руб';
+              var priceServing = items[i].priceServing ? items[i].priceServing + currency : '';
+          %>
           <li class='menu__item<%- groupClass %>'>
-              <span class='menu__name'><%- items[i].name %></span>
+              <span class='menu__name'><%- itemName %></span>
               <% if(!groupClass) { %>
-                  <span class='menu__cnt'> (<%- items[i].serving %> г.)</span>
-                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- items[i].priceServing %> руб.</span>
+                  <span class='menu__cnt'> (<%- serving %>)</span>
+                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- priceServing %></span>
               <% } %>
           </li>
-          <% } %>
+          <%
+            }
+          }
+          %>
         </ul>
+      </div>
     </div>
 </div>
 </body>

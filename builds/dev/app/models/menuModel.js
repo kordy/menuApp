@@ -8,6 +8,10 @@ define([
       __v: 0,
       _id: null,
       name: "",
+      paddingLeft: 80,
+      paddingRight: 80,
+      paddingTop: 120,
+      paddingBottom: 120,
       image: {
         __v: 0,
         _id: null,

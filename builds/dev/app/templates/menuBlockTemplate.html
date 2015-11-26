@@ -15,7 +15,6 @@
   </form>
 </div>
 
-
 <div class='menuProductsRegionBlock' data-region="menuProductsRegion"></div>
 
 <div class="page-header prew-header addOptions">
@@ -24,6 +23,12 @@
 <div class='highlight options-menu optionsMenu'>
   <div class="row">
     <div class="col-md-6">
+      <div class="form-group">
+        <div class="form-group">
+          <label for="menuName">Название меню:</label>
+          <input type="text" class="form-control menuName" id="menuName">
+        </div>
+      </div>
       <h4>Сервис</h4>
         <div class="form-group">
           <div class="checkbox">
@@ -46,6 +51,14 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label for="discount">Скидка на общую стоимость (%):</label>
+              <input type="text" class="form-control discount" id="discount">
+            </div>
+          </div>
+        </div>
     </div>
     <div class="col-md-6">
       <h4>Формат</h4>
@@ -59,24 +72,37 @@
           <div class="checkbox">
             <label><input type="checkbox" class='noPrices'>Скрыть цены за каждую единицу товара</label>
           </div>
-          <div class="checkbox">
-            <label><input type="checkbox" class='isTwoColumns'>2 колонки</label>
-          </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="discount">Скидка на общую стоимость (%):</label>
-              <input type="text" class="form-control discount" id="discount">
-            </div>
-          </div>
+    </div>
+    <div class="col-md-6">
+      <h4>ПДФ</h4>
+      <div class="form-group">
+        <div class="checkbox">
+          <label><input type="checkbox" class='isTwoColumns'>2 колонки</label>
         </div>
+        <div class="form-group">
+          <label for="paddingLeft">Левый отступ:</label>
+          <input type="text" class="form-control paddingLeft" id="paddingLeft">
+        </div>
+        <div class="form-group">
+          <label for="paddingRight">Правый отступ:</label>
+          <input type="text" class="form-control paddingRight" id="paddingRight">
+        </div>
+        <div class="form-group">
+          <label for="paddingTop">Верхний отступ:</label>
+          <input type="text" class="form-control paddingTop" id="paddingTop">
+        </div>
+        <div class="form-group">
+          <label for="paddingBottom">Нижний отступ:</label>
+          <input type="text" class="form-control paddingBottom" id="paddingBottom">
+        </div>
+      </div>
     </div>
   </div>
 </div>
 <div id='pdfContainer'></div>
+<div class='previewRegionW'><div class='previewRegion' data-region="previewRegion"></div></div>
 <div class="btn-group right imp-btns" role="group" aria-label="...">
-  <button type="button" class="btn btn-success previewButton">Предпросмотр</button>
   <button type="button" class="btn btn-success exportButton">Экспорт в PDF</button>
   <button type="button" class="btn btn-success exportExcelButton">Экспорт в Excel</button>
   <button type="button" class="btn btn-success exportWordButton">Экспорт в Word</button>

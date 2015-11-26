@@ -14,6 +14,10 @@ var MenuSchema = db.Schema({
           serving: String
         }
     ],
+    paddingLeft: Number,
+    paddingRight: Number,
+    paddingTop: Number,
+    paddingBottom: Number,
     image: {type: db.Schema.Types.ObjectId, ref: 'image'},
     noAdditionalExpenses: Boolean,
     serviceIncrease: String,

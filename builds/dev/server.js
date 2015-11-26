@@ -144,6 +144,11 @@ app.post('/pdf', function (req, res) {
   res.send(html);
 });
 
+app.get('/pdfTemplate', function (req, res) {
+  var path = __dirname + '/views/pdf.ejs';
+  var file = fs.readFileSync(path, "utf8");
+  res.send(file);
+});
 
 app.post('/exportPDF', function (req, res) {
   pdf.create(req.body, function (fileURL) {
