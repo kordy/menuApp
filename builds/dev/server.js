@@ -18,6 +18,7 @@ var fs = require('fs');
 
 var pdf = require('./ext/pdf');
 var xlsx = require('./ext/xlsx');
+var word = require('./ext/word');
 
 //var db = require('./ext/db/db');
 
@@ -152,6 +153,12 @@ app.post('/exportPDF', function (req, res) {
 
 app.post('/exportExcel', function (req, res) {
   xlsx.build(req.body, function (fileURL) {
+    res.send(fileURL);
+  });
+});
+
+app.post('/exportWord', function (req, res) {
+  word.create(req.body, function (fileURL) {
     res.send(fileURL);
   });
 });

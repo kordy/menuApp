@@ -24,7 +24,8 @@ define([
         'click .deleteButton': 'deleteMenu',
         'click .previewButton': 'showPDF',
         'click .exportButton': 'exportPDF',
-        'click .exportExcelButton': 'exportExcel'
+        'click .exportExcelButton': 'exportExcel',
+        'click .exportWordButton': 'exportWord'
       },
       bindings: {
         '.saveButton, .exportButton, .previewButton, .addOptions, .optionsMenu': {
@@ -241,6 +242,14 @@ define([
         var that = this;
         that.model.set('items', that.modelItems.toJSON());
         Api.post('exportExcel', that.model.toJSON()).done(function(fileURL){
+          window.location.href = Api.getBasePath() + fileURL;
+          //Api.get(fileURL);
+        });
+      },
+      exportWord: function() {
+        var that = this;
+        that.model.set('items', that.modelItems.toJSON());
+        Api.post('exportWord', that.model.toJSON()).done(function(fileURL){
           window.location.href = Api.getBasePath() + fileURL;
           //Api.get(fileURL);
         });
