@@ -104,9 +104,9 @@ define([
       initialize: function() {
         var that = this;
         that.blanksCollection = new BlanksCollection();
+        Sync.on('blanksUpdate', that.blanksUpdate, that);
         that.menusCollection = new MenusCollection();
         that.menusCollection.fetch();
-        that.blanksCollection.fetch();
         that.menusCollection.on('sync', function() {
           that.menusCollection.unshift({'name': '--- Новое меню ---'});
           if (!that.currentMenuId) that.setCurrentMenu(that.menusCollection.first());
@@ -114,15 +114,6 @@ define([
             console.log(that.currentMenuId);
             that.setCurrentMenu(that.menusCollection.find({_id: that.currentMenuId}));
             that.selectMenuView.setSelected(that.currentMenuId);
-          }
-        });
-
-        that.blanksCollection.on('sync', function() {
-          that.blanksCollection.unshift({'name': '--- Выберите бланк ---'});
-          if (that.model.get('image') && that.model.get('image')._id) {
-            that.selectMenuView.setSelected(that.model.get('image')._id);
-          } else {
-            that.selectMenuView.setSelected();
           }
         });
 
@@ -182,6 +173,17 @@ define([
         $(window).on('resize', function() {
           that.setPreviewSize();
         });
+      },
+
+      blanksUpdate: function(blanksCollection) {
+        var that = this;
+        that.blanksCollection.reset(blanksCollection.models);
+        that.blanksCollection.unshift({'name': '--- Выберите бланк ---'});
+        if (that.model.get('image') && that.model.get('image')._id) {
+          that.blanksSelectView.setSelected(that.model.get('image')._id);
+        } else {
+          that.blanksSelectView.setSelected();
+        }
       },
 
       upDownValue: function(e) {

@@ -19,7 +19,6 @@ define(['api'],
       },
 
       save: function() {
-        console.log(this.attributes);
         return Api.post(this.getUrl(), this.attributes);
       },
 
