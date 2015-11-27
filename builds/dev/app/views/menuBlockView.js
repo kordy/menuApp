@@ -20,7 +20,6 @@ define([
         previewRegion: '[data-region="previewRegion"]'
       },
       events: {
-        'change .isEnglish': 'initChangeLanguage',
         'click .saveButton': 'saveMenu',
         'click .deleteButton': 'deleteMenu',
         'click .previewButton': 'showPDF',
@@ -49,6 +48,9 @@ define([
         },
         '.menuName': {
           observe: 'name'
+        },
+        '.menuEngName': {
+          observe: 'nameEng'
         },
         '.noAdditionalExpenses': {
           observe: 'noAdditionalExpenses'
@@ -132,6 +134,14 @@ define([
           }
         });
 
+        that.model.on('change:isEnglish', function() {
+          Sync.trigger('changeLanguage', that.model.get('isEnglish'));
+        });
+
+        that.model.on('change:noPrices', function() {
+          Sync.trigger('changeNoPrices', that.model.get('noPrices'));
+        });
+
         that.modelItems = new Backbone.Collection();
         that.modelItems.on('add remove sort', function() {
           that.itemsCheck();
@@ -150,11 +160,13 @@ define([
               that.modelItems.unshift({
                 isDelimiter: true,
                 isDisabled: true,
-                name: 'Левая колонка'
+                name: 'Левая колонка',
+                nameEng: 'Левая колонка'
               });
               that.modelItems.push({
                 isDelimiter: true,
-                name: 'Правая колонка'
+                name: 'Правая колонка',
+                nameEng: 'Правая колонка'
               });
             }
           } else {
@@ -191,7 +203,7 @@ define([
 
       setPreviewSize: function() {
         var that = this;
-        var columnWidth = that.$el.width();
+        var columnWidth = that.$el.find('.optionsMenu').width();
         var previewWidth = that.$el.find('.menu').width();
         var previewHeight = that.$el.find('.menu').height();
         var coef = 1;
@@ -252,10 +264,6 @@ define([
         that.menuProductsRegion.show(that.menuProductsView);
         that.stickit();
       },
-      initChangeLanguage: function() {
-        var that = this;
-        Sync.trigger('changeLanguage', !that.model.get('isEnglish'));
-      },
       saveMenuChanges: function() {
         var that = this;
         that.model.set('items', that.modelItems.toJSON());
@@ -270,6 +278,8 @@ define([
         that.modelItems.trigger('change');
         that.model.set(selected.attributes);
         that.itemsCheck();
+        Sync.trigger('changeLanguage', that.model.get('isEnglish'));
+        Sync.trigger('changeNoPrices', that.model.get('noPrices'));
       },
       addProduct: function(item) {
         var that = this;

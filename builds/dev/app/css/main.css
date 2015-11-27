@@ -485,3 +485,6 @@ body {
 .previewRegionW {
     margin-bottom: 20px;
 }
+.disabled{
+    color: #CCCCCC;
+}

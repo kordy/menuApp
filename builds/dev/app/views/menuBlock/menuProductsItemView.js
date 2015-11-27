@@ -11,6 +11,7 @@ define([
       initialize: function () {
         var that = this;
         Sync.on('changeLanguage', that.changeLanguage, that);
+        Sync.on('changeNoPrices', that.changeNoPrices, that);
       },
       events: {
         'click .menuItemDelete': 'deleteItem',
@@ -37,6 +38,13 @@ define([
             }
           }
         },
+        '.menuPriceBlock': {
+          observe: 'noPrices',
+          visible: true,
+          onGet: function(value) {
+            return !value;
+          }
+        },
         '.itemMeasure':'serving',
         '.itemPrice':'priceServing',
         '.itemPriceBase':'priceBase'
@@ -44,6 +52,11 @@ define([
       changeLanguage: function(isEnglish) {
         var that = this;
         that.model.set('isEnglish', isEnglish);
+      },
+      changeNoPrices: function(noPrices) {
+        console.log(noPrices);
+        var that = this;
+        that.model.set('noPrices', noPrices);
       },
       onRender: function() {
         this.stickit();

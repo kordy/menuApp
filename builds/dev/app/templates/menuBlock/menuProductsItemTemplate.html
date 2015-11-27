@@ -12,11 +12,13 @@
       <input class='itemMeasure' type='text' value="<%- typeof measure !== 'undefined' ? measure : '' %>" />
       <span class='menu-list__characters-val-text'> г</span>
   </span>
-  <span class='menu-list__characters-val'>
+    <% if (typeof isGroup === 'undefined' || !isGroup) {%>
+  <span class='menu-list__characters-val menuPriceBlock'>
       <span class='menu-list__characters-val-text'>Стоимость: </span>
       <input class='itemPrice' type='text' value="<%- typeof priceServing !== 'undefined' ? priceServing : '' %>" />
       <span class='menu-list__characters-val-text'> руб.</span>
   </span>
+    <% }%>
   <% }%>
 </div>
 

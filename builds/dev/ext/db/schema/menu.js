@@ -3,6 +3,7 @@ var db = require('../db');
 
 var MenuSchema = db.Schema({
     name: String,
+    nameEng: String,
     items: [
         { isGroup: Boolean,
           isDelimiter: Boolean,
