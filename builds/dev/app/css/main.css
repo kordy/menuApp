@@ -488,3 +488,31 @@ body {
 .disabled{
     color: #CCCCCC;
 }
+
+.changeName{
+    margin-top:10px;
+}
+
+@media screen and (max-width: 1366px) {
+
+    .nav-tabs > li > a{
+        font-size:0.9em;
+    }
+
+}
+
+@media screen and (max-width: 1210px) {
+
+    .nav-tabs > li > a{
+        padding:10px 9px;
+    }
+
+}
+
+@media screen and (max-width: 1050px) {
+
+    .nav-tabs > li > a{
+        padding:10px 6px;
+    }
+
+}

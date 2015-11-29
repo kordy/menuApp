@@ -24,6 +24,7 @@ var word = require('./ext/word');
 
 var Menu = require('./ext/db/schema/menu');
 var Image = require('./ext/db/schema/image');
+var Hot = require('./ext/db/schema/hot');
 var Product = require('./ext/db/schema/product');
 var Group = require('./ext/db/schema/group');
 var User = require('./ext/db/schema/user');
@@ -228,6 +229,40 @@ app.delete('/image/:id', function (req, res) {
 
 app.put('/image/:id', function (req, res) {
   Image.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, image) {
+    res.send({result:true, image: image});
+  });
+});
+
+/********** H O T **********/
+
+app.get('/hots', function (req, res) {
+  Hot.find({}, function (err, images) {
+    res.send(images);
+  });
+});
+
+app.post('/hot', multipartMiddleware, function (req, res) {
+  if (typeof req.files != 'undefined') {
+    var files = req.files.files;
+    for (var i in files) {
+      var hot = new Hot();
+      hot.saveIMG(files[i], function (item) {
+        res.send(item);
+      });
+    }
+  }
+});
+
+app.delete('/hot/:id', function (req, res) {
+  Hot.findOne({_id: req.params.id}, function (err, image) {
+    image.remove({}, function(err,removed) {
+      res.send({result:true, removed: removed});
+    });
+  });
+});
+
+app.put('/hot/:id', function (req, res) {
+  Hot.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, image) {
     res.send({result:true, image: image});
   });
 });

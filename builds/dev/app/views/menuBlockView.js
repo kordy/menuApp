@@ -4,12 +4,14 @@ define([
     "views/menuBlock/menuProductsView",
     "collections/blanksCollection",
     "collections/menusCollection",
+    "collections/hotsCollection",
     "models/menuModel",
+    "models/hotModel",
     "models/model",
     "sync",
     "api"
   ],
-  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, MenuModel, Model, Sync, Api) {
+  function(MenuBlockTemplate, SelectView, MenuProductsView, BlanksCollection, MenusCollection, HotsCollection, MenuModel, HotModel, Model, Sync, Api) {
     var MenuBlockView = Marionette.LayoutView.extend({
       template: MenuBlockTemplate,
       model: new MenuModel(),
@@ -103,6 +105,11 @@ define([
       currentMenuId: null,
       initialize: function() {
         var that = this;
+
+        that.hotsCollection = new HotsCollection();
+        that.hotsCollection.fetch();
+        that.model.set('hots', that.hotsCollection.toJSON());
+
         that.blanksCollection = new BlanksCollection();
         Sync.on('blanksUpdate', that.blanksUpdate, that);
         that.menusCollection = new MenusCollection();
@@ -328,6 +335,7 @@ define([
       showPDF: function() {
         var that = this;
         that.model.set('items', that.modelItems.toJSON());
+        that.model.set('hots', that.hotsCollection.toJSON());
         Api.post('pdf', that.model.toJSON()).done(function(file){
           var iframe = document.createElement('iframe');
           document.getElementById('pdfContainer').innerHTML = '';
@@ -341,6 +349,7 @@ define([
       exportPDF: function() {
         var that = this;
         that.model.set('items', that.modelItems.toJSON());
+        that.model.set('hots', that.hotsCollection.toJSON());
         Api.post('exportPDF', that.model.toJSON()).done(function(fileURL){
           window.location.href = Api.getBasePath() + fileURL;
           //Api.get(fileURL);

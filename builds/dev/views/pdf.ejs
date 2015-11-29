@@ -78,6 +78,28 @@
             font-size: 1.1em;
             margin-bottom:10px;
           }
+          .hots{
+            margin-top:50px;
+          }
+          .hots__list{
+            margin:0;
+            padding:0;
+            list-style: none;
+            display:flex;
+            justify-content:space-between;
+          }
+          .hots__item{
+            width:45%;
+          }
+          .hots__item-name{
+            display:block;
+            font-size:18px;
+            margin-bottom:15px;
+          }
+          .hots__item-img{
+            display:block;
+            width:100%;
+          }
     </style>
 </head>
 <body>
@@ -157,6 +179,26 @@
         <% if (typeof noAdditionalExpenses !== 'undefined' && (noAdditionalExpenses === 'true' || noAdditionalExpenses === true)) { %>
         <div class='menu__disclaimer'>* Без дополнительных расходов на персонал</div>
         <% } %>
+
+        <%
+          if (typeof hots !== 'undefined') {
+        %>
+          <div class='hots'>
+            <ul class='hots__list'>
+        <%
+            for(var i = 0; i < hots.length; i++) {
+        %>
+              <li class='hots__item'>
+                <span class='hots__item-name'><%- hots[i].name %></span>
+                <img src='<%- hots[i].src %>' class='hots__item-img' />
+              </li>
+        <%
+            }
+        %>
+          </div>
+        <%
+          }
+        %>
 
       </div>
     </div>
