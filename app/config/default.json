@@ -1,0 +1,12 @@
+{
+  "port": "3000",
+  "domain": "localhost",
+  "staticPath": "/dev",
+  "secret": "FusionMenuApp",
+  "db": {
+    "host": "ds031893.mongolab.com:31893",
+    "name": "menu",
+    "user": "menu",
+    "password": "menu1"
+  }
+}

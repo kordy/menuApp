@@ -1,0 +1,61 @@
+<div class="prod-group__item-info">
+    <span class="prod-group__item-name"><%- $.trim(name) %></span>
+    <div class="prod-group__item-icons">
+        <%= isAdmin ? '<span class="right glyphicon glyphicon-remove deleteButton" aria-hidden="true" title="Удалить"></span>' : '' %>
+        <%= isAdmin ? '<span class="right glyphicon glyphicon-saved saveButton" aria-hidden="true" title="Сохранить"></span>' : '' %>
+        <span class="right glyphicon glyphicon-edit" aria-hidden="true" title="Редактировать"></span>
+        <span class="right glyphicon glyphicon-plus-sign" aria-hidden="true" title="Добавить в меню"></span>
+    </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-body">
+      <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+                <label>Название:</label>
+                <input class="form-control prod-name" type="text" placeholder="Название">
+            </div>
+            <div class="form-group">
+              <label>Английское название:</label>
+              <input class="form-control prod-name-eng" type="text" placeholder="Английское название">
+            </div>
+            <div class="form-group">
+              <label>Изображение:</label>
+              <input class="form-control prod-image" type="text" placeholder="Изображение">
+            </div>
+          </div>
+      </div>
+      <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Номинальный вес (г):</label>
+                    <input class="form-control prod-serving" type="text" placeholder="Номинальный вес">
+                </div>
+                <div class="form-group">
+                    <label>Напиток (мл):</label>
+                    <input class="form-control prod-serving-drink" type="text" placeholder="Напиток">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Цена за 1 шт (руб.):</label>
+                    <input class="form-control prod-price-serving" type="text" placeholder="Цена за 1 шт">
+                </div>
+                <div class="form-group">
+                    <label>Цена за 1 кг (руб.):</label>
+                    <input class="form-control prod-price-kg" type="text" placeholder="Цена за 1 кг">
+                </div>
+            </div>
+      </div>
+    <% if (isAdmin) { %>
+      <div class='row'>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Себестоимость за ед. измерения (руб.):</label>
+                    <input class="form-control prod-price-base" type="text" placeholder="Себестоимость за ед. измерения">
+                </div>
+            </div>
+      </div>
+    <% } %>
+  </div>
+</div>

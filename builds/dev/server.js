@@ -33,23 +33,28 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 app.set('secret', 'FusionMenuApp');
 
-app.use(express.static(__dirname + "/static"));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8000');
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
-  next();
-});
+//app.use(function (req, res, next) {
+//  res.header('Access-Control-Allow-Origin', 'http://localhost:8000');
+//  res.header('Access-Control-Allow-Credentials', true);
+//  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token');
+//  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//  next();
+//});
 
 process.on('uncaughtException', function (err) {
   console.log(err);
 });
 
-app.post('/isLogin', function(req, res) {
-  //console.log(req.headers);
+app.use('/static', express.static(__approot + '/static'));
+
+app.get('/', function (req, res) {
+  console.log(__approot);
+  res.sendfile('index.html');
+});
+
+app.post('/api/isLogin', function(req, res) {
   if (req.method === 'OPTIONS') {
     next();
     return;
@@ -71,7 +76,7 @@ app.post('/isLogin', function(req, res) {
   }
 });
 
-app.post('/login', function(req, res) {
+app.post('/api/login', function(req, res) {
   var login = req.body.login;
   var password = req.body.password;
 
@@ -115,10 +120,6 @@ app.get('/files/:file', function (req, res) {
 var apiRoutes = express.Router();
 
 apiRoutes.use(function(req, res, next) {
-  if (req.method === 'OPTIONS') {
-    next();
-    return;
-  }
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     jwt.verify(token, app.get('secret'), function(err, decoded) {
@@ -137,38 +138,38 @@ apiRoutes.use(function(req, res, next) {
   }
 });
 
-app.use('/', apiRoutes);
+app.use('/api', apiRoutes);
 
-app.post('/pdf', function (req, res) {
+app.post('/api/pdf', function (req, res) {
   var html = pdf.get(req.body);
   res.send(html);
 });
 
-app.get('/pdfTemplate', function (req, res) {
+app.get('/api/pdfTemplate', function (req, res) {
   var path = __dirname + '/views/pdf.ejs';
   var file = fs.readFileSync(path, "utf8");
   res.send(file);
 });
 
-app.post('/exportPDF', function (req, res) {
+app.post('/api/exportPDF', function (req, res) {
   pdf.create(req.body, function (fileURL) {
     res.send(fileURL);
   });
 });
 
-app.post('/exportExcel', function (req, res) {
+app.post('/api/exportExcel', function (req, res) {
   xlsx.build(req.body, function (fileURL) {
     res.send(fileURL);
   });
 });
 
-app.post('/exportWord', function (req, res) {
+app.post('/api/exportWord', function (req, res) {
   word.create(req.body, function (fileURL) {
     res.send(fileURL);
   });
 });
 
-app.get('/groups', function (req, res) {
+app.get('/api/groups', function (req, res) {
   Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
     res.send(groups);
   });
@@ -176,13 +177,13 @@ app.get('/groups', function (req, res) {
 
 /********** P R O D U C T S **********/
 
-app.get('/products', function (req, res) {
+app.get('/api/products', function (req, res) {
   Product.fetch(function (err, products) {
     res.send(products);
   });
 });
 
-app.post('/products', multipartMiddleware, function (req, res) {
+app.post('/api/products', multipartMiddleware, function (req, res) {
   //console.log(req.files);
   if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
     xlsx.parse(req.files.files, function () {
@@ -195,7 +196,7 @@ app.post('/products', multipartMiddleware, function (req, res) {
   }
 });
 
-app.delete('/product/:id', function (req, res) {
+app.delete('/api/product/:id', function (req, res) {
   Product.findOne({_id: req.params.id}, function (err, product) {
     product.remove({}, function(err,removed) {
       res.status(200).send({result:true, removed: removed});
@@ -203,7 +204,7 @@ app.delete('/product/:id', function (req, res) {
   });
 });
 
-app.put('/product/:id', function (req, res) {
+app.put('/api/product/:id', function (req, res) {
   Product.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, product) {
     res.status(200).send({result:true, product: product});
   });
@@ -211,13 +212,13 @@ app.put('/product/:id', function (req, res) {
 
 /********** I M A G E **********/
 
-app.get('/images', function (req, res) {
+app.get('/api/images', function (req, res) {
   Image.find({}, function (err, images) {
     res.send(images);
   });
 });
 
-app.post('/image', multipartMiddleware, function (req, res) {
+app.post('/api/image', multipartMiddleware, function (req, res) {
   if (typeof req.files != 'undefined') {
     var files = req.files.files;
     for (var i in files) {
@@ -229,7 +230,7 @@ app.post('/image', multipartMiddleware, function (req, res) {
   }
 });
 
-app.delete('/image/:id', function (req, res) {
+app.delete('/api/image/:id', function (req, res) {
   Image.findOne({_id: req.params.id}, function (err, image) {
     image.remove({}, function(err,removed) {
       res.send({result:true, removed: removed});
@@ -237,7 +238,7 @@ app.delete('/image/:id', function (req, res) {
   });
 });
 
-app.put('/image/:id', function (req, res) {
+app.put('/api/image/:id', function (req, res) {
   Image.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, image) {
     res.send({result:true, image: image});
   });
@@ -245,7 +246,7 @@ app.put('/image/:id', function (req, res) {
 
 /********** M E N U **********/
 
-app.get('/menus', function (req, res) {
+app.get('/api/menus', function (req, res) {
   Menu.find({})
     .populate('image')
     .exec(function (err, menus) {
@@ -253,7 +254,7 @@ app.get('/menus', function (req, res) {
     });
 });
 
-app.post('/menu', function (req, res) {
+app.post('/api/menu', function (req, res) {
   var params = req.body;
   delete params._id;
   if (!params.image._id) delete params.image;
@@ -272,7 +273,7 @@ app.post('/menu', function (req, res) {
   });
 });
 
-app.put('/menu/:id', function (req, res) {
+app.put('/api/menu/:id', function (req, res) {
   var params = req.body;
   delete params._id;
   if (!params.image._id) delete params.image;
@@ -285,7 +286,7 @@ app.put('/menu/:id', function (req, res) {
   });
 });
 
-app.delete('/menu/:id', function (req, res) {
+app.delete('/api/menu/:id', function (req, res) {
   Menu.findOne({_id: req.params.id}, function (err, menu) {
     menu.remove({}, function(err,menu) {
       Menu.find({})
@@ -297,22 +298,6 @@ app.delete('/menu/:id', function (req, res) {
   });
 });
 
-app.post('/menu.json', function (req, res) {
-
-  for (var i in req.body) {
-    var menu = new Menu();
-    for (var j in req.body[i]) {
-      prod[j] = req.body[i][j]
-    }
-    prod.replace();
-  }
-  res.json(req.body);
-});
-
-
-app.get('/', function (req, res) {
-  res.render('index.ejs');
-});
 
 var server = http.listen(app.get('port'), function () {
   var host = server.address().address;

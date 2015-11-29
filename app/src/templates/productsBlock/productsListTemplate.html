@@ -1,0 +1,78 @@
+<div data-region="productsListRegion"></div>
+
+<!--<table class="table table-striped table-hover table-condensed">
+    <thead>
+    <tr>
+        <th>Название</th>
+        <th class=''>Количество</th>
+        <th class=''>Мера</th>
+        <th class='tar'>Цена</th>
+        <th class='tar'>Закуп. цена</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="productsRegion">
+    <tr ng-repeat-start="product in menuDynamic" ng-init="$productIndex=$index"></tr>
+    <tr ng-repeat="gr in product.group"
+        ng-init="$groupIndex=$index"
+        data-group='{{gr.code}}'
+        ng-click='groupToggle(gr.code)'
+        ng-show='groupCheck(gr.code)'
+        ng-if='groupCompare(menuDynamic[$productIndex-1].group[$index], gr)'>
+        <th colspan=7>{{gr.code}}. {{gr.name}}</th>
+    </tr>
+
+    <tr ng-repeat-end
+        ng-show='groupProductCheck(product.group[product.group.length-1].code)'
+        ng-class='[
+													{success: product.isCurrent},
+													{warning: !product._id},
+													{danger: product.isDelete},
+												]'
+        data-group='{{product.group[product.group.length-1].code}}'
+            >
+        <td>
+            <input placeholder='Название' class='table-input' type='text' ng-model='product.name'>
+        </td>
+        <td>
+            <input placeholder='Количество' class='table-input table-input--count' type='text'
+                   ng-model='product.count'>
+
+        </td>
+        <td>
+            <input placeholder='Мера' class='table-input table-input--measure' type='text'
+                   ng-model='product.measure'>
+        </td>
+        <td>
+            <input placeholder='Цена' class='table-input table-input--price' type='text'
+                   ng-model='product.price'>
+            <span class='table-currency'>Р</span>
+        </td>
+        <td>
+            <input placeholder='Закупка' class='table-input table-input--price' type='text'
+                   ng-model='product.priceBase'>
+            <span class='table-currency'>Р</span>
+        </td>
+        <td><span ng-if='product._id && !product.isDelete'
+                  ng-click='productToggle(product)'
+                  ng-class="[   'glyphicon',
+																	'pointer',
+																	{'glyphicon-plus': !product.isCurrent},
+																	{'glyphicon-minus': product.isCurrent}
+																	]"
+                >
+
+													  </span></td>
+        <td><span ng-click='productDeleteToggle(product)'
+                  class="pointer glyphicon glyphicon-remove"></span></td>
+    </tr>
+
+    </tbody>
+</table>
+<div class='prod-buttons'>
+    <button ng-click='menuAdd()' type="button" class="btn btn-success add-prod"><span
+            class="glyphicon glyphicon-plus"></span>Добавить продукт
+    </button>
+    <button ng-click='menuUpdate()' type="button" class="btn btn-default">Сохранить</button>
+</div>-->

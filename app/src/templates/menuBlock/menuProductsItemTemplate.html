@@ -1,0 +1,35 @@
+<div class='menu-list__characters'>
+  <span class='menu-list__characters-val'>
+     <% if (typeof isDelimiter === 'undefined' || !isDelimiter) { %>
+      <input class='itemName' type='text' value="<%- typeof name !== 'undefined' ? name : '' %>" />
+     <% } else {%>
+      <span class='itemName'><%- typeof name !== 'undefined' ? name : '' %></span>
+     <% }%>
+  </span>
+  <% if (typeof isDelimiter === 'undefined' || !isDelimiter) {%>
+  <span class='menu-list__characters-val'>
+      <span class='menu-list__characters-val-text'>Вес: </span>
+      <input class='itemMeasure' type='text' value="<%- typeof measure !== 'undefined' ? measure : '' %>" />
+      <span class='menu-list__characters-val-text'> г</span>
+  </span>
+    <% if (typeof isGroup === 'undefined' || !isGroup) {%>
+  <span class='menu-list__characters-val menuPriceBlock'>
+      <span class='menu-list__characters-val-text'>Стоимость: </span>
+      <input class='itemPrice' type='text' value="<%- typeof priceServing !== 'undefined' ? priceServing : '' %>" />
+      <span class='menu-list__characters-val-text'> руб.</span>
+  </span>
+    <% }%>
+  <% }%>
+</div>
+
+<% if (typeof isDelimiter === 'undefined' || !isDelimiter) {%>
+<div class='menu-list__delete menuItemDelete'>
+  <span class="glyphicon glyphicon-remove"></span>
+</div>
+<% }%>
+
+<% if (typeof isDisabled === 'undefined' || !isDisabled) {%>
+<div class='menu-list__handle menuItemHandle'>
+    <span class="glyphicon glyphicon-align-justify"></span>
+</div>
+<% }%>
