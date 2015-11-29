@@ -20,6 +20,7 @@ var PDF = {
             "height": h,
             "width": w
         };
+
       var menuName = menu.name;
       if (!menu.name) menuName = 'menu';
       var fileURL = 'files/' + slugify(menuName) + '.pdf';
