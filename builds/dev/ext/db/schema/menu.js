@@ -3,15 +3,22 @@ var db = require('../db');
 
 var MenuSchema = db.Schema({
     name: String,
+    nameEng: String,
     items: [
         { isGroup: Boolean,
+          isDelimiter: Boolean,
           name: String,
           nameEng: String,
           price: Number,
+          priceServing: Number,
           priceBase: Number,
           serving: String
         }
     ],
+    paddingLeft: Number,
+    paddingRight: Number,
+    paddingTop: Number,
+    paddingBottom: Number,
     image: {type: db.Schema.Types.ObjectId, ref: 'image'},
     noAdditionalExpenses: Boolean,
     serviceIncrease: String,
@@ -19,6 +26,7 @@ var MenuSchema = db.Schema({
     isEnglish: Boolean,
     isImages: Boolean,
     noPrices: Boolean,
+    isTwoColumns: Boolean,
     discount: String
 });
 

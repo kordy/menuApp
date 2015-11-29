@@ -3,9 +3,10 @@ define([
     "collections/blanksCollection",
     "views/productsBlock/blanksTableItemView",
     "api",
-    "userInfo"
+    "userInfo",
+    "sync"
   ],
-  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api, User) {
+  function (BlanksTableTemplate, BlanksCollection, BlanksTableItemView, Api, User, Sync) {
     var BlanksTableView = Mn.CompositeView.extend({
       className: 'highlight imageBlock',
       collection: new BlanksCollection(),
@@ -23,8 +24,16 @@ define([
         uploadButton: '.imageAdd'
       },
       initialize: function () {
-        this.collection.fetch();
-        this.bindUIElements()
+        var that = this;
+        that.collection.fetch();
+        that.collection.on('sync', function() {
+          Sync.trigger('blanksUpdate', that.collection);
+          that.collection.on('change', function() {
+            Sync.trigger('blanksUpdate', that.collection);
+          })
+        });
+
+        that.bindUIElements()
       },
       showLoader: function () {
         var that = this;
@@ -57,6 +66,7 @@ define([
             var jqXHR = data.submit()
               .success(function (result, textStatus, jqXHR) {
                 that.collection.add(result);
+                Sync.trigger('blanksUpdate', that.collection);
                 that.hideLoader();
                 alertify.success('Файл <strong>' + result.name + '</strong> загружен');
               })

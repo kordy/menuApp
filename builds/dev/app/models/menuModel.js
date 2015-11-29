@@ -8,6 +8,11 @@ define([
       __v: 0,
       _id: null,
       name: "",
+      nameEng: "",
+      paddingLeft: 80,
+      paddingRight: 80,
+      paddingTop: 120,
+      paddingBottom: 120,
       image: {
         __v: 0,
         _id: null,
@@ -21,8 +26,10 @@ define([
         __v: 0,
         _id: null,
         isGroup: false,
+        isDelimiter: false,
         name: "",
         nameEng: "",
+        priceServing: '',
         priceBase: '',
         serving: ''
       }],
@@ -33,7 +40,8 @@ define([
       isImages: false,
       noPrices: false,
       discount: '',
-      noItems: true
+      noItems: true,
+      isTwoColumns: false
     },
     initialize: function(params) {
 

@@ -12,25 +12,49 @@
           .menu{
               font:16px Arial;
               background-size:contain;
+              color:#023567;
+              width:100%;
           }
           .menu__inner{
-                padding:120px 80px;
+
+          }
+          .menu__blank{
+            padding-left: <%- paddingLeft %>px;
+            padding-right: <%- paddingRight %>px;
+            padding-top: <%- paddingTop %>px;
+            padding-bottom: <%- paddingBottom %>px;
+          }
+          .menu__header{
+              font-size:22px;
+              font-weight:bold;
+              text-align:center;
+              margin-bottom:60px;
+          }
+          .menu__list{
+            list-style:none;
+          }
+          .menu__inner--part{
+            float:left;
+            width:50%;
+          }
+          .menu__inner--part-right{
+            /*float:right;*/
+          }
+          .menu__item{
+            font-size:16px;
+            list-style:none;
+            margin-bottom:20px;
+          }
+          .menu__item--group{
+            font-size:18px;
+            font-weight:bold;
+            margin-top:40px;
+          }
+          .menu__price{
+            font-weight:bold;
           }
           .menu__table{
               border-collapse:collapse;
-          }
-          .menu__name{
-              width:70%;
-              text-align:left;
-          }
-          .menu__cnt{
-              width:15%;
-              text-align:right;
-              padding-right:30px;
-          }
-          .menu__price{
-              width:15%;
-              text-align:right;
           }
           .menu__th{
               font-size:1.1em;
@@ -41,9 +65,25 @@
           .menu__td{
                padding-top:.8em;
           }
+          .menu__fullPrice {
+            font-size: 1.1em;
+            border-top: 1px dashed#023567;
+            padding-top: 15px;
+            margin-bottom:10px;
+          }
+          .menu__service-increase{
+            margin-bottom:10px;
+          }
+          .menu__service-discount{
+            font-size: 1.1em;
+            margin-bottom:10px;
+          }
     </style>
 </head>
 <body>
+<%
+  var fullValue = 0;
+%>
 <div class='menu'
   <%
   if(typeof(image) !== 'undefined'){
@@ -53,25 +93,72 @@
 }
 %>
   >
-    <div class='menu__inner'>
-        <table class='menu__table'>
-            <thead>
-                <tr class='menu__tr'>
-                   <th class='menu__th menu__name'>Наименование</th>
-                   <th class='menu__th menu__cnt'>Кол</th>
-                   <th class='menu__th menu__price'>Цена(руб)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for(var i = 0; i < items.length; i++) { %>
-                <tr class='menu-list-item'>
-                    <td class='menu__td menu__name'><%- items[i].name %></td>
-                    <td class='menu__td menu__cnt'><%- items[i].count %><%- items[i].measure %></td>
-                    <td class='menu__td menu__price'><%- items[i].price %></td>
-                </tr>
+    <div class='menu__inner <%- typeof isTwoColumns !== 'undefined' && isTwoColumns && isTwoColumns !== 'false' ? 'menu__inner--part' : '' %>'>
+      <div class='menu__blank'>
+        <div class='menu__header'><%- isEnglish === 'true' || isEnglish === true ? nameEng : name %></div>
+        <ul class="menu__list">
+          <%
+          if (typeof items !== 'undefined') {
+            for(var i = 0; i < items.length; i++) {
+              if (items[i].isDelimiter && !i) continue;
+              if (typeof isTwoColumns !== 'undefined' && isTwoColumns && items[i].isDelimiter) {
+          %>
+        </ul>
+      </div>
+    </div>
+    <div class='menu__inner menu__inner--part menu__inner--part-right'>
+      <div class='menu__blank'>
+        <div class='menu__header'><%- isEnglish === 'true' || isEnglish === true ? nameEng : name %></div>
+          <ul class="menu__list">
+          <%
+                continue;
+              }
+              var groupClass = null;
+              if (items[i].isGroup) groupClass = ' menu__item--group';
+              var itemName = isEnglish === 'true' || isEnglish === true ? items[i].nameEng : items[i].name;
+              var measure = isEnglish === 'true' || isEnglish === true ? ' g' : ' г';
+              var serving = items[i].serving ? items[i].serving + measure : '';
+              var currency = isEnglish === 'true' || isEnglish === true ? ' RUR' : ' руб';
+              var priceServing = items[i].priceServing ? items[i].priceServing + currency : '';
+              fullValue += parseInt(priceServing ? priceServing : 0);
+          %>
+          <li class='menu__item<%- groupClass %>'>
+              <span class='menu__name'><%- itemName %></span>
+              <% if(!groupClass) { %>
+                  <span class='menu__cnt'> (<%- serving %>)</span>
+                <% if (typeof noPrices === 'undefined' || noPrices === 'false' || !noPrices) { %>
+                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- priceServing %></span>
                 <% } %>
-            </tbody>
-        </table>
+              <% } %>
+          </li>
+          <%
+            }
+          }
+          %>
+        </ul>
+        <% if (typeof serviceIncrease !== 'undefined' && serviceIncrease) {
+            fullValue = fullValue + fullValue * parseInt(serviceIncrease) / 100;
+        %>
+        <div class='menu__service-increase'>Надбавка за сервис - <%- serviceIncrease %>%</div>
+        <% } %>
+        <div class='menu__fullPrice'>Итого <%- fullValue %> руб.</div>
+
+        <% if (typeof discount !== 'undefined' && discount) {
+          fullValue = fullValue - fullValue * parseInt(discount) / 100;
+        %>
+        <div class='menu__service-discount'>Скидка - <%- discount %>%</div>
+        <div class='menu__fullPrice'>Итого со скидкой <%- fullValue %> руб.</div>
+        <% } %>
+
+        <% if (typeof commentAdditionalExpenses !== 'undefined' && commentAdditionalExpenses) { %>
+        <div class='menu__additional-expenses'><%- commentAdditionalExpenses %></div>
+        <% } %>
+
+        <% if (typeof noAdditionalExpenses !== 'undefined' && (noAdditionalExpenses === 'true' || noAdditionalExpenses === true)) { %>
+        <div class='menu__disclaimer'>* Без дополнительных расходов на персонал</div>
+        <% } %>
+
+      </div>
     </div>
 </div>
 </body>

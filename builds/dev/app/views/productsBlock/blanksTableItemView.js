@@ -56,7 +56,8 @@ define([
         var that = this;
         that.model.delete().done(function(){
           alertify.log('Файл <strong>' + that.model.get('name') + '</strong> удален');
-          that.remove();
+          that.model.stopListening();
+          that.model.trigger('destroy', that.model, that.model.collection);
         });
       },
       onRender: function() {

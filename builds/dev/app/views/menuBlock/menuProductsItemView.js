@@ -11,9 +11,7 @@ define([
       initialize: function () {
         var that = this;
         Sync.on('changeLanguage', that.changeLanguage, that);
-        //var that = this;
-        //that.model.set('nameDefault', that.model.get('name'));
-        console.log(this.model);
+        Sync.on('changeNoPrices', that.changeNoPrices, that);
       },
       events: {
         'click .menuItemDelete': 'deleteItem',
@@ -22,23 +20,43 @@ define([
       bindings: {
         ':el': {
           classes: {
-            'menu-list__item--group': 'isGroup'
+            'menu-list__item--group': 'isGroup',
+            'menu-list__item--disabled': 'isDisabled',
+            'menu-list__item--isDelimiter': 'isDelimiter'
           }
         },
         '.itemName':{
           observe: ['name','nameEng','isEnglish'],
           onGet: function(values) {
             return values[2] ? values[1] : values[0];
+          },
+          onSet: function(value) {
+            if (!this.model.get('isEnglish')) {
+              this.model.set('name', value);
+            } else {
+              this.model.set('nameEng', value);
+            }
+          }
+        },
+        '.menuPriceBlock': {
+          observe: 'noPrices',
+          visible: true,
+          onGet: function(value) {
+            return !value;
           }
         },
         '.itemMeasure':'serving',
         '.itemPrice':'priceServing',
-        '.itemPriceBase':'priceBase',
+        '.itemPriceBase':'priceBase'
       },
       changeLanguage: function(isEnglish) {
         var that = this;
         that.model.set('isEnglish', isEnglish);
-        console.log(that.model);
+      },
+      changeNoPrices: function(noPrices) {
+        console.log(noPrices);
+        var that = this;
+        that.model.set('noPrices', noPrices);
       },
       onRender: function() {
         this.stickit();
