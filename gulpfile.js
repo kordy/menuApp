@@ -8,17 +8,17 @@ var gulp = require('gulp'),
     clean = require("gulp-clean")
 
 gulp.task('clean', function () {
-    gulp.src('builds/dev/static/templates', {read: false})
+    gulp.src('app/dev/templates', {read: false})
         .pipe(clean());
-    gulp.src('builds/dev/static/models', {read: false})
+    gulp.src('app/dev/models', {read: false})
         .pipe(clean());
-    gulp.src('builds/dev/static/collections', {read: false})
+    gulp.src('app/dev/collections', {read: false})
       .pipe(clean());
-    gulp.src('builds/dev/static/views', {read: false})
+    gulp.src('app/dev/views', {read: false})
         .pipe(clean());
-//    gulp.src('builds/dev/static/js', {read: false})
+//    gulp.src('app/dev/js', {read: false})
 //        .pipe(clean());
-    gulp.src('builds/dev/static/css', {read: false})
+    gulp.src('app/dev/css', {read: false})
         .pipe(clean());
 });
 
@@ -40,41 +40,41 @@ gulp.task('js', function(){
         'bower_components/requirejs/require.js'
          ])
         .pipe(concat('libs.js'))
-        .pipe(gulp.dest('builds/dev/static/js'));
+        .pipe(gulp.dest('app/dev/js'));
 
 
-    gulp.src('builds/dev/app/js/*.js')
+    gulp.src('app/src/js/*.js')
         .pipe(concat('app.js'))
-        .pipe(gulp.dest('builds/dev/static/js'));
+        .pipe(gulp.dest('app/dev/js'));
 
+    gulp.src('app/src/views/**/*.js')
+        .pipe(gulp.dest('app/dev/views'));
 
-    gulp.src('builds/dev/app/views/**/*.js')
-        .pipe(gulp.dest('builds/dev/static/views'));
+    gulp.src('app/src/collections/**/*.js')
+      .pipe(gulp.dest('app/dev/collections'));
 
-    gulp.src('builds/dev/app/collections/**/*.js')
-      .pipe(gulp.dest('builds/dev/static/collections'));
+    gulp.src('app/src/models/**/*.js')
+      .pipe(gulp.dest('app/dev/models'));
 
-    gulp.src('builds/dev/app/models/**/*.js')
-      .pipe(gulp.dest('builds/dev/static/models'));
+    gulp.src('app/src/behaviors/**/*.js')
+      .pipe(gulp.dest('app/dev/behaviors'));
 
-    gulp.src('builds/dev/app/behaviors/**/*.js')
-      .pipe(gulp.dest('builds/dev/static/behaviors'));
+    gulp.src('app/src/services/**/*.js')
+      .pipe(gulp.dest('app/dev/services'));
 
-    gulp.src('builds/dev/app/services/**/*.js')
-      .pipe(gulp.dest('builds/dev/static/services'));
+    gulp.src('app/src/fonts/**/*')
+      .pipe(gulp.dest('app/dev/fonts'));
 
-    gulp.src([
-        'bower_components/text/text.js'
-    ])
-        .pipe(gulp.dest('builds/dev/static/js/libs'));
+    gulp.src('bower_components/text/text.js')
+     .pipe(gulp.dest('app/dev/js/libs'));
 });
 
 gulp.task('html', function(){
-    gulp.src('builds/dev/app/templates/**/*.html')
+    gulp.src('app/src/templates/**/*.html')
       .pipe(rename(function (path) {
           path.extname = ".js"
       }))
-      .pipe(gulp.dest('builds/dev/static/templates'));
+      .pipe(gulp.dest('app/dev/templates'));
 });
 
 gulp.task('css', function(){
@@ -86,18 +86,18 @@ gulp.task('css', function(){
         'bower_components/alertify/themes/alertify.bootstrap.css',
     ])
     .pipe(concat('libs.css'))
-    .pipe(gulp.dest('builds/dev/static/css'));
+    .pipe(gulp.dest('app/dev/css'));
 
-    gulp.src('builds/dev/app/**/*.css')
+    gulp.src('app/src/**/*.css')
      //   .pipe(scss())
         .pipe(concat('app.css'))
-        .pipe(gulp.dest('builds/dev/static/css'));
+        .pipe(gulp.dest('app/dev/css'));
 })
 
 gulp.task('watch', function(){
-    gulp.watch('builds/dev/app/**/*.js', ['js']);
-    gulp.watch('builds/dev/app/**/*.html', ['html']);
-    gulp.watch('builds/dev/app/**/*.css', ['css']);
+    gulp.watch('app/src/**/*.js', ['js']);
+    gulp.watch('app/src/**/*.html', ['html']);
+    gulp.watch('app/src/**/*.css', ['css']);
 })
 
 
