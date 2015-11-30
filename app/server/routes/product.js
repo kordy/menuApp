@@ -1,6 +1,8 @@
 var Product = require(__approot + '/server/ext/db/schema/product');
+var Group = require(__approot + '/server/ext/db/schema/group');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
+var xlsx = require(__approot + '/server/ext/xlsx');
 
 module.exports = function (app) {
   app.get('/api/products', function (req, res) {

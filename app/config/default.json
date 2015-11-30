@@ -1,4 +1,5 @@
 {
+  "app": "Fusion Service Menu App",
   "port": "3000",
   "domain": "localhost",
   "staticPath": "/dev",

@@ -16,4 +16,5 @@ module.exports = function (app) {
     var filestream = fs.createReadStream(file);
     filestream.pipe(res);
   });
-}
+
+};

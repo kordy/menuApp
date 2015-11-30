@@ -1,4 +1,4 @@
-var User = require('./user');
+var User = require('./server/ext/db/schema/user');
 
 var admin = new User({
   name: 'admin',

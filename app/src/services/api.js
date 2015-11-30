@@ -1,6 +1,6 @@
 define(['router'], function (Router) {
   var Api = function () {
-    var basePath = 'http://localhost:3000/api/';
+    var basePath = '/api/';
 
     function getBasePath() {
       return basePath;

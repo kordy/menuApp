@@ -5,6 +5,7 @@ var menuRoutes = require('./menu');
 var imageRoutes = require('./image');
 var productRoutes = require('./product');
 var groupRoutes = require('./group');
+var hotRoutes = require('./hot');
 var exportRoutes = require('./export');
 
 module.exports = function (app) {
@@ -14,6 +15,7 @@ module.exports = function (app) {
   exportRoutes(app);
   groupRoutes(app);
   productRoutes(app);
+  hotRoutes(app);
   imageRoutes(app);
   menuRoutes(app);
 };

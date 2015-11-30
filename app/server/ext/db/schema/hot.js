@@ -1,8 +1,8 @@
-var db = require('../../../../../builds/dev/ext/db/db');
+var db = require('../db');
 var fs = require('fs');
 var imagesize = require('imagesize');
 var crypto = require('crypto');
-var fileDirectory = '/hots/'
+var fileDirectory = '/files/hots/';
 
 var hotSchema = db.Schema({
 //    _id : { type: Number, ref: 'menu' },

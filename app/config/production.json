@@ -1,0 +1,13 @@
+{
+  "app": "Fusion Service Menu App",
+  "port": "3000",
+  "domain": "menu.fusion-service.com",
+  "staticPath": "/release",
+  "secret": "FusionMenuApp",
+  "db": {
+    "host": "localhost1111",
+    "name": "menu",
+    "user": "fusion",
+    "password": "fsm301115"
+  }
+}
