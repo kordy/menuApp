@@ -32,10 +32,13 @@ function dataSave(data, callback) {
         prod.nameEng = data[3];
         prod.serving = data[4];
         prod.servingDrink = data[5];
-        prod.priceServing = data[6];
-        prod.priceKg = data[7];
-        prod.priceBase = data[8];
-        prod.image = data[9];
+        if (prod.servingDrink) {
+          prod.serving = prod.servingDrink;
+          prod.measure = 'мл';
+        }
+        prod.priceBase = data[6];
+        prod.coefficient = data[7];
+        prod.image = data[8];
         prod.group = groups;
         prod.replace(function () {
           XLSX.cnt--;
