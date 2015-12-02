@@ -118,7 +118,6 @@ define([
           that.menusCollection.unshift({'name': '--- Новое меню ---'});
           if (!that.currentMenuId) that.setCurrentMenu(that.menusCollection.first());
           else {
-            console.log(that.currentMenuId);
             that.setCurrentMenu(that.menusCollection.find({_id: that.currentMenuId}));
             that.selectMenuView.setSelected(that.currentMenuId);
           }

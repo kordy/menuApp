@@ -1,18 +1,27 @@
 var db = require('../db');
 
+function extend(target) {
+    var sources = [].slice.call(arguments, 1);
+    sources.forEach(function (source) {
+        for (var prop in source) {
+            if (prop !== '_id') {
+                target[prop] = source[prop];
+            }
+        }
+    });
+    return target;
+}
 
 var MenuSchema = db.Schema({
     name: String,
     nameEng: String,
     items: [
-        { isGroup: Boolean,
+        {
+          _id: {type: db.Schema.Types.ObjectId, ref: 'product'},
+          isGroup: Boolean,
           isDelimiter: Boolean,
           name: String,
-          nameEng: String,
-          price: Number,
-          priceServing: Number,
-          priceBase: Number,
-          serving: String
+          nameEng: String
         }
     ],
     paddingLeft: Number,
@@ -30,7 +39,27 @@ var MenuSchema = db.Schema({
     discount: String
 });
 
+MenuSchema.statics.fetch = function(callback){
+    this.find({})
+      .populate('items._id')
+      .exec(function (err, menus) {
+          if (menus)
+              menus.forEach(function(menu, index) {
+                  if (menu.items)
+                      menu.items.forEach(function(product, index) {
+                          if (product && product._id && product._id._id) {
+                              extend(product, product._id);
+                              product._id = product._id._id;
+                          }
+                      });
+              });
+          if (typeof callback === 'function') callback(err, menus);
+      });
+};
+
 var Menu = db.model('menu', MenuSchema);
+
+
 
 
 Menu.prototype.updateById = function(callback){

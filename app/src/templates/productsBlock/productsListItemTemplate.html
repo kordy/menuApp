@@ -28,22 +28,13 @@
       <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label>Номинальный вес (г):</label>
-                    <input class="form-control prod-serving" type="text" placeholder="Номинальный вес">
-                </div>
-                <div class="form-group">
-                    <label>Напиток (мл):</label>
-                    <input class="form-control prod-serving-drink" type="text" placeholder="Напиток">
+                    <label>Порция (г/мл):</label>
+                    <input class="form-control prod-serving" type="text" placeholder="Порция (г/мл)">
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-group">
-                    <label>Цена за 1 шт (руб.):</label>
-                    <input class="form-control prod-price-serving" type="text" placeholder="Цена за 1 шт">
-                </div>
-                <div class="form-group">
-                    <label>Цена за 1 кг (руб.):</label>
-                    <input class="form-control prod-price-kg" type="text" placeholder="Цена за 1 кг">
+                <div class="checkbox">
+                  <label><input type="checkbox" class='isDrink'>Напиток</label>
                 </div>
             </div>
       </div>
@@ -55,7 +46,21 @@
                     <input class="form-control prod-price-base" type="text" placeholder="Себестоимость за ед. измерения">
                 </div>
             </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Коэфициэнт</label>
+                <input class="form-control prod-price-coefficient" type="text" placeholder="Коэфициэнт">
+              </div>
+            </div>
       </div>
     <% } %>
+    <div class='row'>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>Стоимость за ед. измерения (руб.):</label>
+          <input class="form-control prod-price-sale" readonly type="text" placeholder="Стоимость за ед. измерения">
+        </div>
+      </div>
+    </div>
   </div>
 </div>

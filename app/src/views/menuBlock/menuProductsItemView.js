@@ -45,9 +45,14 @@ define([
             return !value;
           }
         },
-        '.itemMeasure':'serving',
-        '.itemPrice':'priceServing',
-        '.itemPriceBase':'priceBase'
+        '.itemServing':'serving',
+        '.itemPrice': {
+          observe: ['priceBase', 'coefficient'],
+          onGet: function(values) {
+            if (!values[0] || !values[1]) return;
+            return (parseFloat(values[0]) * parseFloat(values[1])).toFixed(2);
+          }
+        }
       },
       changeLanguage: function(isEnglish) {
         var that = this;

@@ -93,6 +93,19 @@ define([
               return !value;
             }
           }]
+        },
+        '.prod-price-coefficient': {
+          observe: 'coefficient'
+        },
+        '.isDrink': {
+          observe: 'isDrink'
+        },
+        '.prod-price-sale': {
+          observe: ['priceBase', 'coefficient'],
+          onGet: function(values) {
+            if (!values[0] || !values[1]) return;
+            return (parseFloat(values[0]) * parseFloat(values[1])).toFixed(2);
+          }
         }
       },
       template: ProductsListItemTemplate,

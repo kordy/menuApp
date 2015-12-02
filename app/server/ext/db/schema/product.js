@@ -1,13 +1,11 @@
 var db = require('../db');
 
 var ProductSchema = db.Schema({
+  id: db.Schema.Types.ObjectId,
   name: String,
   nameEng: String,
   serving: Number,
-  measure: {
-    type: String,
-    default: 'гр'
-  },
+  isDrink: Boolean,
   priceBase: Number,
   coefficient: Number,
   image: String,

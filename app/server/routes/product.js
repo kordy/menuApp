@@ -12,7 +12,6 @@ module.exports = function (app) {
   });
 
   app.post('/api/products', multipartMiddleware, function (req, res) {
-    //console.log(req.files);
     if (typeof req.files != 'undefined' && req.files.files[0].name.split('.').pop() === 'xlsx') {
       xlsx.parse(req.files.files, function () {
         Group.find({}, null, {sort: {'code': 1}}, function (err, groups) {
@@ -33,7 +32,9 @@ module.exports = function (app) {
   });
 
   app.put('/api/product/:id', function (req, res) {
+    console.log(req.body);
     Product.findOneAndUpdate({_id: req.params.id}, req.body, null, function (err, product) {
+      console.log(product);
       res.status(200).send({result: true, product: product});
     });
   });

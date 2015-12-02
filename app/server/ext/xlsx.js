@@ -34,7 +34,7 @@ function dataSave(data, callback) {
         prod.servingDrink = data[5];
         if (prod.servingDrink) {
           prod.serving = prod.servingDrink;
-          prod.measure = 'мл';
+          prod.isDrink = true;
         }
         prod.priceBase = data[6];
         prod.coefficient = data[7];
@@ -66,7 +66,14 @@ var XLSX = {
       var data = obj[0].data;
 
       XLSX.dataLength = data.length;
-
+      //Product.remove({}, function(err) {
+      //  console.log(err);
+      //  console.log('collection removed');
+      //});
+      //Group.remove({}, function(err) {
+      //  console.log(err);
+      //  console.log('collection removed');
+      //});
       for (var j in data) {
         XLSX.cntAll++;
         if (isNaN(parseInt(data[j][0])) || !data[j][0]) continue;
