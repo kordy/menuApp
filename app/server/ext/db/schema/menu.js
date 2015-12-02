@@ -17,7 +17,8 @@ var MenuSchema = db.Schema({
     nameEng: String,
     items: [
         {
-          _id: {type: db.Schema.Types.ObjectId, ref: 'product'},
+          _id: {type: db.Schema.Types.ObjectId},
+          product: {type: db.Schema.Types.ObjectId, ref: 'product'},
           isGroup: Boolean,
           isDelimiter: Boolean,
           name: String,
@@ -39,17 +40,27 @@ var MenuSchema = db.Schema({
     discount: String
 });
 
+MenuSchema.pre('update', function(next) {
+  console.log(this.schema.paths);
+  next();
+});
+
+MenuSchema.pre('save', function(next) {
+  console.log(2);
+  console.log(this);
+  next();
+});
+
 MenuSchema.statics.fetch = function(callback){
     this.find({})
-      .populate('items._id')
+      .populate('items.product')
       .exec(function (err, menus) {
           if (menus)
               menus.forEach(function(menu, index) {
                   if (menu.items)
-                      menu.items.forEach(function(product, index) {
-                          if (product && product._id && product._id._id) {
-                              extend(product, product._id);
-                              product._id = product._id._id;
+                      menu.items.forEach(function(item, index) {
+                          if (item && item.product && item.product._id) {
+                              extend(item, item.product);
                           }
                       });
               });
@@ -57,18 +68,16 @@ MenuSchema.statics.fetch = function(callback){
       });
 };
 
+MenuSchema.statics.updateById = function(param, callback){
+  this.update({_id: param._id}, param, false, function(err, menu){
+    if (typeof callback === 'function') callback(err, menu);
+  })
+};
+
 var Menu = db.model('menu', MenuSchema);
 
 
 
-
-Menu.prototype.updateById = function(callback){
-    var that = this;
-    Menu.update({_id: that._id}, that, false, function(err){
-        if (err) console.log(err);
-        if(typeof callback === 'function')callback();
-    })
-};
 
 Menu.prototype.deleteById = function(callback){
     var that = this;

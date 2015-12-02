@@ -14,6 +14,13 @@ module.exports = function (app) {
     var params = req.body;
     delete params._id;
     if (!params.image._id) delete params.image;
+    if (params.items) {
+      params.items.forEach(function(item, index) {
+        if (item._id) item.product = item._id;
+        console.log(item);
+      });
+    }
+    console.log(params);
     var menu = new Menu(params);
     menu.save(function (err) {
       if (err) {
@@ -32,9 +39,14 @@ module.exports = function (app) {
     var params = req.body;
     delete params._id;
     if (!params.image || !params.image._id) delete params.image;
+    if (params.items) {
+      params.items.forEach(function(item, index) {
+        if (item._id) item.product = item._id;
+        console.log(item);
+      });
+    }
     console.log(params);
     Menu.findOneAndUpdate({_id: req.params.id}, params, null, function (err, menu) {
-      console.log(err);
       Menu.fetch(function(err, menus) {
         if (err) console.log(err);
         res.json({menus: menus, currentMenuId: menu._id});
