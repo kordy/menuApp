@@ -4,7 +4,11 @@ module.exports = function (app) {
 
 
   app.get('/api/menus', function (req, res) {
-    Menu.fetch(function(err, menus) {
+    var params = {};
+    if (req.decodedUser && req.decodedUser.type !== 'admin'){
+      params = {userId: req.decodedUser};
+    }
+    Menu.fetch(params, function(err, menus) {
       if (err) console.log(err);
       res.json(menus);
     })
@@ -17,17 +21,19 @@ module.exports = function (app) {
     if (params.items) {
       params.items.forEach(function(item, index) {
         if (item._id) item.product = item._id;
-        console.log(item);
       });
     }
-    console.log(params);
+    params.userId = req.decodedUser;
     var menu = new Menu(params);
     menu.save(function (err) {
       if (err) {
-        console.log(err);
         res.send({'result': false});
       } else {
-        Menu.fetch(function(err, menus) {
+        var params = {};
+        if (req.decodedUser && req.decodedUser.type !== 'admin'){
+          params = {userId: req.decodedUser};
+        }
+        Menu.fetch(params, function(err, menus) {
           if (err) console.log(err);
           res.json({menus: menus, currentMenuId: menu._id});
         });
@@ -45,9 +51,13 @@ module.exports = function (app) {
         console.log(item);
       });
     }
-    console.log(params);
+    params.userId = req.decodedUser;
     Menu.findOneAndUpdate({_id: req.params.id}, params, null, function (err, menu) {
-      Menu.fetch(function(err, menus) {
+      params = {};
+      if (req.decodedUser && req.decodedUser.type !== 'admin'){
+        params = {userId: req.decodedUser};
+      }
+      Menu.fetch(params, function(err, menus) {
         if (err) console.log(err);
         res.json({menus: menus, currentMenuId: menu._id});
       });
@@ -57,7 +67,11 @@ module.exports = function (app) {
   app.delete('/api/menu/:id', function (req, res) {
     Menu.findOne({_id: req.params.id}, function (err, menu) {
       menu.remove({}, function (err, menu) {
-        Menu.fetch(function(err, menus) {
+        var params = {};
+        if (req.decodedUser && req.decodedUser.type !== 'admin'){
+          params = {userId: req.decodedUser};
+        }
+        Menu.fetch(params, function(err, menus) {
           if (err) console.log(err);
           res.json({menus: menus});
         });

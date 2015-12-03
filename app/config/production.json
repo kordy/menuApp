@@ -2,10 +2,11 @@
   "app": "Fusion Service Menu App",
   "port": "3000",
   "domain": "menu.fusion-service.com",
+  "domainFull": "http://menu.fusion-service.com",
   "staticPath": "/release",
   "secret": "FusionMenuApp",
   "db": {
-    "host": "localhost1111",
+    "host": "localhost",
     "name": "menu",
     "user": "fusion",
     "password": "fsm301115"

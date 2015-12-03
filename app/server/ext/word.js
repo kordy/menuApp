@@ -21,7 +21,7 @@ var DOCX = {
 
       var name = menu.isEnglish === 'true' ? item.nameEng : item.name;
       var serving = item.serving ? item.serving + ' г' : '';
-      var priceBase = item.priceBase ? item.priceBase + ' руб' : '';
+      var price = item.priceBase && item.coefficient ? parseFloat(item.priceBase) * parseFloat(item.coefficient) + ' руб' : '';
 
       var pObj = docx.createP ();
       if (item.isGroup === 'true') {
@@ -30,7 +30,7 @@ var DOCX = {
       }
       else {
         pObj.addText ( name + '(' + serving + ')', {font_face: 'Arial', font_size: 10});
-        pObj.addText ( ' - ' + priceBase, { bold: true, font_face: 'Arial', font_size: 10});
+        pObj.addText ( ' - ' + price, { bold: true, font_face: 'Arial', font_size: 10});
       }
     });
 

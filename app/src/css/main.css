@@ -1,3 +1,6 @@
+html{
+    zoom: 1!important;
+}
 #body {
     padding-bottom: 40px;
 }
@@ -445,11 +448,15 @@ body {
 }
 
 .menu-list__characters {
-    float: left;
+    margin-right:50px;
 }
-
+.menu-list__characters-val:first-child{
+    min-width:50%;
+    margin-left:0;
+}
 .menu-list__characters-val {
-    margin-right: 70px;
+   float:left;
+   margin-left:4%;
 }
 
 .menu-list__characters-val-text {

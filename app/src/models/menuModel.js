@@ -29,8 +29,8 @@ define([
         isDelimiter: false,
         name: "",
         nameEng: "",
-        priceServing: '',
         priceBase: '',
+        coefficient: 0,
         serving: ''
       }],
       noAdditionalExpenses: false,

@@ -1,3 +1,15 @@
+<% if (typeof isDelimiter === 'undefined' || !isDelimiter) {%>
+<div class='menu-list__delete menuItemDelete'>
+  <span class="glyphicon glyphicon-remove"></span>
+</div>
+<% }%>
+
+<% if (typeof isDisabled === 'undefined' || !isDisabled) {%>
+<div class='menu-list__handle menuItemHandle'>
+  <span class="glyphicon glyphicon-align-justify"></span>
+</div>
+<% }%>
+
 <div class='menu-list__characters'>
   <span class='menu-list__characters-val'>
      <% if ((typeof isDelimiter === 'undefined' || !isDelimiter) && (typeof isGroup !== 'undefined' && isGroup)) { %>
@@ -14,22 +26,10 @@
   </span>
     <% if (typeof isGroup === 'undefined' || !isGroup) {%>
   <span class='menu-list__characters-val menuPriceBlock'>
-      <span class='menu-list__characters-val-text'>Стоимость: </span>
+      <span class='menu-list__characters-val-text'>Цена: </span>
       <span class='itemPrice'></span>
       <span class='menu-list__characters-val-text'> руб.</span>
   </span>
     <% }%>
   <% }%>
 </div>
-
-<% if (typeof isDelimiter === 'undefined' || !isDelimiter) {%>
-<div class='menu-list__delete menuItemDelete'>
-  <span class="glyphicon glyphicon-remove"></span>
-</div>
-<% }%>
-
-<% if (typeof isDisabled === 'undefined' || !isDisabled) {%>
-<div class='menu-list__handle menuItemHandle'>
-    <span class="glyphicon glyphicon-align-justify"></span>
-</div>
-<% }%>

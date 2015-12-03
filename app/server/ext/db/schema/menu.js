@@ -13,6 +13,7 @@ function extend(target) {
 }
 
 var MenuSchema = db.Schema({
+    userId: db.Schema.Types.ObjectId,
     name: String,
     nameEng: String,
     items: [
@@ -40,29 +41,28 @@ var MenuSchema = db.Schema({
     discount: String
 });
 
-MenuSchema.pre('update', function(next) {
-  console.log(this.schema.paths);
-  next();
-});
-
-MenuSchema.pre('save', function(next) {
-  console.log(2);
-  console.log(this);
-  next();
-});
-
-MenuSchema.statics.fetch = function(callback){
-    this.find({})
-      .populate('items.product')
+MenuSchema.statics.fetch = function(options, callback){
+    var that = this;
+    that.find(options)
+      .populate('image items.product')
       .exec(function (err, menus) {
           if (menus)
               menus.forEach(function(menu, index) {
-                  if (menu.items)
+                  if (menu.items) {
+                      var newItems = [];
                       menu.items.forEach(function(item, index) {
+                          if (!item.isGroup && !item.isDelimiter && (!item.product || !item.product._id)) {
+                              return;
+                          }
                           if (item && item.product && item.product._id) {
                               extend(item, item.product);
                           }
+                          newItems[newItems.length] = item;
                       });
+                      if (menu.items.length !== newItems.length) {
+                          menu.items = newItems;
+                      }
+                  }
               });
           if (typeof callback === 'function') callback(err, menus);
       });
@@ -75,9 +75,6 @@ MenuSchema.statics.updateById = function(param, callback){
 };
 
 var Menu = db.model('menu', MenuSchema);
-
-
-
 
 Menu.prototype.deleteById = function(callback){
     var that = this;

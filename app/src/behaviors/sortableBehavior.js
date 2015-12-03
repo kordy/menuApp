@@ -12,7 +12,7 @@ define(function() {
         , items = this.view.children._views // Получаем список дочерних элементов
         , view;
 
-      collection.on('add remove change', function() {
+      collection.on('add remove change sort', function() {
         for (var v in items) {
           view = items[v];
           view.$el.attr('data-backbone-cid', view.model.cid); // Привязываем элемент к модели по cid

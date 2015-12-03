@@ -175,10 +175,21 @@ define([
         });
 
         Sync.on('addToMenu', that.addProduct, that);
+        Sync.on('updateProduct', that.updateProduct, that);
+        Sync.on('updateProducts', that.updateProducts, that);
+        Sync.on('deleteProduct', that.deleteProduct, that);
 
         $(window).on('resize', function() {
           that.setPreviewSize();
         });
+      },
+
+      onDestroy: function(){
+        var that = this;
+        Sync.off('addToMenu', that.addProduct, that);
+        Sync.off('updateProduct', that.updateProduct, that);
+        Sync.off('updateProducts', that.updateProducts, that);
+        Sync.off('deleteProduct', that.deleteProduct, that);
       },
 
       blanksUpdate: function(blanksCollection) {
@@ -235,8 +246,14 @@ define([
           template: pdfTemplate,
           model: parentView.model,
           initialize: function() {
+            var that = this;
             this.render();
-            this.model.on('change', this.render, this);
+            this.model.on('change', function () {
+              that.render();
+            });
+          },
+          onBeforeRender: function() {
+            this.model.set('hots', parentView.hotsCollection.toJSON());
           },
           onRender: function() {
             parentView.setPreviewSize();
@@ -294,6 +311,56 @@ define([
         if (item.code) item.isGroup = true;
         item.children = null;
         that.modelItems.add(new Model(item));
+      },
+      updateProducts: function(items) {
+        var that = this;
+        _.each(items.products, function(item) {
+          that.updateProduct(item);
+        });
+      },
+      updateProduct: function(item) {
+        var that = this;
+        that.saveMenuChanges();
+        that.menusCollection.each(function(menu) {
+          var menuItems = menu.get('items');
+          if (menuItems instanceof Array) {
+            var newItems = [];
+            _.each(menuItems, function(menuItem) {
+              if (menuItem._id && menuItem._id === item._id) {
+                newItems[newItems.length] = item;
+              } else {
+                newItems[newItems.length] = menuItem;
+              }
+            });
+            if (menu.get('_id') === that.model.get('_id')) {
+              that.modelItems.reset(newItems);
+              that.modelItems.trigger('change');
+            }
+            menu.set('items', newItems);
+          }
+        });
+      },
+      deleteProduct: function(item) {
+        var that = this;
+        that.saveMenuChanges();
+        that.menusCollection.each(function(menu) {
+          var menuItems = menu.get('items');
+          if (menuItems instanceof Array) {
+            var newItems = [];
+            _.each(menuItems, function(menuItem) {
+              if (menuItem._id && menuItem._id === item._id) {
+
+              } else {
+                newItems[newItems.length] = menuItem;
+              }
+            });
+            if (menu.get('_id') === that.model.get('_id')) {
+              that.modelItems.reset(newItems);
+              that.modelItems.trigger('change');
+            }
+            menu.set('items', newItems);
+          }
+        });
       },
       deleteMenu: function() {
         var that = this;

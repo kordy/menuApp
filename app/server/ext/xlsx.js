@@ -92,10 +92,10 @@ var XLSX = {
     var ws = wb.WorkSheet(slugify(menu.name), wsOpts);
     menu.items.forEach(function (item, index) {
       if (item.isDelimiter) return;
-
+      index++;
       var name = menu.isEnglish === 'true' ? item.nameEng : item.name;
       var serving = item.serving ? item.serving + ' г' : '';
-      var priceBase = item.priceBase ? item.priceBase + ' руб' : '';
+      var price = item.priceBase && item.coefficient ? parseFloat(item.priceBase) * parseFloat(item.coefficient) + ' руб' : '';
 
       //myStyle.Font.Italics();
       //myStyle.Font.Underline();
@@ -117,7 +117,7 @@ var XLSX = {
       }
 
       ws.Cell(index, 2).String(serving);
-      ws.Cell(index, 3).String(priceBase);
+      ws.Cell(index, 3).String(price);
       //ws.Cell(index,3).Formula("A2+B2");
       //ws.Cell(index,4).Formula("A2/C2");
       //ws.Cell(index,5).Date(new Date());

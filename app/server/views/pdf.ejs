@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Меню</title>
     <style>
-
+          html{
+            zoom: 0.69;
+          }
           *{
               margin:0;
               padding:0;
@@ -141,15 +143,15 @@
               var measure = isEnglish === 'true' || isEnglish === true ? ' g' : ' г';
               var serving = items[i].serving ? items[i].serving + measure : '';
               var currency = isEnglish === 'true' || isEnglish === true ? ' RUR' : ' руб';
-              var priceServing = items[i].priceServing ? items[i].priceServing + currency : '';
-              fullValue += parseInt(priceServing ? priceServing : 0);
+              var price = items[i].priceBase && items[i].coefficient ? parseFloat(items[i].priceBase) * parseFloat(items[i].coefficient) + currency : '';
+              fullValue += parseFloat(price ? price : 0);
           %>
           <li class='menu__item<%- groupClass %>'>
               <span class='menu__name'><%- itemName %></span>
               <% if(!groupClass) { %>
                   <span class='menu__cnt'> (<%- serving %>)</span>
                 <% if (typeof noPrices === 'undefined' || noPrices === 'false' || !noPrices) { %>
-                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- priceServing %></span>
+                  <span class='menu__price'>&nbsp;&nbsp;-&nbsp;&nbsp;<%- price %></span>
                 <% } %>
               <% } %>
           </li>
@@ -163,13 +165,13 @@
         %>
         <div class='menu__service-increase'>Надбавка за сервис - <%- serviceIncrease %>%</div>
         <% } %>
-        <div class='menu__fullPrice'>Итого <%- fullValue %> руб.</div>
+        <div class='menu__fullPrice'>Итого <%- fullValue.toFixed(2) %> руб.</div>
 
         <% if (typeof discount !== 'undefined' && discount) {
           fullValue = fullValue - fullValue * parseInt(discount) / 100;
         %>
         <div class='menu__service-discount'>Скидка - <%- discount %>%</div>
-        <div class='menu__fullPrice'>Итого со скидкой <%- fullValue %> руб.</div>
+        <div class='menu__fullPrice'>Итого со скидкой <%- fullValue.toFixed(2) %> руб.</div>
         <% } %>
 
         <% if (typeof commentAdditionalExpenses !== 'undefined' && commentAdditionalExpenses) { %>

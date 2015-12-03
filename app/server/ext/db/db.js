@@ -8,7 +8,9 @@ var DB_USER = conf.get('db.user');
 var DB_PASSWORD = conf.get('db.password');
 
 var dbSRC = "mongodb://"+DB_USER+":"+DB_PASSWORD+"@"+DB_HOST+"/"+DB_NAME;
-db.connect(dbSRC,function(err){});
+db.connect(dbSRC,function(err){
+  console.log(err);
+});
 
 module.exports = db;
 

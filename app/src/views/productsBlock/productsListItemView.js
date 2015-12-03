@@ -135,7 +135,8 @@ define([
         var that = this;
         that.model.delete()
           .done(function(){
-            alertify.log('Файл <strong>' + that.model.get('name') + '</strong> удален');
+            Sync.trigger('deleteProduct', that.model.toJSON());
+            alertify.log('Продукт <strong>' + that.model.get('name') + '</strong> удален');
             that.remove();
           })
           .fail(function(){
@@ -147,6 +148,7 @@ define([
         that.model.update()
           .done(function(){
             alertify.log('Продукт <strong>' + that.model.get('name') + '</strong> обновлен');
+            Sync.trigger('updateProduct', that.model.toJSON());
           })
           .fail(function(){
             alertify.error('Ошибка при обновлении');

@@ -2,8 +2,8 @@ var db = require('../db');
 var fs = require('fs');
 var imagesize = require('imagesize');
 var crypto = require('crypto');
-var fileDirectory = '/files/'
-
+var fileDirectory = '/files/';
+var conf = require('config');
 var imageSchema = db.Schema({
 //    _id : { type: Number, ref: 'menu' },
     name: String,
@@ -15,7 +15,7 @@ var imageSchema = db.Schema({
 
 imageSchema.post('find', function(result) {
     result.forEach(function(item) {
-        item.src = fileDirectory + item.url();
+        item.src = conf.get('domainFull') + fileDirectory + item.url();
     })
 });
 
@@ -73,7 +73,7 @@ Image.prototype.saveIMG = function(file,callback){
             fs.rename(tmpPath, that.path(), function (err) {
                 console.log('rename callback ', err);
             });
-            that.src = fileDirectory + that.url();
+            that.src = conf.get('domainFull') + fileDirectory + that.url();
             if(typeof callback === 'function')callback(that);
         });
     });

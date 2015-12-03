@@ -57,6 +57,7 @@ module.exports = function (app) {
           return res.status(401).json({ tokenFail: true, message: 'Failed to authenticate token.' });
         } else {
           req.decoded = decoded;
+          req.decodedUser = decoded;
           next();
         }
       });

@@ -3,6 +3,7 @@ var fs = require('fs');
 var imagesize = require('imagesize');
 var crypto = require('crypto');
 var fileDirectory = '/files/hots/';
+var conf = require('config');
 
 var hotSchema = db.Schema({
 //    _id : { type: Number, ref: 'menu' },
@@ -15,7 +16,7 @@ var hotSchema = db.Schema({
 
 hotSchema.post('find', function(result) {
     result.forEach(function(item) {
-        item.src = fileDirectory + item.url();
+        item.src = conf.get('domainFull') + fileDirectory + item.url();
     })
 });
 
@@ -73,7 +74,7 @@ Hot.prototype.saveIMG = function(file,callback){
             fs.rename(tmpPath, that.path(), function (err) {
                 console.log('rename callback ', err);
             });
-            that.src = fileDirectory + that.url();
+            that.src = conf.get('domainFull') + fileDirectory + that.url();
             if(typeof callback === 'function')callback(that);
         });
     });

@@ -2,6 +2,7 @@
   "app": "Fusion Service Menu App",
   "port": "3000",
   "domain": "localhost",
+  "domainFull": "http://localhost:3000",
   "staticPath": "/dev",
   "secret": "FusionMenuApp",
   "db": {
