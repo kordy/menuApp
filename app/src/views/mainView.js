@@ -3,9 +3,10 @@ define([
     "views/productsBlockView",
     "views/menuBlockView",
     "router",
+    "api",
     "userInfo"
 ],
-    function(LayoutTemplate, ProductsBlockView, MenuBlockView, Router, User) {
+    function(LayoutTemplate, ProductsBlockView, MenuBlockView, Router, Api, User) {
         var MainView = Marionette.LayoutView.extend({
             el: 'body',
             templateHelpers: function(){
@@ -22,8 +23,9 @@ define([
               'click .logoutButton': 'logout'
             },
             logout: function() {
-              $.removeCookie('token');
-              Router.go('login');
+              Api.post('logout').done(function(){
+                  Router.go('login');
+              });
             },
             initialize: function() {
                 this.render();

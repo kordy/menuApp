@@ -26,13 +26,8 @@ define([
           return;
         }
         Api.post(this.model.getUrl(), this.model.toJSON()).done(function(data) {
-          if(data && data.success && data.token) {
-            $.cookie("token", data.token, {
-              path    : '/'
-            });
+          if(data) {
             Router.go('main');
-          } else {
-            alertify.error('Неверный логин или пароль');
           }
         })
           .fail(function(){

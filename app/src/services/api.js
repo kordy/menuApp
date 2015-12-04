@@ -30,24 +30,14 @@ define(['router'], function (Router) {
         return deferredRequest.promise();
       }
 
-      var token = $.cookie('token');
-
-      if (token) {
-        //if (data) data.token = token;
-        //else data = {token: token}
-      }
-
       var options = {
+
         url: getBasePath() + url,
         type: type,
-        data: data,
-        beforeSend: function(xhr, data) {
-          xhr.setRequestHeader('X-Access-Token', token);
-        }
+        data: data
       };
 
       sendRequest(options, deferredRequest);
-
       return deferredRequest.promise();
     }
 
